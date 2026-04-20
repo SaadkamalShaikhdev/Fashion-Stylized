@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono,Inter } from "next/font/google";
+import { Geist, Geist_Mono,Inter,Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -14,6 +14,13 @@ const inter = Inter({
   subsets: ["latin"]
 
 })
+
+
+const cormorantGaramond = Cormorant_Garamond({
+  variable: "--font-cormorant-garamond",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"]
+});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -33,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={` h-full antialiased`}
+      className={` h-full antialiased bg-white  ${geistSans.variable} ${inter.variable} ${cormorantGaramond.variable} ${geistMono.variable}`}
     >
       <body  className={`min-h-full flex flex-col  ${inter.className}`}>
         <Navbar />
