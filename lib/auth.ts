@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import User from "@/models/User";
 import GoogleProvider from "next-auth/providers/google";
+import { sendOTPEmail} from "@/lib/resend"
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -27,6 +28,27 @@ export const authOptions: NextAuthOptions = {
                     if (!isMatch) {
                         throw new Error("Invalid password");
                     }
+
+                      // ⚠️ user exists but not verified
+          if (!user.isVerified) {
+            // generate fresh OTP
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+            user.otp = otp;
+            user.otpExpiry = otpExpiry;
+            await user.save();
+
+            // send fresh OTP
+            await sendOTPEmail({
+              email: user.email,
+              username: user.username,
+              otp,
+            });
+
+            // throw special error with userId so frontend can redirect
+            throw new Error(`UNVERIFIED:${user._id}`);
+          }
                     return {
                         id: user._id.toString(),
                         email: user.email,
