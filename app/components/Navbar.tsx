@@ -16,7 +16,7 @@ const Navbar = () => {
   <nav className='container mx-auto flex items-center justify-between py-4 px-6'>
     <div className='flex items-center justify-center gap-20'>
       <div>
-      <Image src="/logo2.png"  alt="Logo" width={100} height={40} />
+        <Link href="/"><Image src="/logo2.png"  alt="Logo" width={100} height={40} /></Link>
       </div>
       <ul className='hidden gap-8 lg:flex'>
       <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/Watches">Watches</Link></li>

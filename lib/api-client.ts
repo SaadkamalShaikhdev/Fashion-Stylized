@@ -17,11 +17,10 @@ class APIClient {
             body: body ? JSON.stringify(body) : undefined,
             headers: defaultHeaders
         } )
-        if(!response.ok) {
-            throw new Error (await response.text())
-        }
-        return await response.json();
-    }
+       
+// ✅ always parse JSON whether ok or not
+    const data = await response.json();
+    return data;    }
    async registerUser(userData: {email: string, password: string, name: string}) {
     return this.fetch<{ success: boolean; error?: string | string[]; userId?: string }>("/auth/register", {
         method: "POST",

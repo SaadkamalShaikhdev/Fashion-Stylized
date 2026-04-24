@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Mail, Lock, Loader2, AlertCircle } from 'lucide-react'
 import { motion } from "framer-motion";
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -12,11 +13,60 @@ const SignIn = () => {
  const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
   
   const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0 }
 };
+
+    const handleSubmit = async () => {
+
+    setError(""); // clear previous error
+
+    // frontend validation
+    if (!email || !password) {
+      setError("Email and password are required");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      
+     const result = await signIn("credentials", {
+        email,
+        password,
+         redirect: false, 
+      })
+       if (result?.error) {
+    if (result.error.startsWith("UNVERIFIED:")) {
+        const userId = result.error.split("UNVERIFIED:")[1];
+        router.push(`/verify-otp?userId=${userId}`);
+        return;
+    }
+    setError("Invalid email or password");
+}
+
+if (result?.ok && !result?.error) {
+    router.push("/"); // ✅ redirect to home on success
+}
+
+
+    } catch (error) {
+            console.error("Sign in error:", error);
+            setError("Something went wrong. Please try again.");
+
+    } finally {
+      setLoading(false);
+    }
+    }
+
+const handleGoogle = async () => {
+    setGoogleLoading(true);
+    await signIn("google");
+    setGoogleLoading(false);
+  };
   return (
     <motion.div
   initial={{ opacity: 0 }}
@@ -35,10 +85,22 @@ const SignIn = () => {
       }
     }
   }} className="w-full max-w-md">
+
       <motion.div variants={fadeUp} className='mb-10'>
         <h1 className='text-5xl mb-3 font-cormorant-garamond'>Welcome Back</h1>
         <p className="text-white/60">Sign in to access your account</p>
       </motion.div>
+      {/* ── ERROR BOX ── */}
+       {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className='flex items-center gap-3 bg-red-500/10 border border-red-500/40 text-red-400 px-4 py-3 mb-6 text-sm'>
+                    <AlertCircle className='w-4 h-4 shrink-0' />
+                    <span>{error}</span>
+                  </motion.div>
+                )}
+      
       <div className='space-y-6'>
         <motion.div variants={fadeUp}>
           <label className='block text-sm uppercase tracking-wider mb-2' htmlFor="email">Email</label>
@@ -57,10 +119,20 @@ const SignIn = () => {
         <motion.div variants={fadeUp} className='flex items-center justify-end'>
           <Link className='text-sm text-white/70 hover:text-white transition-colors' href="/forget-password">Forgot password?</Link>
         </motion.div>
-        <motion.button
-  variants={fadeUp}
-  whileHover={{ scale: 1.03 }}
-  whileTap={{ scale: 0.97 }} className='w-full font-bold cursor-pointer hover:scale-[102%] bg-white text-black py-4 uppercase tracking-widest hover:bg-white/90 transition-all'>Sign In</motion.button>
+       <motion.button
+              variants={fadeUp}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => handleSubmit()}
+              disabled={loading}
+              className='w-full font-bold cursor-pointer bg-white text-black py-4 uppercase tracking-widest hover:bg-white/90 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2'>
+              {loading ? (
+                <>
+                  <Loader2 className='w-4 h-4 animate-spin' />
+                  Signing in...
+                </>
+              ) : "Sign In"}
+            </motion.button>
        <motion.div className='flex flex-col gap-6' variants={fadeUp}>
 
         <div className='relative'>
@@ -73,7 +145,18 @@ const SignIn = () => {
             </span>
           </div>
         </div>
-        <button onClick={()=>signIn("google")} className='py-3 border cursor-pointer border-white/20 hover:border-white transition-colors text-white text-sm uppercase tracking-wider w-full'>Google</button>
+         {/* Google button */}
+              <button
+                onClick={handleGoogle}
+                disabled={googleLoading}
+                className='py-3 border cursor-pointer border-white/20 hover:border-white transition-colors text-white text-sm uppercase tracking-wider w-full disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2'>
+                {googleLoading ? (
+                  <>
+                    <Loader2 className='w-4 h-4 animate-spin' />
+                    Connecting...
+                  </>
+                ) : "Google"}
+              </button>
         <p className='text-center text-white/60 text-sm'>Don't have an account? <Link href="/signUp" className='text-white hover:underline' >Sign up</Link></p>
       </motion.div>
        </div>

@@ -186,7 +186,7 @@ const SignUp = () => {
               variants={fadeUp}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={handleSubmit}
+              onClick={() => handleSubmit()}
               disabled={loading}
               className='w-full font-bold cursor-pointer bg-white text-black py-4 uppercase tracking-widest hover:bg-white/90 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2'>
               {loading ? (

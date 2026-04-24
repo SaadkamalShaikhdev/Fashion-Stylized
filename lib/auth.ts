@@ -15,52 +15,46 @@ export const authOptions: NextAuthOptions = {
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) {
-                    throw new Error("Email and password are required");
-                }
-                try {
-                    await connectToDatabase();
-                    const user = await User.findOne({ email: credentials.email });
-                    if (!user) {
-                        throw new Error("No user found with the provided email");
-                    }
-                    const isMatch = await compare(credentials.password, user.password);
-                    if (!isMatch) {
-                        throw new Error("Invalid password");
-                    }
+    if (!credentials?.email || !credentials?.password) {
+        throw new Error("Email and password are required");
+    }
 
-                      // ⚠️ user exists but not verified
-          if (!user.isVerified) {
-            // generate fresh OTP
-            const otp = Math.floor(100000 + Math.random() * 900000).toString();
-            const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+    await connectToDatabase();
 
-            user.otp = otp;
-            user.otpExpiry = otpExpiry;
-            await user.save();
+    const user = await User.findOne({ email: credentials.email });
+    if (!user) {
+        throw new Error("INVALID_CREDENTIALS");
+    }
 
-            // send fresh OTP
-            await sendOTPEmail({
-              email: user.email,
-              username: user.username,
-              otp,
-            });
+    const isMatch = await compare(credentials.password, user.password);
+    if (!isMatch) {
+        throw new Error("INVALID_CREDENTIALS");
+    }
 
-            // throw special error with userId so frontend can redirect
-            throw new Error(`UNVERIFIED:${user._id}`);
-          }
-                    return {
-                        id: user._id.toString(),
-                        email: user.email,
-                        name: user.name,
-                        role: user.role
-                    }
+    if (!user.isVerified) {
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+        user.otp = otp;
+        user.otpExpiry = otpExpiry;
+        await user.save();
 
-                } catch (error) {
-                    throw new Error("Invalid email or password");
+        await sendOTPEmail({
+            email: user.email,
+            username: user.username,
+            otp,
+        });
 
-                }
-            }
+        throw new Error(`UNVERIFIED:${user._id}`);
+    }
+
+    return {
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        role: user.role
+    }
+    // ✅ NO try/catch — errors bubble up naturally
+}
         }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || "",
