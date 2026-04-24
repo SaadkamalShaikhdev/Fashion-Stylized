@@ -5,6 +5,7 @@ import User from "@/models/User"
 import { registerSchema } from "@/lib/register-validation/auth";
 import {sendOTPEmail} from "@/lib/resend"
 
+
 export async function POST(request: NextRequest){
 try {
     const { email, username, password } = await request.json();
@@ -65,6 +66,7 @@ const validatedData = result.data;
 
 
 } catch (error) {
+    console.error("Error in registration:", error);
     return NextResponse.json({ success: false, error: "An error occurred while creating the account" }, { status: 400 });
 }
 }

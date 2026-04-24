@@ -6,7 +6,7 @@ type FetchOptions = {
 }
 
 class APIClient {
-    private async fetchData<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
+    private async fetch<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
           const { method = "GET", body, headers = {}} = options;
         const defaultHeaders = {
             "Content-Type": "application/json",
@@ -22,6 +22,12 @@ class APIClient {
         }
         return await response.json();
     }
+   async registerUser(userData: {email: string, password: string, name: string}) {
+    return this.fetch<{ success: boolean; error?: string | string[]; userId?: string }>("/auth/register", {
+        method: "POST",
+        body: {email: userData.email, password: userData.password, username: userData.name}
+    })
+}
 }
 
-export const aptClient = new APIClient();
+export const apiClient = new APIClient();

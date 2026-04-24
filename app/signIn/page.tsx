@@ -2,14 +2,17 @@
 import { useState } from 'react'
 import Image from "next/image"
 import Link from "next/link"
-import { Mail,Lock } from 'lucide-react'
+import { Mail, Lock, Loader2, AlertCircle } from 'lucide-react'
 import { motion } from "framer-motion";
 import { signIn } from 'next-auth/react'
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+ const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [error, setError] = useState("");
+  
   const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0 }

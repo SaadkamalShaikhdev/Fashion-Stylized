@@ -19,7 +19,6 @@ const Navbar = () => {
       <Image src="/logo2.png"  alt="Logo" width={100} height={40} />
       </div>
       <ul className='hidden gap-8 lg:flex'>
-      <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/">Home</Link></li>
       <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/Watches">Watches</Link></li>
       <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/wallet">Wallet</Link></li>
       <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/glasses">Glasses</Link></li>
