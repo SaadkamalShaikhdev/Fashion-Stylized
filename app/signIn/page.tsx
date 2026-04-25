@@ -117,7 +117,7 @@ const handleGoogle = async () => {
           </div>
         </motion.div>
         <motion.div variants={fadeUp} className='flex items-center justify-end'>
-          <Link className='text-sm text-white/70 hover:text-white transition-colors' href="/forget-password">Forgot password?</Link>
+          <Link className='text-sm text-white/70 hover:text-white transition-colors' href="/forgot-password">Forgot password?</Link>
         </motion.div>
        <motion.button
               variants={fadeUp}

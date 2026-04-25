@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Image from "next/image"
 import Link from "next/link"
-import { Mail, Lock, Loader2, AlertCircle } from 'lucide-react'
+import { Mail, Lock, Loader2, AlertCircle,User  } from 'lucide-react'
 import { motion } from "framer-motion";
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
@@ -67,7 +67,7 @@ const SignUp = () => {
 
   const handleGoogle = async () => {
     setGoogleLoading(true);
-    await signIn("google");
+    await signIn("google", { callbackUrl: "/" });
     setGoogleLoading(false);
   };
 
@@ -125,7 +125,7 @@ const SignUp = () => {
             <motion.div variants={fadeUp}>
               <label className='block text-sm uppercase tracking-wider mb-2'>Full Name</label>
               <div className='relative'>
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
