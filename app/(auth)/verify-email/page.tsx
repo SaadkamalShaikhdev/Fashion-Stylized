@@ -123,7 +123,7 @@ const VerifyEmail = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className='min-h-[calc(100vh-75px)] bg-black text-white flex items-center justify-center p-6'>
+      className='min-h-screen bg-black text-white flex items-center justify-center p-6'>
 
       <motion.div
         initial="hidden"
