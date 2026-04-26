@@ -72,7 +72,7 @@ const handleGoogle = async () => {
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
   transition={{ duration: 0.5 }}
-  className='min-h-[calc(100vh-75px)] bg-black text-white flex'>
+  className='min-h-screen bg-black text-white flex'>
         <div className='w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12'>
         <motion.div
   initial="hidden"

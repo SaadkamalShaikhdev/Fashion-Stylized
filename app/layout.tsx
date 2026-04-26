@@ -29,7 +29,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fashion Stylized - Premium Accessories for the Modern Individual",
+  title: "Fashion Stylized - Premium Accessories",
   description: "Discover our curated collection of premium accessories, including watches, glasses, wallets, and more. Elevate your style with timeless pieces designed for the modern individual.",
 };
 
@@ -41,14 +41,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={` h-full antialiased bg-white  ${geistSans.variable} ${inter.variable} ${cormorantGaramond.variable} ${geistMono.variable}`}
+      className={` h-full antialiased  ${geistSans.variable} ${inter.variable} ${cormorantGaramond.variable} ${geistMono.variable}`}
     >
       <body  className={`min-h-full flex flex-col  ${inter.className}`}>
         <AuthProvider>
 
-        <Navbar />
 {children}
-<Footer />
         </AuthProvider>
 </body>
     </html>
