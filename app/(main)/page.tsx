@@ -7,6 +7,7 @@ import HeroSection from "../components/HeroSection";
 import Image from "next/image";
 import CategorySection from "../components/CategorySection";
 import NewArrival from "../components/NewArrival";
+import StorySection from "../components/StorySection";
 
 
 
@@ -16,6 +17,7 @@ export default function Home() {
 <HeroSection />
 <CategorySection />
 <NewArrival />
+<StorySection />
  </>
   );
 }
