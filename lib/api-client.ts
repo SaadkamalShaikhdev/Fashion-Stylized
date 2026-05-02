@@ -1,9 +1,12 @@
+import { IProduct } from "@/models/Product";
 
 type FetchOptions = {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     headers?: Record<string, string>;
     body?: any;
 }
+
+
 
 class APIClient {
     private async fetch<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
@@ -70,9 +73,20 @@ async resetPassword(data: { userId: string; newPassword: string }) {
     })
 }
 async getTrendingProducts() {
-    return this.fetch<{ success: boolean; error?: string, data?: any }>("/products?trending=true&limit=9")
+    return this.fetch<{ success: boolean; error?: string, data?: IProduct[] }>("/products?trending=true&limit=9")
 }
 
+async getProductById(id: string) {
+    return this.fetch<{ success: boolean; data?: IProduct; error?: string }>(
+        `/products?id=${id}`
+    )
+}
+
+async getProductsByCategory(category: string) {
+    return this.fetch<{ success: boolean; data?: IProduct[]; error?: string }>(
+        `/category?category=${category}`
+    )
+}
 }
 
 
