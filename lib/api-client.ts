@@ -84,7 +84,7 @@ async getProductById(id: string) {
 
 async getProductsByCategory(category: string) {
     return this.fetch<{ success: boolean; data?: IProduct[]; error?: string }>(
-        `/category?category=${category}`
+        `/categories?category=${category}`
     )
 }
 }

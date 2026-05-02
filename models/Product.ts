@@ -9,6 +9,7 @@ export interface IProduct {
     _id?: mongoose.Types.ObjectId;
     stock?: number;
     category: string;
+    subcategory?: string;
     isTrending?: boolean;
     createdAt?: Date;
     updatedAt?: Date; 
@@ -22,6 +23,7 @@ const productSchema = new mongoose.Schema<IProduct>({
     images: [{type: String}],
     stock: {type: Number, default: 5},
     category: {type: String, required: true},
+    subcategory: {type: String},
     isTrending: {type: Boolean, default: false}
 }, { timestamps: true
 })
