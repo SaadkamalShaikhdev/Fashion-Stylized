@@ -4,23 +4,14 @@ import { Image } from '@imagekit/next'
 import { motion, AnimatePresence } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import { ShoppingBag, Eye } from 'lucide-react'
+import { IProduct } from '@/models/Product'
 
-type Product = {
-  _id: string
-  title: string
-  price: number
-  category: string
-  images?: string[]
-  imageUrl?: string[]
-  stock: number
-  isTrending: boolean
-}
 
 const filters = ["All", "Watches", "Glasses", "Wallets"]
 
 const NewArrival = () => {
-  const [products, setProducts] = useState<Product[]>([])
-  const [filtered, setFiltered] = useState<Product[]>([])
+  const [products, setProducts] = useState<IProduct[]>([])
+  const [filtered, setFiltered] = useState<IProduct[]>([])
   const [activeFilter, setActiveFilter] = useState("All")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
@@ -31,8 +22,8 @@ const NewArrival = () => {
         setLoading(true)
         const res = await apiClient.getTrendingProducts()
         if (res.success) {
-          setProducts(res.data)
-          setFiltered(res.data)
+          setProducts(res.data || [])
+          setFiltered(res.data || [])
         } else {
           setError(res.error || "Failed to fetch products")
         }
@@ -58,7 +49,7 @@ const NewArrival = () => {
   }
 
   // get image url — handles both images[] and imageUrl[]
-  const getImage = (product: Product) => {
+  const getImage = (product: IProduct) => {
     if (product.images && product.images.length > 0) return product.images[0]
     if (product.imageUrl && product.imageUrl.length > 0) return product.imageUrl[0]
     return "/home.jpg" // fallback
