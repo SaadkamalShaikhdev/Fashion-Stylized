@@ -93,6 +93,11 @@ async getProducts() {
         `/products`
     )
 }
+async getProductsByCategoryAndLimit(category: string) {
+    return this.fetch<{ success: boolean; data?: IProduct[]; error?: string }>(
+        `/categories?category=${category}&limit=3`
+    )
+}
 }
 
 

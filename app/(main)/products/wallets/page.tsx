@@ -28,7 +28,7 @@ const Wallet = () => {
     async function getData() {
       try {
         setLoading(true)
-        const res = await apiClient.getProductsByCategory("wallet")
+        const res = await apiClient.getProductsByCategory("wallets")
         if (res.success) {
           setWallets(res.data || [])
           setFiltered(res.data || [])
