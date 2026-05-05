@@ -7,8 +7,14 @@ export async function GET(request: NextRequest) {
     try {
             const searchParams = request.nextUrl.searchParams;
             const category = searchParams.get('category');
+            const limit = searchParams.get("limit")
             if(category){
-                const products = await Product.find({ category }).lean();
+                let products
+                if(limit){
+                    products = await Product.find({ category }).limit(parseInt(limit)).lean();
+                }else{
+                 products = await Product.find({ category }).lean();
+                }
                 if (!products) {
                     return NextResponse.json({ success: false, error: 'No products found for this category' }, { status: 404 });
                 }
