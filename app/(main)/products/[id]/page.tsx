@@ -27,7 +27,7 @@ const Product = () => {
         setLoading(true)
         const res = await apiClient.getProductById(id?.toString() || "")
         if (res.success) {
-          setProduct(res.data)
+          setProduct(res.data ?? null)
           setSelectedImage(res.data?.images?.[0] || "")
         } else {
           setError(res.error || "Failed to fetch product")
@@ -47,7 +47,7 @@ const Product = () => {
     async function getRecommendData() {
       try {
         const res = await apiClient.getProductsByCategoryAndLimit(product!.category)
-        if (res.success) {
+        if (res.success && res.data) {
           // exclude current product from recommendations
           const filtered = res.data.filter((p: IProduct) => p._id?.toString() !== id?.toString())
           setRecommendProducts(filtered.slice(0, 3))
@@ -352,7 +352,7 @@ const Product = () => {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => navigator.share?.({ title: product.title, url: window.location.href })}
+                  onClick={() => navigator.share && navigator.share({ title: product.title, url: window.location.href })}
                   className="flex-1 py-4 border border-(--border) hover:border-(--primary) transition-colors flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
                   <Share2 className="h-4 w-4" />
                   Share
