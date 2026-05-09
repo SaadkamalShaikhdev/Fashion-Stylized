@@ -73,3 +73,34 @@ export async function POST(request: NextRequest) {
     }, { status: 500 });
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    await connectToDatabase();
+
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return NextResponse.json({
+        success: false,
+        error: "Please login to view orders"
+      }, { status: 401 });
+    }
+
+    const orders = await Order.find({ userId: session.user.id })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    return NextResponse.json({
+      success: true,
+      data: orders
+    }, { status: 200 });
+
+  } catch (error) {
+    console.error("GET orders error:", error);
+    return NextResponse.json({
+      success: false,
+      error: "Failed to fetch orders"
+    }, { status: 500 });
+  }
+}
