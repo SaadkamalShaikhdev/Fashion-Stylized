@@ -98,6 +98,29 @@ async getProductsByCategoryAndLimit(category: string) {
         `/categories?category=${category}&limit=3`
     )
 }
+async createOrder(orderData: {
+  name: string;
+  email: string;
+  products: {
+    productId: string;
+    title: string;
+    price: number;
+    image: string;
+    category: string;
+    quantity: number;
+  }[];
+  address: string;
+  city: string;
+  postalCode: string;
+  mobileNumber: string;
+  paymentMethod: string;
+}) {
+  return this.fetch<{ success: boolean; error?: string; orderId?: string }>("/orders", {
+    method: "POST",
+    body: orderData,
+  });
+}
+
 }
 
 
