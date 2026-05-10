@@ -297,7 +297,7 @@ const Cart = () => {
 
                 {/* action buttons */}
                 <div className="flex flex-col gap-3">
-                  <Link href="/checkout">
+                  <Link href="/checkout?type=cart">
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
