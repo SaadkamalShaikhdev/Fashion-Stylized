@@ -8,6 +8,8 @@ import { Image } from '@imagekit/next'
 import { Minus, Plus, ShoppingBag, Heart, Share2, AlertCircle, Eye, CheckCircle2 } from "lucide-react"
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/app/store/cartStore'
+import { useBuyNowStore } from '@/app/store/buyNowStore'
+import { useRouter } from 'next/navigation'
 
 const Product = () => {
   const [product, setProduct] = useState<IProduct | null>(null)
@@ -19,6 +21,8 @@ const Product = () => {
   const [addedToCart, setAddedToCart] = useState(false)
   const { id } = useParams()
   const { addItem } = useCartStore()
+  const { setItem } = useBuyNowStore()
+  const router = useRouter()
 
   // fetch product
   useEffect(() => {
@@ -83,6 +87,19 @@ const Product = () => {
     if (quantity > 1) setQuantity(q => q - 1)
   }
 
+    const handleBuyNow = (()=>{
+      if(!product) return
+      setItem({
+        id: product._id?.toString() || '',
+    title: product.title,
+    price: product.price,
+    image: product.images?.[0] || "",
+    category: product.category,
+    quantity,
+      })
+      router.push("/checkout?type=buynow")
+      
+    })
   // ── Loading skeleton ──
   if (loading) {
     return (
@@ -332,6 +349,7 @@ const Product = () => {
 
                 {/* buy now */}
                 <motion.button
+                onClick={handleBuyNow}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   disabled={product.stock === 0}
