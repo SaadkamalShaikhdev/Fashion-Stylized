@@ -104,8 +104,9 @@ export const authOptions: NextAuthOptions = {
                 }
                 
         
-
+            user.id = existingUser._id.toString()
         }
+
    
     return true;
     }
