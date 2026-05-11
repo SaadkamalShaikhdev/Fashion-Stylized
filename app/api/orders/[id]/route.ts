@@ -7,13 +7,13 @@ import { authOptions } from "@/lib/auth";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> } 
 ) {
   try {
     await connectToDatabase();
-
+     const {id}   = await params
     const session = await getServerSession(authOptions);
-
+     console.log("Fetching order with id:", id)
     if (!session?.user?.id) {
       return NextResponse.json({
         success: false,
@@ -21,7 +21,7 @@ export async function GET(
       }, { status: 401 });
     }
 
-    const order = await Order.findById(params.id).lean();
+    const order = await Order.findById(id).lean();
 
     if (!order) {
       return NextResponse.json({

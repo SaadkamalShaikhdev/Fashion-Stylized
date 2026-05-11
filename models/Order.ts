@@ -39,7 +39,7 @@ const orderProductSchema = new mongoose.Schema<IOrderProduct>({
 })
 
 const orderSchema = new mongoose.Schema<IOrder>({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  userId: { type: String, ref: "User" },
   name: { type: String, required: true },
   email: { type: String, required: true },
   products: { type: [orderProductSchema], required: true },

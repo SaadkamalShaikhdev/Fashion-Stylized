@@ -1,4 +1,5 @@
 import { IProduct } from "@/models/Product";
+import { IOrder } from "@/models/Order";
 
 type FetchOptions = {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -120,7 +121,13 @@ async createOrder(orderData: {
     body: orderData,
   });
 }
+async getOrders() {
+  return this.fetch<{ success: boolean; data: IOrder[]; error?: string }>("/orders");
+}
 
+async getOrderById(id: string) {
+  return this.fetch<{ success: boolean; data: IOrder; error?: string }>(`/orders/${id}`);
+}
 }
 
 

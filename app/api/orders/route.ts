@@ -36,14 +36,15 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
+    const deliveryFee = 500
     // ✅ calculate total on server — never trust client
     const totalAmount = products.reduce(
       (sum: number, item: { price: number; quantity: number }) =>
-        sum + item.price * item.quantity, 0
+        sum + item.price * item.quantity + deliveryFee, 0
     );
 
     const newOrder = new Order({
-      userId: session?.user?.id || null,
+      userId: session?.user?.id.toString() || null,
       name,
       email,
       products,
@@ -87,7 +88,7 @@ export async function GET(request: NextRequest) {
       }, { status: 401 });
     }
 
-    const orders = await Order.find({ userId: session.user.id })
+    const orders = await Order.find({ userId: session.user.id.toString() })
       .sort({ createdAt: -1 })
       .lean();
 

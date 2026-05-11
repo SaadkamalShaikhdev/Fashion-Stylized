@@ -209,7 +209,10 @@ export default function CheckoutPage() {
         clearCart()
       }
 
-      router.push(`/orders/${res.orderId}`)
+      setTimeout(() => {
+              router.push(`/orders/${res.orderId}`)
+
+      }, 2000);
 
     } catch (err) {
       setError("Something went wrong. Please try again.")

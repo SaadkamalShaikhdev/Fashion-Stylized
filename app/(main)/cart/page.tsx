@@ -13,9 +13,9 @@ import CheckoutAuthModal from "@/app/components/checkout/CheckoutAuthModal";
 const SHIPPING_COST = 500;
 
 const PROMO_CODES: Record<string, number> = {
-  "FASHION10": 10,
-  "WELCOME20": 20,
-  "SAVE15": 15,
+  // "FASHION10": 10,
+  // "WELCOME20": 20,
+  // "SAVE15": 15,
 }
 
 type ItemValidation = {
