@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import Image from "next/image"
 import { Lock, Loader2, AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-react'
 import { motion } from "framer-motion"
@@ -16,7 +16,13 @@ const ResetPassword = () => {
   const [success, setSuccess] = useState("")
   const router = useRouter()
   const searchParams = useSearchParams()
-  const userId = searchParams.get("userId")
+  const [userId, setUserId] = useState<string | null>(null)
+
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search)
+  setUserId(params.get("userId"))
+}, [])
+  
 
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
