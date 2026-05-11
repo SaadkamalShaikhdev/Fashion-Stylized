@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+require("node:dns/promises").setServers(["8.8.8.8", "8.8.4.4"]);
 const MONGODB_URI:string = process.env.MONGODB_URI!;
 
 if(!MONGODB_URI) {
@@ -28,7 +28,7 @@ export async function connectToDatabase() {
 
     } catch (error) {
         cached.promise = null;
-        throw new Error('Failed to connect to database');
+        console.log(error);
     }
     return cached.conn;
 }

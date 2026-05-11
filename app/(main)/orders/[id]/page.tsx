@@ -116,7 +116,7 @@ export default function OrderConfirmationPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
           className="text-xs text-(--muted-foreground) uppercase tracking-widest">
-          Order ID: <span className="text-foreground">{order?._id.toString() || "NaN"}</span>
+          Order ID: <span className="text-foreground">{order._id?.toString() || "NaN"}</span>
         </motion.p>
       </motion.div>
 
