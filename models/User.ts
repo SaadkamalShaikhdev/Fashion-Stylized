@@ -8,6 +8,7 @@ export interface IUser {
     isVerified?: boolean; // For email verification
     otp?: string | null; // For password reset or email verification
     otpExpiry?: Date | null; // Expiry time for OTP
+    wishlist?: string | null
     passwordResetVerified?: boolean; // To track if password reset OTP is verified
     provider?: 'local' | 'google';      // Track auth provider
     googleId?: string;                  
@@ -23,6 +24,7 @@ const userSchema = new mongoose.Schema<IUser>({
     provider: { type: String, enum: ['local', 'google'], default: 'local' },
     googleId: { type: String, unique: true, sparse: true, required: false },
     otp: { type: String, default: null },
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product", required: false }],
     otpExpiry: { type: Date, default: null },
     passwordResetVerified: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false },

@@ -5,11 +5,13 @@ import { apiClient } from '@/lib/api-client'
 import Link from 'next/link'
 import { IProduct } from '@/models/Product'
 import { Image } from '@imagekit/next'
-import { Minus, Plus, ShoppingBag, Heart, Share2, AlertCircle, Eye, CheckCircle2 } from "lucide-react"
+import { Minus, Plus, ShoppingBag, Heart, Share2, AlertCircle, Eye, CheckCircle2,Loader2 } from "lucide-react"
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/app/store/cartStore'
 import { useBuyNowStore } from '@/app/store/buyNowStore'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import { useWishlistStore } from '@/app/store/wishlistStore'
 
 const Product = () => {
   const [product, setProduct] = useState<IProduct | null>(null)
@@ -19,6 +21,10 @@ const Product = () => {
   const [recommendProducts, setRecommendProducts] = useState<IProduct[]>([])
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
+
+const { isInWishlist, addWishlistItem, removeItem } = useWishlistStore()
+const { data: session } = useSession()
+const [wishlistLoading, setWishlistLoading] = useState(false)
   const { id } = useParams()
   const { addItem } = useCartStore()
   const { setItem } = useBuyNowStore()
@@ -62,6 +68,56 @@ const Product = () => {
     }
     getRecommendData()
   }, [product?.category])
+
+  useEffect(() => {
+  async function loadWishlist() {
+    if (!session) return
+    const res = await apiClient.getWishlist()
+    if (res.success) {
+      useWishlistStore.getState().setItems(
+        res.data.map((p: any) => ({
+          id: p._id.toString(),
+          title: p.title,
+          price: p.price,
+          image: p.images?.[0] || "",
+          category: p.category,
+        }))
+      )
+    }
+  }
+  loadWishlist()
+}, [session])
+
+const handleWishlist = async () => {
+  if (!session) {
+    // show auth modal or redirect to login
+    router.push("/signIn")
+    return
+  }
+  if (!product) return
+
+  setWishlistLoading(true)
+  try {
+    const res = await apiClient.toggleWishlist(product._id.toString())
+    if (res.success) {
+      if (res.action === "added") {
+        addWishlistItem({
+          id: product._id.toString(),
+          title: product.title,
+          price: product.price,
+          image: product.images?.[0] || "",
+          category: product.category,
+        })
+      } else {
+        removeItem(product._id.toString())
+      }
+    }
+  } catch (err) {
+    console.error("Wishlist error:", err)
+  } finally {
+    setWishlistLoading(false)
+  }
+}
 
   const handleAddToCart = () => {
     if (!product) return
@@ -360,13 +416,25 @@ const Product = () => {
 
               {/* wishlist + share */}
               <div className="flex gap-4">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex-1 py-4 border border-(--border) hover:border-(--primary) transition-colors flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
-                  <Heart className="h-4 w-4" />
-                  Wishlist
-                </motion.button>
+              <motion.button
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+  onClick={handleWishlist}
+  disabled={wishlistLoading}
+  className={`flex-1 py-4 border transition-colors flex items-center justify-center gap-2 text-sm uppercase tracking-wider ${
+    isInWishlist(product._id?.toString() || "")
+      ? "border-red-500/60 text-red-400 bg-red-500/10"  // ✅ in wishlist
+      : "border-(--border) hover:border-(--primary) transition-colors"  // not in wishlist
+  }`}>
+  {wishlistLoading ? (
+    <Loader2 className="h-4 w-4 animate-spin" />
+  ) : (
+    <Heart className={`h-4 w-4 ${
+      isInWishlist(product._id?.toString() || "") ? "fill-red-400 text-red-400" : ""
+    }`} />
+  )}
+  {isInWishlist(product._id?.toString() || "") ? "Wishlisted" : "Wishlist"}
+</motion.button>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
