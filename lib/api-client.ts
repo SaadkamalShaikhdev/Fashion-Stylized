@@ -128,6 +128,18 @@ async getOrders() {
 async getOrderById(id: string) {
   return this.fetch<{ success: boolean; data: IOrder; error?: string }>(`/orders/${id}`);
 }
+async toggleWishlist(productId: string) {
+  return this.fetch<{ success: boolean; action: "added" | "removed"; error?: string }>(
+    "/wishlist",
+    { method: "POST", body: { productId } }
+  )
+}
+
+async getWishlist() {
+  return this.fetch<{ success: boolean; data: IProduct[]; error?: string }>(
+    "/wishlist"
+  )
+}
 }
 
 

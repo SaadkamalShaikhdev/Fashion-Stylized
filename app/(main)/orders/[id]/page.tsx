@@ -137,37 +137,79 @@ export default function OrderConfirmationPage() {
           </div>
 
           {/* status steps */}
-          {(() => {
-            const steps = ["pending", "processing", "shipped", "delivered"]
-            const currentIndex = steps.indexOf(order.status)
-            return (
-              <div className="flex items-center gap-0">
-                {steps.map((step, i) => (
-                  <div key={step} className="flex items-center flex-1">
-                    <div className="flex flex-col items-center flex-1">
-                      <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-colors ${
-                        i <= currentIndex
-                          ? "border-(--primary) bg-(--primary) text-(--primary-foreground)"
-                          : "border-(--border) text-(--muted-foreground)"
-                      }`}>
-                        {i < currentIndex ? "✓" : i + 1}
-                      </div>
-                      <p className={`text-xs uppercase tracking-wider mt-2 text-center ${
-                        i <= currentIndex ? "text-(--primary)" : "text-(--muted-foreground)"
-                      }`}>
-                        {step}
-                      </p>
-                    </div>
-                    {i < steps.length - 1 && (
-                      <div className={`h-px flex-1 mb-5 transition-colors ${
-                        i < currentIndex ? "bg-(--primary)" : "bg-(--border)"
-                      }`} />
-                    )}
-                  </div>
-                ))}
+         {/* status steps */}
+{(() => {
+  const steps = ["pending", "processing", "shipped", "delivered"]
+  const currentIndex = steps.indexOf(order.status)
+  return (
+    <>
+      {/* ── Mobile — vertical ── */}
+      <div className="flex flex-col gap-3 sm:hidden">
+        {steps.map((step, i) => (
+          <div key={step} className="flex items-center gap-4">
+            {/* circle */}
+            <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold flex-shrink-0 transition-colors ${
+              i <= currentIndex
+                ? "border-(--primary) bg-(--primary) text-(--primary-foreground)"
+                : "border-(--border) text-(--muted-foreground)"
+            }`}>
+              {i < currentIndex ? "✓" : i + 1}
+            </div>
+
+            {/* label + connector */}
+            <div className="flex-1">
+              <p className={`text-xs uppercase tracking-wider ${
+                i <= currentIndex ? "text-(--primary)" : "text-(--muted-foreground)"
+              }`}>
+                {step}
+              </p>
+              {/* vertical line between steps */}
+              {i < steps.length - 1 && (
+                <div className={`w-px h-4 ml-[14px] mt-1 ${
+                  i < currentIndex ? "bg-(--primary)" : "bg-(--border)"
+                }`} />
+              )}
+            </div>
+
+            {/* active indicator */}
+            {i === currentIndex && (
+              <span className="text-xs uppercase tracking-wider text-(--primary) border border-(--primary) px-2 py-0.5">
+                Current
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* ── Desktop — horizontal ── */}
+      <div className="hidden sm:flex items-center">
+        {steps.map((step, i) => (
+          <div key={step} className="flex items-center flex-1">
+            <div className="flex flex-col items-center flex-1">
+              <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-colors ${
+                i <= currentIndex
+                  ? "border-(--primary) bg-(--primary) text-(--primary-foreground)"
+                  : "border-(--border) text-(--muted-foreground)"
+              }`}>
+                {i < currentIndex ? "✓" : i + 1}
               </div>
-            )
-          })()}
+              <p className={`text-xs uppercase tracking-wider mt-2 text-center ${
+                i <= currentIndex ? "text-(--primary)" : "text-(--muted-foreground)"
+              }`}>
+                {step}
+              </p>
+            </div>
+            {i < steps.length - 1 && (
+              <div className={`h-px flex-1 mb-5 transition-colors ${
+                i < currentIndex ? "bg-(--primary)" : "bg-(--border)"
+              }`} />
+            )}
+          </div>
+        ))}
+      </div>
+    </>
+  )
+})()}
         </motion.div>
 
         {/* ── Order items ── */}
