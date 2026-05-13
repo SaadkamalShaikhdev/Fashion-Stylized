@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Image } from "@imagekit/next"
+import { IOrder } from "@/models/Order"
 
 type OrderProduct = {
   productId: string
@@ -41,8 +42,8 @@ const statusColors: Record<string, string> = {
 const filters = ["All", "Pending", "Processing", "Shipped", "Delivered", "Cancelled"]
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([])
-  const [filtered, setFiltered] = useState<Order[]>([])
+  const [orders, setOrders] = useState<IOrder[]>([])
+  const [filtered, setFiltered] = useState<IOrder[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [activeFilter, setActiveFilter] = useState("All")
@@ -89,7 +90,7 @@ export default function OrdersPage() {
 
     if (search.trim()) {
       result = result.filter(o =>
-        o._id.toLowerCase().includes(search.toLowerCase()) ||
+        o._id?.toString().toLowerCase().includes(search.toLowerCase()) ||
         o.products.some(p => p.title.toLowerCase().includes(search.toLowerCase()))
       )
     }
@@ -221,7 +222,7 @@ export default function OrdersPage() {
       <AnimatePresence>
         {filtered.map((order, index) => (
           <motion.div
-            key={order._id}
+            key={order._id?.toString() || index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98 }}
@@ -238,7 +239,7 @@ export default function OrdersPage() {
                       Order ID
                     </p>
                     <p className="text-sm font-mono text-foreground">
-                      #{order._id.slice(-8).toUpperCase()}
+                      #{order._id?.toString().slice(-8).toUpperCase()}
                     </p>
                   </div>
 
@@ -294,11 +295,20 @@ export default function OrdersPage() {
                     </span>
                     <span>{order.city}</span>
                     <span>
-                      {new Date(order.createdAt).toLocaleDateString("en-PK", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric"
-                      })}
+                     // Option 1: Provide a fallback date
+{new Date(order.createdAt || new Date()).toLocaleDateString("en-PK", {
+  day: "numeric", month: "short", year: "numeric"
+})}
+
+// Option 2: Check if createdAt exists
+{order.createdAt && new Date(order.createdAt).toLocaleDateString("en-PK", {
+  day: "numeric", month: "short", year: "numeric"
+})}
+
+// Option 3: Use optional chaining with nullish coalescing
+{new Date(order.createdAt ?? Date.now()).toLocaleDateString("en-PK", {
+  day: "numeric", month: "short", year: "numeric"
+})}
                     </span>
                   </div>
 
