@@ -2,9 +2,16 @@ import { IProduct } from "@/models/Product";
 import { IOrder } from "@/models/Order";
 
 type FetchOptions = {
-    method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     headers?: Record<string, string>;
     body?: any;
+}
+ type WishlistProduct = {
+  _id: string
+  title: string
+  price: number
+  images: string[]
+  category: string
 }
 
 
@@ -136,9 +143,28 @@ async toggleWishlist(productId: string) {
 }
 
 async getWishlist() {
-  return this.fetch<{ success: boolean; data: IProduct[]; error?: string }>(
+  return this.fetch<{ success: boolean; data: WishlistProduct[]; error?: string }>(
     "/wishlist"
   )
+}
+async updateProfile(data: { name: string }) {
+  return this.fetch<{ success: boolean; error?: string }>("/user/profile", {
+    method: "PATCH",
+    body: data
+  })
+}
+
+async changePassword(data: { currentPassword: string; newPassword: string }) {
+  return this.fetch<{ success: boolean; error?: string }>("/user/change-password", {
+    method: "POST",
+    body: data
+  })
+}
+
+async deleteAccount() {
+  return this.fetch<{ success: boolean; error?: string }>("/user/delete", {
+    method: "DELETE"
+  })
 }
 }
 
