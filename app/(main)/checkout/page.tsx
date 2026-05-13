@@ -145,9 +145,8 @@ export default function CheckoutPage() {
       setValidating(false)
     }
 
-    if (status !== "loading") {
-      validateAndSetItems()
-    }
+      if (status === "loading") return
+  validateAndSetItems()
   }, [type, status])
 
   const subtotal = checkoutItems.reduce((sum, item) => sum + item.price * item.quantity, 0)

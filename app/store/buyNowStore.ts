@@ -1,4 +1,5 @@
-import {create} from "zustand"
+import { create } from "zustand"
+import { persist, createJSONStorage } from "zustand/middleware"
 
 type BuyNowItem = {
   id: string
@@ -15,9 +16,16 @@ type BuyNowStore = {
   clearItem: () => void
 }
 
-
-export const useBuyNowStore = create<BuyNowStore>((set) => ({
-  item: null,
-  setItem: (item) => set({ item }),
-  clearItem: () => set({ item: null }),
-}))
+export const useBuyNowStore = create<BuyNowStore>()(
+  persist(
+    (set) => ({
+      item: null,
+      setItem: (item) => set({ item }),
+      clearItem: () => set({ item: null }),
+    }),
+    {
+      name: "buynow-storage",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+)
