@@ -23,7 +23,7 @@ const navLinks = [
 const accountLinks = [
   { label: "My Profile", href: "/profile", icon: User },
   { label: "My Orders", href: "/orders", icon: ShoppingBag },
-  { label: "Settings", href: "/settings", icon: Settings },
+  { label: "Settings", href: "/profile#dangerzone", icon: Settings },
 ]
 
 const MotionLink = motion(Link);
