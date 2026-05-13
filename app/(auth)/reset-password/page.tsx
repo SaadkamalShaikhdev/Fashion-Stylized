@@ -5,7 +5,7 @@ import { Lock, Loader2, AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-re
 import { motion } from "framer-motion"
 import { useRouter, useSearchParams } from 'next/navigation'
 import { apiClient } from '@/lib/api-client'
-
+export const dynamic = "force-dynamic"
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
