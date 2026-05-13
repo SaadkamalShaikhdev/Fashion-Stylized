@@ -1,4 +1,5 @@
 "use client"
+export const dynamic = "force-dynamic"
 import { useSearchParams, useRouter } from "next/navigation"
 import { useCartStore } from "@/app/store/cartStore"
 import { useBuyNowStore } from "@/app/store/buyNowStore"

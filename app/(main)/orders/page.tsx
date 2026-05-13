@@ -1,5 +1,6 @@
 // app/(main)/orders/page.tsx
 "use client"
+export const dynamic = "force-dynamic"
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Package, ChevronRight, Loader2, AlertCircle, ShoppingBag, Search } from "lucide-react"

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import User from "@/models/User";
 import { sendOTPEmail } from "@/lib/resend"
-
+export const dynamic = "force-dynamic"
 export async function POST(request: NextRequest) {
     try {
         const { userId } = await request.json();
