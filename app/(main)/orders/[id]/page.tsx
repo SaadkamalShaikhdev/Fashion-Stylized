@@ -9,6 +9,7 @@ import Link from "next/link"
 import { Image } from "@imagekit/next"
 import { IOrder } from "@/models/Order"
 
+export const dynamic = "force-dynamic"
 // type Order = {
 //   _id: string
 //   name: string

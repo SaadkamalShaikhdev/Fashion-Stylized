@@ -4,7 +4,7 @@ import { connectToDatabase } from "@/lib/db";
 import User from "@/models/User"
 import { registerSchema } from "@/lib/register-validation/auth";
 import {sendOTPEmail} from "@/lib/resend"
-
+export const dynamic = "force-dynamic"
 
 export async function POST(request: NextRequest){
 try {

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
+export const dynamic = "force-dynamic"
 import {
   User, Mail, Lock, Eye, EyeOff, Loader2, AlertCircle,
   CheckCircle2, Heart, Package, Trash2, ChevronRight,

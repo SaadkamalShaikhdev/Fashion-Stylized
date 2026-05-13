@@ -3,7 +3,7 @@ import { connectToDatabase } from "@/lib/db";
 import User from "@/models/User";
 import constants from "node:constants";
 
-
+export const dynamic = "force-dynamic"
 export async function POST(request: NextRequest){
     try {
         const {userId, otp} = await request.json();

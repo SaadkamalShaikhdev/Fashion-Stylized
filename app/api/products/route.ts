@@ -5,6 +5,7 @@ import Product from "@/models/Product";
 import { getServerSession } from "next-auth";
 import { NextResponse, NextRequest } from "next/server";
 
+export const dynamic = "force-dynamic"
 // ── GET ──
 export async function GET(request: NextRequest) {
   try {
