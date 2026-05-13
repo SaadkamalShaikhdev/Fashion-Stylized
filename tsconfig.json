@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "app/(auth)/verify-reset-otp/VerifyResetOtp.tsx"  ],
   "exclude": ["node_modules"]
 }

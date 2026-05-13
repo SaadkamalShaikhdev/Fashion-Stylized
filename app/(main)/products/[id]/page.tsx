@@ -98,18 +98,18 @@ const handleWishlist = async () => {
 
   setWishlistLoading(true)
   try {
-    const res = await apiClient.toggleWishlist(product._id.toString())
+    const res = await apiClient.toggleWishlist(product._id?.toString() || "")
     if (res.success) {
       if (res.action === "added") {
         addWishlistItem({
-          id: product._id.toString(),
+          id: product._id?.toString() || "",
           title: product.title,
           price: product.price,
           image: product.images?.[0] || "",
           category: product.category,
         })
       } else {
-        removeItem(product._id.toString())
+        removeItem(product._id?.toString() || "")
       }
     }
   } catch (err) {
