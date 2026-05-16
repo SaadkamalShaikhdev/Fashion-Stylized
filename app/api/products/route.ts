@@ -1,6 +1,5 @@
 import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/db";
-import { uploadToImageKit } from "@/lib/uplaudToImageKit";
 import Product from "@/models/Product";
 import { getServerSession } from "next-auth";
 import { NextResponse, NextRequest } from "next/server";
@@ -53,22 +52,15 @@ export async function POST(request: NextRequest) {
 
     await connectToDatabase()
 
-    const { title, description, price, images, keyFeatures, category, isTrending, expire, token, signature } = await request.json()
+    const { title, description, price, images, keyFeatures, category, isTrending} = await request.json()
 
     if (!title || !description || !price || !category) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 })
     }
 
-    // upload images to imagekit
-    const imageUrls: string[] = []
-    for (const image of images) {
-      const uploadResult = await uploadToImageKit({ image, token, signature, expire })
-      if (uploadResult.url) {
-        imageUrls.push(uploadResult.url)
-      }
-    }
+    
 
-    if (imageUrls.length === 0) {
+    if (images.length === 0) {
       return NextResponse.json({ success: false, error: "At least one image is required" }, { status: 400 })
     }
 
@@ -76,7 +68,7 @@ export async function POST(request: NextRequest) {
       title,
       description,
       price,
-      images: imageUrls,
+      images: images,
       keyFeatures,
       category,
       isTrending: isTrending || false,
@@ -123,19 +115,14 @@ export async function PUT(request: NextRequest) {
       keyFeatures,
       category,
       isTrending,
+      images
     }
 
     // ✅ fix — if new images provided upload and save URLs
     if (images && images.length > 0) {
-      const imageUrls: string[] = []
-      for (const image of images) {
-        const uploadResult = await uploadToImageKit({ image, token, signature, expire })
-        if (uploadResult.url) {
-          imageUrls.push(uploadResult.url)
-        }
-      }
-      if (imageUrls.length > 0) {
-        updateData.images = imageUrls // ✅ now actually saved to DB
+     
+      if (images.length > 0) {
+        updateData.images = images // ✅ now actually saved to DB
       }
     }
 

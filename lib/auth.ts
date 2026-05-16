@@ -65,12 +65,29 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }) {
-            if (user) {
-                token.id = user.id;         // ✅ user.id exists by default
-                token.role = (user as { role?: string }).role; // only cast what isn't typed
-            }
-            return token;
-        },
+  // user is only available on first sign in
+  if (user) {
+    token.id = user.id
+    token.role = (user as any).role
+  }
+
+  // ✅ always fetch fresh role from DB on every request
+  // this fixes Google users and role changes in DB
+  if (token.id) {
+    try {
+      await connectToDatabase()
+      const dbUser = await User.findById(token.id).select("role").lean() as any
+      if (dbUser) {
+        token.role = dbUser.role
+        token.id = dbUser._id.toString()
+      }
+    } catch (error) {
+      console.error("JWT callback error:", error)
+    }
+  }
+
+  return token
+},
         async signIn({ user, account, profile }) {
             await connectToDatabase();
             if (account?.provider === "google") {
