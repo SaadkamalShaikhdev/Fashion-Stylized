@@ -295,20 +295,12 @@ export default function OrdersPage() {
                     </span>
                     <span>{order.city}</span>
                     <span>
-                     // Option 1: Provide a fallback date
-{new Date(order.createdAt || new Date()).toLocaleDateString("en-PK", {
-  day: "numeric", month: "short", year: "numeric"
-})}
 
-// Option 2: Check if createdAt exists
 {order.createdAt && new Date(order.createdAt).toLocaleDateString("en-PK", {
   day: "numeric", month: "short", year: "numeric"
 })}
 
-// Option 3: Use optional chaining with nullish coalescing
-{new Date(order.createdAt ?? Date.now()).toLocaleDateString("en-PK", {
-  day: "numeric", month: "short", year: "numeric"
-})}
+
                     </span>
                   </div>
 
