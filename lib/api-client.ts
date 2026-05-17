@@ -166,6 +166,16 @@ async deleteAccount() {
     method: "DELETE"
   })
 }
+async adminGetOrders() {
+  return this.fetch<{ success: boolean; data: any[]; error?: string }>("/admin/orders")
+}
+
+async updateOrderStatus(orderId: string, status: string) {
+  return this.fetch<{ success: boolean; error?: string }>(`/admin/orders/${orderId}`, {
+    method: "PATCH",
+    body: { status }
+  })
+}
 }
 
 
