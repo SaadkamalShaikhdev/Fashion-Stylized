@@ -176,6 +176,50 @@ async updateOrderStatus(orderId: string, status: string) {
     body: { status }
   })
 }
+
+async adminGetOrderById(id: string) {
+  return this.fetch<{ success: boolean; data: any; error?: string }>(
+    `/admin/orders/${id}`
+  )
+}
+
+async createProduct(data: {
+  title: string
+  description: string
+  price: number
+  category: string
+  stock: number
+  isTrending: boolean
+  keyFeatures: string[]
+  images: string[]
+}) {
+  return this.fetch<{ success: boolean; data: any; error?: string }>("/products", {
+    method: "POST",
+    body: data
+  })
+}
+
+async updateProduct(id: string, data: {
+  title: string
+  description: string
+  price: number
+  category: string
+  stock: number
+  isTrending: boolean
+  keyFeatures: string[]
+  images: string[]
+}) {
+  return this.fetch<{ success: boolean; data: any; error?: string }>(
+    `/products?id=${id}`,
+    { method: "PUT", body: data }
+  )
+}
+async deleteProduct(id: string) {
+  return this.fetch<{ success: boolean; error?: string }>(
+    `/products?id=${id}`,
+    { method: "DELETE" }
+  )
+}
 }
 
 
