@@ -6,23 +6,14 @@ import { Plus, Search, Pencil, Trash2, Loader2, AlertCircle, RefreshCw, Trending
 import Link from "next/link"
 import { apiClient } from "@/lib/api-client"
 import { Image } from "@imagekit/next"
+import { IProduct } from "@/models/Product"
 
-type Product = {
-  _id: string
-  title: string
-  price: number
-  category: string
-  stock: number
-  isTrending: boolean
-  images: string[]
-  createdAt: string
-}
 
 const categories = ["All", "watches", "glasses", "wallets"]
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [filtered, setFiltered] = useState<Product[]>([])
+  const [products, setProducts] = useState<IProduct[]>([])
+  const [filtered, setFiltered] = useState<IProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
@@ -71,7 +62,7 @@ export default function AdminProductsPage() {
     try {
       const res = await apiClient.deleteProduct(id)
       if (res.success) {
-        setProducts(prev => prev.filter(p => p._id !== id))
+        setProducts(prev => prev.filter(p => p?._id?.toString() !== id))
         setShowDeleteConfirm(null)
       }
     } catch {
@@ -196,7 +187,7 @@ export default function AdminProductsPage() {
                 <AnimatePresence>
                   {filtered.map((product, index) => (
                     <motion.tr
-                      key={product._id}
+                      key={product?._id?.toString() || index}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -276,13 +267,13 @@ export default function AdminProductsPage() {
                             </motion.button>
                           </Link>
 
-                          {showDeleteConfirm === product._id ? (
+                          {showDeleteConfirm === product?._id?.toString() ? (
                             <div className="flex items-center gap-1">
                               <button
-                                onClick={() => handleDelete(product._id)}
-                                disabled={deletingId === product._id}
+                                onClick={() => handleDelete(product?._id?.toString() || "")}
+                                disabled={deletingId === product?._id?.toString()}
                                 className="px-3 py-1.5 bg-red-500 text-white text-xs uppercase tracking-wider hover:bg-red-600 transition-colors disabled:opacity-60 flex items-center gap-1">
-                                {deletingId === product._id
+                                {deletingId === product?._id?.toString()
                                   ? <Loader2 className="w-3 h-3 animate-spin" />
                                   : "Confirm"
                                 }
@@ -297,7 +288,7 @@ export default function AdminProductsPage() {
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              onClick={() => setShowDeleteConfirm(product._id)}
+                              onClick={() => setShowDeleteConfirm(product?._id?.toString() || null)}
                               className="flex items-center gap-1 px-3 py-1.5 border border-(--border) hover:border-red-500/60 hover:text-red-400 text-xs uppercase tracking-wider transition-colors">
                               <Trash2 className="w-3 h-3" />
                               Delete
@@ -316,7 +307,7 @@ export default function AdminProductsPage() {
           <div className="lg:hidden space-y-3">
             {filtered.map((product, index) => (
               <motion.div
-                key={product._id}
+                key={product._id?.toString() || index}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
@@ -361,19 +352,19 @@ export default function AdminProductsPage() {
                       </button>
                     </Link>
                     <button
-                      onClick={() => showDeleteConfirm === product._id
-                        ? handleDelete(product._id)
-                        : setShowDeleteConfirm(product._id)
+                      onClick={() => showDeleteConfirm === product?._id?.toString()
+                        ? handleDelete(product?._id?.toString())
+                        : setShowDeleteConfirm(product?._id?.toString() || null )
                       }
-                      disabled={deletingId === product._id}
+                      disabled={deletingId === product?._id?.toString()}
                       className={`flex-1 py-2 border text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-1 disabled:opacity-60 ${
-                        showDeleteConfirm === product._id
+                        showDeleteConfirm === product?._id?.toString()
                           ? "border-red-500 bg-red-500 text-white"
                           : "border-(--border) hover:border-red-500/60 hover:text-red-400"
                       }`}>
-                      {deletingId === product._id
+                      {deletingId === product._id?.toString()
                         ? <Loader2 className="w-3 h-3 animate-spin" />
-                        : <><Trash2 className="w-3 h-3" />{showDeleteConfirm === product._id ? "Confirm" : "Delete"}</>
+                        : <><Trash2 className="w-3 h-3" />{showDeleteConfirm === product._id?.toString() ? "Confirm" : "Delete"}</>
                       }
                     </button>
                   </div>
