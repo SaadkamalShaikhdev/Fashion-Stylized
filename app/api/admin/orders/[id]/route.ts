@@ -37,3 +37,28 @@ export async function PATCH(
     return NextResponse.json({ success: false, error: "Something went wrong" }, { status: 500 })
   }
 }
+
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await getServerSession(authOptions)
+    if (session?.user?.role !== "admin") {
+      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 403 })
+    }
+
+    const { id } = await params
+    await connectToDatabase()
+
+    const order = await Order.findById(id).lean()
+    if (!order) {
+      return NextResponse.json({ success: false, error: "Order not found" }, { status: 404 })
+    }
+
+    return NextResponse.json({ success: true, data: order })
+  } catch (error) {
+    return NextResponse.json({ success: false, error: "Something went wrong" }, { status: 500 })
+  }
+}

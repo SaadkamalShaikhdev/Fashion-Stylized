@@ -1,7 +1,8 @@
 // components/admin/ImageUpload.tsx
 "use client"
 import { useState, useRef } from "react"
-import { upload, ImageKitAbortError, ImageKitInvalidRequestError, ImageKitUploadNetworkError, ImageKitServerError } from "@imagekit/next"
+
+import { upload, ImageKitAbortError, ImageKitInvalidRequestError, ImageKitUploadNetworkError, ImageKitServerError, Image } from "@imagekit/next"
 import { Upload, X, Loader2 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -121,8 +122,9 @@ const ImageUpload = ({ images, onChange, maxImages = 3 }: Props) => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 className="relative aspect-square bg-(--secondary) overflow-hidden group">
-                <img
-                  src={url}
+                <Image
+                  src={url} urlEndpoint='https://ik.imagekit.io/fashionstylized'
+              fill={true}
                   alt={`Product ${index + 1}`}
                   className="w-full h-full object-cover"
                 />
