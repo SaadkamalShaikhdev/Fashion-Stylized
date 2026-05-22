@@ -220,6 +220,26 @@ async deleteProduct(id: string) {
     { method: "DELETE" }
   )
 }
+async getAdminStats() {
+  return this.fetch<{
+    success: boolean
+    error?: string
+    data: {
+      stats: {
+        totalOrders: number
+        totalRevenue: number
+        totalProducts: number
+        totalUsers: number
+        pendingOrders: number
+      }
+      ordersPerDay: { date: string; orders: number; revenue: number }[]
+      ordersByStatus: { name: string; value: number }[]
+      topCategories: { name: string; orders: number; revenue: number }[]
+      lowStock: any[]
+      recentOrders: any[]
+    }
+  }>("/admin/stats")
+}
 }
 
 
