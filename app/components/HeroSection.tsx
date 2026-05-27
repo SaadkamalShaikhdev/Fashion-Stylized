@@ -1,7 +1,7 @@
 "use client"
 import {ChevronRight} from "lucide-react";
 import { motion } from "framer-motion"
-
+import Link from "next/link";
 import Image from "next/image";
 
 
@@ -19,7 +19,7 @@ const stagger = {
     }
   }
 }
-import React from 'react'
+
 
 const HeroSection = () => {
   return (
@@ -99,7 +99,10 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="w-full sm:w-auto bg-(--primary) text-(--primary-foreground) px-8 sm:px-12 py-4 uppercase tracking-widest flex items-center justify-center gap-3 group text-sm">
+                  <Link href="/products">
+                  
                 Explore Collection
+                  </Link>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </motion.button>
     
@@ -108,7 +111,10 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="w-full sm:w-auto border border-white/60 text-white px-8 sm:px-12 py-4 uppercase tracking-widest text-sm hover:border-white transition-colors">
+                <Link href="#story">
+                
                 Our Story
+                </Link>
               </motion.button>
     
             </motion.div>

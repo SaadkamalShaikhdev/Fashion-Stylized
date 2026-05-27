@@ -5,7 +5,7 @@ import React from 'react'
 
 const StorySection = () => {
   return (
-    <section className='relative py-32 px-6 lg:px-12 overflow-hidden'>
+    <section className='relative py-32 px-6 lg:px-12 overflow-hidden' id='story'>
 
       {/* background image — subtle zoom */}
       <div className='absolute inset-0'>
