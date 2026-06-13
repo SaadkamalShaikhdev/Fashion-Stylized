@@ -2,6 +2,16 @@
 import { Suspense } from "react"
 import Checkout from "./Checkout" // ✅ move your component to separate file
 
+
+export const metadata = {
+  title: "Checkout | Fashion Stylized",
+  description: "Complete your purchase at Fashion Stylized.",
+  openGraph: {
+    title: "Checkout | Fashion Stylized",
+    description: "Complete your purchase at Fashion Stylized.",
+    type: "website",
+  },
+}
 export default function CheckoutPage() {
   return (
     <Suspense fallback={
