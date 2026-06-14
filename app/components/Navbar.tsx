@@ -30,12 +30,12 @@ const Navbar = () => {
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <header className='sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-b-foreground/10'>
-        <nav className='container mx-auto flex items-center justify-between py-4 px-6'>
+        <nav className='container mx-auto flex items-center justify-between py-2 px-6'>
 
           {/* left — logo + links */}
           <div className='flex items-center justify-center gap-20'>
             <div>
-              <Link href="/"><Image src="/logo2.png" alt="Logo" width={100} height={40} /></Link>
+              <Link href="/"><Image src="/logo25.png" className='object-cover h-14 w-26' alt="Logo" width={100} height={50} /></Link>
             </div>
             <ul className='hidden gap-8 lg:flex'>
               <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/products/watches">Watches</Link></li>
