@@ -1,37 +1,29 @@
 import ProductPages from "./ProductPage"
 
 export const metadata = {
-  title: "Premium Fashion Accessories | Fashion Stylized",
+  title: "Premium Wallets, Watches & Glasses in Pakistan | Fashion Stylized",
   description:
-    "Shop premium wallets, watches, and glasses at Fashion Stylized. Discover stylish accessories crafted with quality materials, modern designs, and exceptional attention to detail.",
+    "Shop premium wallets, watches, and glasses in Pakistan at Fashion Stylized. Discover stylish accessories, modern designs, and quality craftsmanship for men and women.",
 
   keywords: [
-    "fashion accessories",
-    "wallets",
-    "watches",
-    "glasses",
-    "eyewear",
-    "men accessories",
-    "women accessories",
-    "luxury watches",
-    "premium wallets",
-    "stylish glasses",
-    "designer accessories",
-    "Fashion Stylized",
+    "wallets in Pakistan",
+    "watches in Pakistan",
+    "glasses in Pakistan",
+    "fashion accessories Pakistan",
+    "men wallets Pakistan",
+    "women wallets Pakistan",
+    "luxury watches Pakistan",
+    "eyewear Pakistan",
+    "online shopping Pakistan",
+    "Fashion Stylized Pakistan",
   ],
 
   openGraph: {
-    title: "Premium Fashion Accessories | Fashion Stylized",
+    title: "Premium Wallets, Watches & Glasses in Pakistan | Fashion Stylized",
     description:
-      "Explore premium wallets, watches, and glasses designed for style, quality, and everyday elegance.",
+      "Explore premium wallets, watches, and glasses for men and women in Pakistan. Shop stylish accessories at Fashion Stylized.",
     type: "website",
-  },
-
-  twitter: {
-    card: "summary_large_image",
-    title: "Premium Fashion Accessories | Fashion Stylized",
-    description:
-      "Discover premium wallets, watches, and glasses at Fashion Stylized.",
+    locale: "en_PK",
   },
 };
 
