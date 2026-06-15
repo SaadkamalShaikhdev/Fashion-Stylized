@@ -1,28 +1,29 @@
 import GlassDetails from "./GlassDetails"
 
 export const metadata = {
-  title: "Stylish Glasses & Eyewear for Men & Women | Fashion Stylized",
+  title: "Stylish Glasses & Eyewear in Pakistan | Fashion Stylized",
   description:
-    "Discover stylish glasses and premium eyewear for men and women at Fashion Stylized. Explore modern designs, comfortable frames, and fashionable looks for every occasion.",
+    "Discover stylish glasses and premium eyewear in Pakistan at Fashion Stylized. Explore modern frames and fashionable designs for men and women.",
 
   keywords: [
-    "glasses",
-    "eyewear",
-    "fashion glasses",
-    "men glasses",
-    "women glasses",
-    "stylish eyewear",
+    "glasses in Pakistan",
+    "eyewear Pakistan",
+    "fashion glasses Pakistan",
+    "men glasses Pakistan",
+    "women glasses Pakistan",
     "designer glasses",
+    "premium eyewear",
+    "stylish glasses",
     "modern frames",
-    "optical glasses",
     "Fashion Stylized glasses",
   ],
 
   openGraph: {
-    title: "Stylish Glasses & Eyewear for Men & Women | Fashion Stylized",
+    title: "Stylish Glasses & Eyewear in Pakistan | Fashion Stylized",
     description:
-      "Shop fashionable glasses and premium eyewear featuring modern designs, quality materials, and all-day comfort.",
+      "Shop fashionable glasses and premium eyewear in Pakistan with modern designs and comfortable frames.",
     type: "website",
+    locale: "en_PK",
   },
 };
 
