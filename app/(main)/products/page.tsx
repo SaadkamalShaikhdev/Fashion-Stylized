@@ -1,28 +1,37 @@
 import ProductPages from "./ProductPage"
 
 export const metadata = {
-  title: "Premium Wallets for Men & Women | Fashion Stylized",
+  title: "Premium Fashion Accessories | Fashion Stylized",
   description:
-    "Explore premium wallets for men and women at Fashion Stylized. Discover stylish, durable, and modern wallets crafted with quality materials for everyday use.",
+    "Shop premium wallets, watches, and glasses at Fashion Stylized. Discover stylish accessories crafted with quality materials, modern designs, and exceptional attention to detail.",
 
   keywords: [
+    "fashion accessories",
     "wallets",
-    "men wallets",
-    "women wallets",
-    "leather wallets",
+    "watches",
+    "glasses",
+    "eyewear",
+    "men accessories",
+    "women accessories",
+    "luxury watches",
     "premium wallets",
-    "fashion wallets",
-    "designer wallets",
-    "card holder wallets",
-    "stylish wallets",
-    "Fashion Stylized wallets",
+    "stylish glasses",
+    "designer accessories",
+    "Fashion Stylized",
   ],
 
   openGraph: {
-    title: "Premium Wallets for Men & Women | Fashion Stylized",
+    title: "Premium Fashion Accessories | Fashion Stylized",
     description:
-      "Shop premium wallets designed for style, functionality, and durability. Find the perfect wallet for every occasion.",
+      "Explore premium wallets, watches, and glasses designed for style, quality, and everyday elegance.",
     type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Premium Fashion Accessories | Fashion Stylized",
+    description:
+      "Discover premium wallets, watches, and glasses at Fashion Stylized.",
   },
 };
 
