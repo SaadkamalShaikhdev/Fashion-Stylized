@@ -30,9 +30,45 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
+
 export const metadata: Metadata = {
-  title: "Fashion Stylized - Premium Accessories",
-  description: "Discover our curated collection of premium accessories, including watches, glasses, wallets, and more. Elevate your style with timeless pieces designed for the modern individual.",
+  title: "Fashion Stylized | Premium Wallets, Watches & Glasses in Pakistan",
+  description:
+    "Fashion Stylized offers premium wallets, watches, and glasses in Pakistan. Explore stylish accessories for men and women, featuring modern designs, quality craftsmanship, and timeless elegance.",
+
+  keywords: [
+    "Fashion Stylized",
+    "wallets in Pakistan",
+    "watches in Pakistan",
+    "glasses in Pakistan",
+    "fashion accessories Pakistan",
+    "premium accessories",
+    "men accessories",
+    "women accessories",
+    "online shopping Pakistan",
+    "stylish accessories",
+  ],
+
+  openGraph: {
+    title: "Fashion Stylized | Premium Wallets, Watches & Glasses in Pakistan",
+    description:
+      "Shop premium wallets, watches, and glasses in Pakistan. Discover stylish accessories designed for quality, comfort, and elegance.",
+    type: "website",
+    locale: "en_PK",
+    siteName: "Fashion Stylized",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Fashion Stylized | Premium Wallets, Watches & Glasses in Pakistan",
+    description:
+      "Explore premium wallets, watches, and glasses for men and women in Pakistan.",
+  },
+  metadataBase: new URL("https://fashionstylized.store"),
+alternates: {
+  canonical: "/",
+},
 };
 
 export default function RootLayout({
