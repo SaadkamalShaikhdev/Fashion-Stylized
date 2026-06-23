@@ -75,8 +75,12 @@ const VerifyEmail = () => {
       const data = await apiClient.verifyOTP({ userId, otp: otpString })
 
       if (!data.success) {
-        setError(data.error ?? "Invalid OTP")
-        return
+         if (data.error?.includes("Too many requests")) {
+    setError(data.error) // already has "try again in X minutes"
+  } else {
+    setError(data.error ?? "Invalid OTP")
+  }
+  return
       }
 
       setSuccess("Email verified successfully! Redirecting to login...")
