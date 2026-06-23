@@ -4,8 +4,6 @@ import { connectToDatabase } from "@/lib/db";
 import User from "@/models/User"
 import { registerSchema } from "@/lib/register-validation/auth";
 import {sendOTPEmail} from "@/lib/resend"
-import { checkRateLimit } from "@/lib/checkRateLimit";
-import { otpRateLimit } from "@/lib/ratelimit"
 export const dynamic = "force-dynamic"
 
 export async function POST(request: NextRequest){
@@ -56,10 +54,9 @@ const validatedData = result.data;
    const savedUser = await newUser.save();
 
     // Step 7: send OTP email
-const rateLimitResponse = await checkRateLimit(request, otpRateLimit)
-  if (rateLimitResponse) return rateLimitResponse
+
     await sendOTPEmail({email: validatedData.email, username: validatedData.username, otp});
- 
+
 
      return NextResponse.json({
       success: true,
