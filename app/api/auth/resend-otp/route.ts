@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 import User from "@/models/User";
+import { checkRateLimit } from "@/lib/checkRateLimit";
+import { otpRateLimit } from "@/lib/ratelimit"
 import { sendOTPEmail } from "@/lib/resend"
 export const dynamic = "force-dynamic"
 export async function POST(request: NextRequest) {
+     const rateLimitResponse = await checkRateLimit(request, otpRateLimit)
+  if (rateLimitResponse) return rateLimitResponse
     try {
         const { userId } = await request.json();
         if (!userId) {
