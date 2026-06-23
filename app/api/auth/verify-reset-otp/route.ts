@@ -1,10 +1,14 @@
 import {NextResponse, NextRequest} from "next/server";
 import {connectToDatabase} from "@/lib/db";
 import User from "@/models/User";
+import { checkRateLimit } from "@/lib/checkRateLimit"
+import { verifyRateLimit } from "@/lib/ratelimit"
 export const dynamic = "force-dynamic"
 export async function POST(request: NextRequest) {
     try {
         const { userId, otp } = await request.json();
+          const rateLimitResponse = await checkRateLimit(request, verifyRateLimit, userId)
+  if (rateLimitResponse) return rateLimitResponse
         if (!userId || !otp) {
              return NextResponse.json({
         success: false,
