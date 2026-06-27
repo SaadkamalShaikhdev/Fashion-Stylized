@@ -12,7 +12,7 @@ type Props = {
   maxImages?: number
 }
 
-const ImageUpload = ({ images, onChange, maxImages = 3 }: Props) => {
+const ImageUpload = ({ images, onChange, maxImages = 4 }: Props) => {
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState("")
   const [progress, setProgress] = useState(0)
