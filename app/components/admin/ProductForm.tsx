@@ -316,7 +316,7 @@ export default function ProductForm({ initialData, mode }: Props) {
           <ImageUpload
             images={form.images}
             onChange={urls => setForm(prev => ({ ...prev, images: urls }))}
-            maxImages={3}
+            maxImages={4}
           />
         </motion.div>
       </div>
