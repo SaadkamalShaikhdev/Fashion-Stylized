@@ -5,7 +5,7 @@ import Link from "next/link";
 import { X, Watch, Glasses, Wallet, LayoutGrid, Mail, User, ShoppingBag, Settings, LogOut } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { useCartStore } from "@/app/store/cartStore";
-import Image from "next/image";
+import { Image } from '@imagekit/next'
 
 type Props = {
   isOpen: boolean;
@@ -13,7 +13,6 @@ type Props = {
 };
 
 const navLinks = [
-  { label: "Watches", href: "/products/watches", icon: Watch },
   { label: "Glasses", href: "/products/glasses", icon: Glasses },
   { label: "Wallets", href: "/products/wallets", icon: Wallet },
   { label: "Collection", href: "/products", icon: LayoutGrid },

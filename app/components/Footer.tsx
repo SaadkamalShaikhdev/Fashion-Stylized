@@ -25,7 +25,7 @@ const Footer = () => {
       <div>
         <h4 className="uppercase tracking-wider mb-4 text-sm">Shop</h4>
         <ul className="space-y-3 text-sm text-(--muted-foreground)">
-          {["Watches", "Glasses", "Wallets", "Collections"].map((item) => (
+          {["Glasses", "Wallets", "Collections"].map((item) => (
             <li key={item}>
               <Link href={`/products?category=${item.toLowerCase()}`} className="hover:text-(--primary) transition-colors">
                 {item}

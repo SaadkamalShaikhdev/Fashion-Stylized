@@ -2,7 +2,7 @@
 import {ChevronRight} from "lucide-react";
 import { motion } from "framer-motion"
 import Link from "next/link";
-import Image from "next/image";
+import { Image } from '@imagekit/next'
 
 
 const fadeUp = {
@@ -33,12 +33,12 @@ const HeroSection = () => {
               transition={{ duration: 1.8, ease: "easeOut" }}
               className="w-full h-full">
               <Image
-                src="/watchHome.jpg"
-                alt="Home"
-                fill={true}
-                className="w-full h-full object-cover"
-                priority
-              />
+                                  urlEndpoint='https://ik.imagekit.io/fashionstylized'
+                                  alt='Wallet'
+                                  fill={true}
+                                  className='w-full h-full object-cover '
+                                  src="/photo-1696432192353-2846460149d1.jpg"
+                                />
             </motion.div>
     
             {/* ✅ fix 1 — dark overlay top AND bottom so text visible everywhere */}
