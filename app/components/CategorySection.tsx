@@ -65,7 +65,7 @@ const CategorySection = () => {
             }}>
 
             <Link href={category.href}>
-              <div className='group cursor-pointer relative overflow-hidden bg-card aspect-[3/4] max-h-[px] w-full'>
+              <div className='group cursor-pointer relative overflow-hidden bg-card aspect-[3/4] max-h-[450px] w-full'>
 
                 {/* image with zoom */}
                 <div className='absolute inset-0'>

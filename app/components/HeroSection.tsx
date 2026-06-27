@@ -37,7 +37,7 @@ const HeroSection = () => {
                                   alt='Wallet'
                                   fill={true}
                                   className='w-full h-full object-cover '
-                                  src="/photo-1696432192353-2846460149d1.jpg"
+                                  src="/silver framed eyeglasses on....jpg"
                                 />
             </motion.div>
     
