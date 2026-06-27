@@ -38,7 +38,7 @@ const Navbar = () => {
               <Link href="/"><Image src="/logo25.png" className='object-cover h-14 w-26' alt="Logo" width={100} height={50} /></Link>
             </div>
             <ul className='hidden gap-8 lg:flex'>
-              <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/products/watches">Watches</Link></li>
+              {/* <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/products/watches">Watches</Link></li> */}
               <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/products/wallets">Wallet</Link></li>
               <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/products/glasses">Glasses</Link></li>
               <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/products">Collection</Link></li>

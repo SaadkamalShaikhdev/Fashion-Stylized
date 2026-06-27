@@ -20,13 +20,13 @@ const categories = [
     src: "/glass.jpg",
     href: "/products?category=glasses"
   },
-  {
-    title: "Watches",
-    subtitle: "Timeless Precision",
-    icon: Clock,
-    src: "/home.jpg",
-    href: "/products?category=watches"
-  },
+  // {
+  //   title: "Watches",
+  //   subtitle: "Timeless Precision",
+  //   icon: Clock,
+  //   src: "/home.jpg",
+  //   href: "/products?category=watches"
+  // },
 ]
 
 const CategorySection = () => {
@@ -51,7 +51,7 @@ const CategorySection = () => {
       </motion.div>
 
       {/* cards grid */}
-      <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 '>
         {categories.map((category, index) => (
           <motion.div
             key={category.title}
@@ -65,7 +65,7 @@ const CategorySection = () => {
             }}>
 
             <Link href={category.href}>
-              <div className='group cursor-pointer relative overflow-hidden bg-card aspect-[3/4]'>
+              <div className='group cursor-pointer relative overflow-hidden bg-card aspect-[3/4] max-h-[px] w-full'>
 
                 {/* image with zoom */}
                 <div className='absolute inset-0'>
