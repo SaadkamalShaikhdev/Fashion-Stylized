@@ -59,34 +59,38 @@ const HeroSection = () => {
             className="relative z-10 max-w-[1600px] mx-auto px-6 lg:px-12 text-center w-full">
     
             {/* ✅ fix 2 — white text with backdrop so visible on bright image */}
-            <motion.p
-              variants={fadeUp}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="text-sm uppercase tracking-[0.3em] text-white/70 mb-6">
-              Premium Accessories
-            </motion.p>
-    
-            <motion.h1
-              variants={fadeUp}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-5xl sm:text-6xl lg:text-8xl tracking-tight leading-none font-cormorant-garamond text-white">
-              Timeless
-            </motion.h1>
-    
-            <motion.h1
-              variants={fadeUp}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-5xl sm:text-6xl lg:text-8xl tracking-tight leading-none font-cormorant-garamond mb-6">
-              <span className="text-(--primary)">Elegance</span>
-            </motion.h1>
-    
-            {/* ✅ fix 3 — brighter text for description */}
-            <motion.p
-              variants={fadeUp}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="text-base sm:text-lg lg:text-xl text-white/80 mb-10 max-w-2xl mx-auto tracking-wide px-4">
-              Discover our curated collection of premium accessories.
-            </motion.p>
+           <motion.p
+  variants={fadeUp}
+  transition={{ duration: 0.7, ease: "easeOut" }}
+  className="text-sm uppercase tracking-[0.3em] text-white/70 mb-6"
+>
+  Premium Wallets & Glasses
+</motion.p>
+
+<motion.h1
+  variants={fadeUp}
+  transition={{ duration: 0.8, ease: "easeOut" }}
+  className="text-5xl sm:text-6xl lg:text-8xl tracking-tight leading-none font-cormorant-garamond text-white"
+>
+  Elevate Your
+</motion.h1>
+
+<motion.h1
+  variants={fadeUp}
+  transition={{ duration: 0.8, ease: "easeOut" }}
+  className="text-5xl sm:text-6xl lg:text-8xl tracking-tight leading-none font-cormorant-garamond mb-6"
+>
+  <span className="text-(--primary)">Everyday Style</span>
+</motion.h1>
+
+<motion.p
+  variants={fadeUp}
+  transition={{ duration: 0.7, ease: "easeOut" }}
+  className="text-base sm:text-lg lg:text-xl text-white/80 mb-10 max-w-2xl mx-auto tracking-wide px-4"
+>
+  Discover premium wallets and stylish glasses designed for quality,
+  comfort, and everyday confidence.
+</motion.p>
     
             {/* ✅ fix 4 — mobile first buttons, stack on mobile side by side on desktop */}
             <motion.div

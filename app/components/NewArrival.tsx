@@ -8,7 +8,7 @@ import { IProduct } from '@/models/Product'
 import { useCartStore } from '../store/cartStore'
 import Link from 'next/link'
 
-const filters = ["All", "Watches", "Glasses", "Wallets"]
+const filters = ["All", "Glasses", "Wallets"]
 
 const NewArrival = () => {
   const [products, setProducts] = useState<IProduct[]>([])
