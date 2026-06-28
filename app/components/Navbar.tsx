@@ -35,7 +35,9 @@ const Navbar = () => {
           {/* left — logo + links */}
           <div className='flex items-center justify-center gap-20'>
             <div>
-              <Link href="/"><Image src="/logo25.png" className='object-cover h-14 w-26' alt="Logo" width={100} height={50} /></Link>
+              <Link href="/" className="font-cormorant-garamond text-xl flex flex-col font-bold tracking-wider uppercase ">
+              Fashion<span className='text-(--primary)'>Sylized</span>
+              </Link>
             </div>
             <ul className='hidden gap-8 lg:flex'>
               {/* <li><Link className='text-sm tracking-wider uppercase opacity-70 hover:opacity-100 transition-opacity' href="/products/watches">Watches</Link></li> */}
