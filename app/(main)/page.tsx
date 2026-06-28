@@ -1,13 +1,11 @@
 "use client"
-import { signOut } from "next-auth/react";
-import {ChevronRight} from "lucide-react";
-import { motion } from "framer-motion"
-import HeroSection from "../components/HeroSection";
 
-import Image from "next/image";
+import HeroSection from "../components/HeroSection";
 import CategorySection from "../components/CategorySection";
 import NewArrival from "../components/NewArrival";
 import StorySection from "../components/StorySection";
+import Link from "next/link";
+import Image from "next/image";
 
 
 
@@ -18,6 +16,7 @@ export default function Home() {
 <CategorySection />
 <NewArrival />
 <StorySection />
+
  </>
   );
 }
