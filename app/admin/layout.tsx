@@ -14,6 +14,7 @@ const navLinks = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Products", href: "/admin/products", icon: Package },
   { label: "Orders", href: "/admin/orders", icon: ShoppingBag },
+  {label: "Settings", href: "/admin/settings", icon: ExternalLink}
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
