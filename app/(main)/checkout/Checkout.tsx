@@ -151,7 +151,7 @@ export default function Checkout() {
   }, [type, status])
 
   const subtotal = checkoutItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shipping = 500
+  const shipping = 300
   const total = subtotal + shipping
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

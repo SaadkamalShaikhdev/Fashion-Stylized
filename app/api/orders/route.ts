@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const deliveryFee = 500
+    const deliveryFee = 300
     // ✅ calculate total on server — never trust client
     const totalAmount = products.reduce(
       (sum: number, item: { price: number; quantity: number }) =>
