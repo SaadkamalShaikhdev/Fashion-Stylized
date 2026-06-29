@@ -10,7 +10,7 @@ import { apiClient } from "@/lib/api-client";
 import { useSession } from "next-auth/react";
 import CheckoutAuthModal from "@/app/components/checkout/CheckoutAuthModal";
 export const dynamic = "force-dynamic"
-const SHIPPING_COST = 500;
+// const SHIPPING_COST = 500;
 
 const PROMO_CODES: Record<string, number> = {
   // "FASHION10": 10,
@@ -37,6 +37,7 @@ const CartPage = () => {
   const [promoError, setPromoError] = useState("")
   const [promoLoading, setPromoLoading] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
+  const [shippingCost, setShippingCost] = useState(0)
 
   const [validating, setValidating] = useState(false)
   const [validationMap, setValidationMap] = useState<Record<string, ItemValidation>>({})
@@ -45,7 +46,24 @@ const CartPage = () => {
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
   const discountAmount = appliedPromo ? Math.round(subtotal * appliedPromo.discount / 100) : 0
-  const finalTotal = subtotal + SHIPPING_COST - discountAmount
+  const finalTotal = subtotal + shippingCost - discountAmount
+
+const fetchSettings = async () => {
+    try {
+      const res = await apiClient.getdeliveryFee()
+      if (res.success) {
+        setShippingCost(res.data.deliveryFee)
+      } else {
+        console.error("Failed to fetch settings:", res.error)
+      }
+    } catch (error) {
+      console.error("Error fetching settings:", error)
+      setShippingCost(300) // Fallback to 300 if fetching fails
+    }
+  }
+useEffect(() => {
+    fetchSettings()
+  }, [])
 
   useEffect(() => {
     async function validateCart() {
@@ -416,7 +434,7 @@ const CartPage = () => {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-(--muted-foreground)">Shipping</span>
-                    <span>Rs. {SHIPPING_COST.toLocaleString()}</span>
+                    <span>Rs. {shippingCost.toLocaleString()}</span>
                   </div>
                   {appliedPromo && (
                     <motion.div
