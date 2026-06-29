@@ -36,7 +36,7 @@ const Navbar = () => {
           <div className='flex items-center justify-center gap-20'>
             <div>
               <Link href="/" className="font-cormorant-garamond text-xl flex flex-col font-bold tracking-wider uppercase ">
-              Fashion<span className='text-(--primary)'>Sylized</span>
+              Fashion<span>Sylized</span>
               </Link>
             </div>
             <ul className='hidden gap-8 lg:flex'>
