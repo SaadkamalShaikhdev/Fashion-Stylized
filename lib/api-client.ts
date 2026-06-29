@@ -240,6 +240,17 @@ async getAdminStats() {
     }
   }>("/admin/stats")
 }
+
+async getAdminSetting() {
+  return this.fetch<{ success: boolean; data: { deliveryFee: number }; error?: string }>("/admin/setting")
+} 
+
+async updateAdminSetting(data: { deliveryFee: number }) {
+  return this.fetch<{ success: boolean; data: { deliveryFee: number }; error?: string }>("/admin/setting", {
+    method: "PUT",
+    body: data
+  })
+}
 }
 
 
