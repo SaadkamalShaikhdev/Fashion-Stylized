@@ -251,6 +251,10 @@ async updateAdminSetting(data: { deliveryFee: number }) {
     body: data
   })
 }
+
+async getdeliveryFee() {
+  return this.fetch<{ success: boolean; data: { deliveryFee: number }; error?: string }>("/setting")
+}
 }
 
 

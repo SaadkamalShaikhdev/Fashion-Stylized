@@ -9,6 +9,7 @@ import Link from "next/link"
 import { Image } from "@imagekit/next"
 import { IOrder } from "@/models/Order"
 
+
 export const dynamic = "force-dynamic"
 // type Order = {
 //   _id: string
@@ -38,6 +39,24 @@ export default function OrderConfirmationPage() {
   const [order, setOrder] = useState<IOrder | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [shipping, setShipping] = useState<number>(0)
+
+  const fetchSettings = async () => {
+  try {
+    const res = await apiClient.getdeliveryFee()
+    if (res.success) {
+      setShipping(res.data.deliveryFee)
+    }
+  } catch (error) {
+    console.error("Failed to fetch delivery fee:", error)
+    setShipping(300) // Fallback to 300 if fetching fails
+  }
+  }
+
+  useEffect(() => {
+    fetchSettings()
+  }, [])
+
 
   useEffect(() => {
     async function getOrder() {
@@ -260,11 +279,11 @@ export default function OrderConfirmationPage() {
           <div className="mt-6 pt-4 border-t border-(--border) space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-(--muted-foreground)">Subtotal</span>
-              <span>Rs. {(order.totalAmount - 500 ).toLocaleString()}</span>
+              <span>Rs. {(order.totalAmount - shipping ).toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-(--muted-foreground)">Shipping</span>
-              <span>Rs. 500</span>
+              <span>Rs. {shipping.toLocaleString()}</span>
             </div>
             <div className="flex justify-between pt-2 border-t border-(--border)">
               <span className="uppercase tracking-wider">Total</span>

@@ -44,6 +44,7 @@ export default function Checkout() {
   const [error, setError] = useState("")
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [orderSuccess, setOrderSuccess] = useState(false)
+  const [shipping, setShipping] = useState(0)
 
   const [form, setForm] = useState({
     name: "",
@@ -54,6 +55,23 @@ export default function Checkout() {
     mobileNumber: "",
     paymentMethod: "COD",
   })
+
+  const fetchSettings = async () => {
+    try {
+      const res = await apiClient.getdeliveryFee()
+      if (res.success) {
+        setShipping(res.data.deliveryFee)
+      }
+    } catch (error) {
+      console.error("Failed to fetch delivery fee")
+      setShipping(300) // fallback to 300 if fetch fails
+      }
+  }
+  useEffect(() => {
+    fetchSettings()
+  }, [])
+  
+
 
   // fill name/email from session
   useEffect(() => {
@@ -151,7 +169,6 @@ export default function Checkout() {
   }, [type, status])
 
   const subtotal = checkoutItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shipping = 300
   const total = subtotal + shipping
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
