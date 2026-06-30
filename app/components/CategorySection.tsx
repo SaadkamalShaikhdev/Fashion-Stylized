@@ -10,14 +10,14 @@ const categories = [
     title: "Wallets",
     subtitle: "Timeless Craft",
     icon: Wallet,
-    src: "/photo-1696432192353-2846460149d1.jpg",
+    src: "main-wallet",
     href: "/products?category=wallets"
   },
   {
     title: "Glasses",
     subtitle: "Refined Vision",
     icon: Glasses,
-    src: "/glass.jpg",
+    src: "main-glass",
     href: "/products?category=glasses"
   },
 ]
