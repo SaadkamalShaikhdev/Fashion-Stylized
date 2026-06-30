@@ -36,8 +36,16 @@ const HeroSection = () => {
                                   urlEndpoint='https://ik.imagekit.io/fashionstylized'
                                   alt='Wallet'
                                   fill={true}
-                                  className='w-full h-full object-cover '
+                                  className='w-full hidden md:block h-full object-cover '
                                   src="main-hero"
+                                />
+                                {/* mobile */}
+                                 <Image
+                                  urlEndpoint='https://ik.imagekit.io/fashionstylized'
+                                  alt='Wallet'
+                                  fill={true}
+                                  className='w-full block md:hidden h-full object-cover '
+                                  src="main-hero-mobile"
                                 />
             </motion.div>
     
