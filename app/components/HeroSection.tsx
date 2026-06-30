@@ -70,7 +70,7 @@ const HeroSection = () => {
 <motion.h1
   variants={fadeUp}
   transition={{ duration: 0.8, ease: "easeOut" }}
-  className="text-5xl sm:text-6xl lg:text-7xl md:text-start text-center tracking-tight uppercase leading-none font-cormorant-garamond text-white"
+  className="text-4xl sm:text-6xl lg:text-7xl md:text-start text-center tracking-tight uppercase leading-none font-cormorant-garamond text-white"
 >
   Elevate Your
 </motion.h1>
@@ -78,7 +78,7 @@ const HeroSection = () => {
 <motion.h1
   variants={fadeUp}
   transition={{ duration: 0.8, ease: "easeOut" }}
-  className="text-5xl sm:text-6xl md:text-start text-center  lg:text-7xl uppercase tracking-tight leading-none font-cormorant-garamond mb-6"
+  className="text-4xl sm:text-6xl md:text-start text-center  lg:text-7xl uppercase tracking-tight leading-none font-cormorant-garamond mb-6"
 >
   <span className="text-(--primary)">Everyday Style</span>
 </motion.h1>
@@ -110,7 +110,7 @@ const HeroSection = () => {
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                className="w-full sm:w-auto bg-(--primary) text-(--primary-foreground) px-8 sm:px-12 py-4 uppercase tracking-widest flex items-center justify-center gap-3 group text-sm">
+                className="w-full sm:w-auto bg-(--primary) text-(--primary-foreground) min-[380px]:px-4 px-2 px-0 sm:px-12 py-4 uppercase tracking-widest flex items-center justify-center md:gap-3 gap-2 group text-sm">
                   <Link href="/products">
                   
                 Explore Collection
