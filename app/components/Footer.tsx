@@ -15,7 +15,9 @@ const Footer = () => {
       
       {/* Brand */}
       <div className='flex flex-col gap-4'>
-        <Image src="/logo25.png" alt="Fashion Stylized" width={100} height={40}/>
+        <Link href="/" className="font-cormorant-garamond text-xl flex flex-col font-bold tracking-wider uppercase ">
+              Fashion<span>Sylized</span>
+              </Link>
         <p className="text-sm text-(--muted-foreground) leading-relaxed">
           Premium accessories for the modern individual.
         </p>

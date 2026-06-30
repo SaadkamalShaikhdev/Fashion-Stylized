@@ -23,7 +23,7 @@ const stagger = {
 
 const HeroSection = () => {
   return (
-      <section className="relative min-h-[calc(100vh-75px)] flex items-center justify-center">
+      <section className="relative min-h-[calc(100vh-75px)] flex md:items-center items-end pb-25 md:justify-items-start justify-center">
           
           {/* background image */}
           <div className="absolute inset-0 overflow-hidden">
@@ -37,18 +37,18 @@ const HeroSection = () => {
                                   alt='Wallet'
                                   fill={true}
                                   className='w-full h-full object-cover '
-                                  src="/silver framed eyeglasses on....jpg"
+                                  src="main-hero"
                                 />
             </motion.div>
     
             {/* ✅ fix 1 — dark overlay top AND bottom so text visible everywhere */}
-            <div className="absolute inset-0 bg-black/40" />
-            <motion.div
+            {/* <div className="absolute inset-0 bg-black/40" /> */}
+            {/* <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1.2 }}
               className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/30"
-            />
+            /> */}
           </div>
     
           {/* content */}
@@ -56,21 +56,21 @@ const HeroSection = () => {
             variants={stagger}
             initial="hidden"
             animate="show"
-            className="relative z-10 max-w-[1600px] mx-auto px-6 lg:px-12 text-center w-full">
+            className="relative z-10 max-w-[1600px] mx-auto px-6 lg:px-12  w-full">
     
             {/* ✅ fix 2 — white text with backdrop so visible on bright image */}
-           <motion.p
+           {/* <motion.p
   variants={fadeUp}
   transition={{ duration: 0.7, ease: "easeOut" }}
   className="text-sm uppercase tracking-[0.3em] text-white/70 mb-6"
 >
   Premium Wallets & Glasses
-</motion.p>
+</motion.p> */}
 
 <motion.h1
   variants={fadeUp}
   transition={{ duration: 0.8, ease: "easeOut" }}
-  className="text-5xl sm:text-6xl lg:text-8xl tracking-tight leading-none font-cormorant-garamond text-white"
+  className="text-5xl sm:text-6xl lg:text-7xl md:text-start text-center tracking-tight uppercase leading-none font-cormorant-garamond text-white"
 >
   Elevate Your
 </motion.h1>
@@ -78,17 +78,25 @@ const HeroSection = () => {
 <motion.h1
   variants={fadeUp}
   transition={{ duration: 0.8, ease: "easeOut" }}
-  className="text-5xl sm:text-6xl lg:text-8xl tracking-tight leading-none font-cormorant-garamond mb-6"
+  className="text-5xl sm:text-6xl md:text-start text-center  lg:text-7xl uppercase tracking-tight leading-none font-cormorant-garamond mb-6"
 >
   <span className="text-(--primary)">Everyday Style</span>
 </motion.h1>
 
+ <div className="flex items-center  xl:w-[550px] lg:w-[450px] md:w-[350px] w-full">
+      <div className="flex-1 border-t border-[#d4af37]" />
+      <span className="px-4 text-[#d4af37] text-xl">
+        ✦
+      </span>
+      <div className="flex-1 border-t border-[#d4af37]" />
+    </div>
+
 <motion.p
   variants={fadeUp}
   transition={{ duration: 0.7, ease: "easeOut" }}
-  className="text-base sm:text-lg lg:text-xl text-white/80 mb-10 max-w-2xl mx-auto tracking-wide px-4"
+  className="text-base sm:text-lg md:text-start text-center  text-white/80 mb-10 max-w-[470px] mt-5  tracking-wide px-4"
 >
-  Discover premium wallets and stylish glasses designed for quality,
+  Discover premium glasses designed for quality,
   comfort, and everyday confidence.
 </motion.p>
     
@@ -96,7 +104,7 @@ const HeroSection = () => {
             <motion.div
               variants={fadeUp}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-3 px-6">
+              className="flex flex-col sm:flex-row md:items-start items-center   gap-3 px-6">
     
               {/* primary CTA */}
               <motion.button
@@ -124,7 +132,7 @@ const HeroSection = () => {
             </motion.div>
     
             {/* scroll indicator — hidden on mobile */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.5, duration: 1 }}
@@ -135,7 +143,7 @@ const HeroSection = () => {
                 transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
                 className="w-px h-8 bg-white/50">
               </motion.div>
-            </motion.div>
+            </motion.div> */}
     
           </motion.div>
         </section>

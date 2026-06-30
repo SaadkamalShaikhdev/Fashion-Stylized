@@ -20,18 +20,11 @@ const categories = [
     src: "/glass.jpg",
     href: "/products?category=glasses"
   },
-  // {
-  //   title: "Watches",
-  //   subtitle: "Timeless Precision",
-  //   icon: Clock,
-  //   src: "/home.jpg",
-  //   href: "/products?category=watches"
-  // },
 ]
 
 const CategorySection = () => {
   return (
-    <section className='py-24 px-6 lg:px-12 max-w-[1600px] mx-auto'>
+    <section className='py-16 sm:py-24 px-6 lg:px-12 max-w-[1600px] mx-auto'>
 
       {/* heading */}
       <motion.div
@@ -39,8 +32,8 @@ const CategorySection = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className='mb-16'>
-        <h2 className='text-5xl lg:text-6xl mb-4 font-cormorant-garamond'>Categories</h2>
+        className='mb-10 sm:mb-16'>
+        <h2 className='text-4xl sm:text-5xl lg:text-6xl mb-4 font-cormorant-garamond'>Categories</h2>
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: 96 }}
@@ -50,8 +43,8 @@ const CategorySection = () => {
         />
       </motion.div>
 
-      {/* cards grid */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 '>
+      {/* cards grid — 2 cols always */}
+      <div className='grid grid-cols-2 gap-4 sm:gap-8'>
         {categories.map((category, index) => (
           <motion.div
             key={category.title}
@@ -60,12 +53,13 @@ const CategorySection = () => {
             viewport={{ once: true }}
             transition={{
               duration: 0.7,
-              delay: index * 0.15, // stagger each card
+              delay: index * 0.15,
               ease: "easeOut"
             }}>
 
             <Link href={category.href}>
-              <div className='group cursor-pointer relative overflow-hidden bg-card aspect-[3/4] max-h-[450px] w-full'>
+              {/* ✅ shorter aspect ratio on mobile, taller on desktop */}
+              <div className='group cursor-pointer relative overflow-hidden bg-card aspect-[3/4] sm:aspect-[3/4] max-h-[280px] sm:max-h-[450px] w-full'>
 
                 {/* image with zoom */}
                 <div className='absolute inset-0'>
@@ -73,34 +67,35 @@ const CategorySection = () => {
                     urlEndpoint='https://ik.imagekit.io/fashionstylized'
                     alt={category.title}
                     fill={true}
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
                     className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-700'
                     src={category.src}
                   />
                   <div className='absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent' />
                 </div>
 
-                {/* card content */}
-                <div className='absolute bottom-0 left-0 right-0 p-8'>
+                {/* ✅ smaller padding + smaller text on mobile */}
+                <div className='absolute bottom-0 left-0 right-0 p-3 sm:p-8'>
 
-                  {/* icon — slides up slightly on hover */}
+                  {/* icon — smaller on mobile */}
                   <motion.div
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.3 }}>
-                    <category.icon className='w-12 h-12 text-(--primary) mb-4' />
+                    <category.icon className='w-6 h-6 sm:w-12 sm:h-12 text-(--primary) mb-2 sm:mb-4' />
                   </motion.div>
 
-                  <h3 className='text-4xl mb-2 font-cormorant-garamond text-white'>
+                  <h3 className='text-xl sm:text-4xl mb-1 sm:mb-2 font-cormorant-garamond text-white'>
                     {category.title}
                   </h3>
-                  <p className='text-white/60 tracking-wide uppercase text-sm'>
+                  <p className='text-white/60 tracking-wide uppercase text-[10px] sm:text-sm line-clamp-1'>
                     {category.subtitle}
                   </p>
 
-                  {/* shop now — appears on hover */}
-                 <div className='mt-4 flex items-center gap-2 text-(--primary) opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300'>
-  <span className='text-sm uppercase tracking-wider'>Shop Now</span>
-  <ChevronRight className='w-4 h-4' />
-</div>
+                  {/* shop now — always visible on mobile, hover on desktop */}
+                  <div className='mt-2 sm:mt-4 flex items-center gap-1 sm:gap-2 text-(--primary) opacity-100 sm:opacity-0 sm:translate-y-2 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 transition-all duration-300'>
+                    <span className='text-[10px] sm:text-sm uppercase tracking-wider'>Shop Now</span>
+                    <ChevronRight className='w-3 h-3 sm:w-4 sm:h-4' />
+                  </div>
 
                 </div>
 
