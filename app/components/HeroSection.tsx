@@ -23,7 +23,7 @@ const stagger = {
 
 const HeroSection = () => {
   return (
-      <section className="relative min-h-[calc(100vh-75px)] flex md:items-center items-end pb-25 md:justify-items-start justify-center">
+      <section className="relative min-h-[calc(100dvh-75px)] flex md:items-center items-end md:pb-25 pb-15 md:justify-items-start justify-center">
           
           {/* background image */}
           <div className="absolute inset-0 overflow-hidden">
@@ -45,18 +45,18 @@ const HeroSection = () => {
                                   alt='Wallet'
                                   fill={true}
                                   className='w-full block md:hidden h-full object-cover '
-                                  src="main-hero-mobile"
+                                  src="mobile.png"
                                 />
             </motion.div>
     
             {/* ✅ fix 1 — dark overlay top AND bottom so text visible everywhere */}
             {/* <div className="absolute inset-0 bg-black/40" /> */}
-            {/* <motion.div
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1.2 }}
-              className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/30"
-            /> */}
+              className="absolute block md:hidden inset-0 bg-gradient-to-t from-background via-background/50 to-background/30"
+            />
           </div>
     
           {/* content */}
@@ -86,12 +86,12 @@ const HeroSection = () => {
 <motion.h1
   variants={fadeUp}
   transition={{ duration: 0.8, ease: "easeOut" }}
-  className="text-4xl sm:text-6xl md:text-start text-center  lg:text-7xl uppercase tracking-tight leading-none font-cormorant-garamond mb-6"
+  className="text-4xl sm:text-6xl md:text-start text-center lg:text-7xl uppercase tracking-tight leading-none font-cormorant-garamond mb-3 md:mb-6"
 >
   <span className="text-(--primary)">Everyday Style</span>
 </motion.h1>
 
- <div className="flex items-center  xl:w-[550px] lg:w-[450px] md:w-[350px] w-full">
+ <div className="flex items-center xl:w-[550px] lg:w-[450px] md:w-[350px] w-full mt-2 md:mt-0">
       <div className="flex-1 border-t border-[#d4af37]" />
       <span className="px-4 text-[#d4af37] text-xl">
         ✦
@@ -102,7 +102,7 @@ const HeroSection = () => {
 <motion.p
   variants={fadeUp}
   transition={{ duration: 0.7, ease: "easeOut" }}
-  className="text-base sm:text-lg md:text-start text-center  text-white/80 mb-10 max-w-[470px] mt-5  tracking-wide px-4"
+  className="text-base sm:text-lg md:text-start text-center text-white/80 mb-6 md:mb-10 max-w-[470px] mt-3 md:mt-5 tracking-wide px-4"
 >
   Discover premium glasses designed for quality,
   comfort, and everyday confidence.
@@ -112,7 +112,7 @@ const HeroSection = () => {
             <motion.div
               variants={fadeUp}
               transition={{ duration: 0.7, ease: "easeOut" }}
-              className="flex flex-col sm:flex-row md:items-start items-center   gap-3 px-6">
+              className="flex flex-col sm:flex-row md:items-start items-center gap-2 sm:gap-3 px-6">
     
               {/* primary CTA */}
               <motion.button
