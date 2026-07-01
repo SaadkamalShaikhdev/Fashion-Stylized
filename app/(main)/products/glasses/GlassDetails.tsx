@@ -1,14 +1,14 @@
 "use client"
 import { apiClient } from '@/lib/api-client'
 import { Image } from '@imagekit/next'
-import { Funnel, Eye, ShoppingBag, AlertCircle } from 'lucide-react'
+import { Funnel, Eye, ShoppingBag, AlertCircle,Search,X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import { IProduct } from '@/models/Product'
 import { useCartStore } from '@/app/store/cartStore'
 import Link from 'next/link'
 
-const subcategories = ["All", "Round", "Square", "SunGlasses"]
+// const subcategories = ["All", "Round", "Square", "SunGlasses"]
 const sortOptions = [
   { label: "Default", value: "default" },
   { label: "Price: Low to High", value: "asc" },
@@ -20,7 +20,9 @@ const GlassDetails = () => {
   const [filtered, setFiltered] = useState<IProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [activeSubcategory, setActiveSubcategory] = useState("All")
+  // const [activeSubcategory, setActiveSubcategory] = useState("All")
+    const [search, setSearch] = useState("")
+  
   const [activeSort, setActiveSort] = useState("default")
   const { addItem } = useCartStore()
 
@@ -44,23 +46,22 @@ const GlassDetails = () => {
     getData()
   }, [])
 
-  // filter + sort
   useEffect(() => {
-    let result = [...glasses]
-
-    // subcategory filter
-    if (activeSubcategory !== "All") {
-      result = result.filter(p =>
-        (p as any).subcategory?.toLowerCase() === activeSubcategory.toLowerCase()
-      )
-    }
-
-    // sort
-    if (activeSort === "asc") result.sort((a, b) => a.price - b.price)
-    if (activeSort === "desc") result.sort((a, b) => b.price - a.price)
-
-    setFiltered(result)
-  }, [glasses, activeSubcategory, activeSort])
+     let result = [...glasses]
+ 
+     // search
+     if (search.trim()) {
+       result = result.filter(p =>
+         p.title.toLowerCase().includes(search.toLowerCase())
+       )
+     }
+ 
+     // sort
+     if (activeSort === "asc") result.sort((a, b) => a.price - b.price)
+     if (activeSort === "desc") result.sort((a, b) => b.price - a.price)
+ 
+     setFiltered(result)
+   }, [glasses, search, activeSort])
 
   return (
     <>
@@ -112,33 +113,34 @@ const GlassDetails = () => {
 
       {/* ── Filters ── */}
       <section className="max-w-400 mx-auto px-6 lg:px-12 py-12">
-        <motion.div
+         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 pb-6 border-b border-(--border) gap-4">
 
-          {/* subcategory pills */}
-          <div className='flex flex-wrap items-center gap-3'>
-            <Funnel className='w-4 h-4 text-(--muted-foreground)' />
-            {subcategories.map((sub) => (
-              <motion.button
-                key={sub}
-                onClick={() => setActiveSubcategory(sub)}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className={`px-5 py-2 uppercase text-xs tracking-wider border transition-all duration-300 ${
-                  activeSubcategory === sub
-                    ? "bg-(--primary) text-(--primary-foreground) border-(--primary)"
-                    : "border-(--border) text-(--muted-foreground) hover:border-(--primary) hover:text-foreground"
-                }`}>
-                {sub}
-              </motion.button>
-            ))}
+          {/* ✅ search */}
+          <div className="relative w-full sm:w-80">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-(--muted-foreground)" />
+            <input
+              type="text"
+              placeholder="Search glasses..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full pl-10 pr-10 py-2.5 bg-transparent border border-(--border) focus:border-(--primary) outline-none text-sm transition-colors placeholder:text-(--muted-foreground)"
+            />
+            {/* ✅ clear button */}
+            {search && (
+              <button
+                onClick={() => setSearch("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-(--muted-foreground) hover:text-foreground transition-colors">
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
           {/* sort + results count */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 w-full sm:w-auto">
             {!loading && !error && (
               <p className="text-xs uppercase tracking-widest text-(--muted-foreground)">
                 {filtered.length} {filtered.length === 1 ? "item" : "items"}
@@ -147,7 +149,7 @@ const GlassDetails = () => {
             <select
               value={activeSort}
               onChange={(e) => setActiveSort(e.target.value)}
-              className='bg-(--secondary) px-4 py-2 border border-(--border) focus:border-(--primary) outline-none text-sm uppercase tracking-wider cursor-pointer'>
+              className='bg-(--secondary) px-4 py-2.5 border border-(--border) focus:border-(--primary) outline-none text-sm uppercase tracking-wider cursor-pointer w-full sm:w-auto'>
               {sortOptions.map(opt => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
               ))}
@@ -187,23 +189,29 @@ const GlassDetails = () => {
           </motion.div>
         )}
 
-        {/* ── Empty state ── */}
-        {!loading && !error && filtered.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center py-32 gap-3 text-center">
-            <p className="text-3xl font-cormorant-garamond">No eyewear found</p>
-            <p className="text-(--muted-foreground) text-sm">Try a different filter</p>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => { setActiveSubcategory("All"); setActiveSort("default") }}
-              className="mt-4 px-8 py-3 border border-(--primary) text-(--primary) uppercase text-sm tracking-wider hover:bg-(--primary) hover:text-(--primary-foreground) transition-colors">
-              Clear Filters
-            </motion.button>
-          </motion.div>
-        )}
+        {/* empty state */}
+               {!loading && !error && filtered.length === 0 && (
+                 <motion.div
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: 1 }}
+                   className="flex flex-col items-center justify-center py-32 gap-3 text-center">
+                   <p className="text-3xl font-cormorant-garamond">
+                     {search ? `No results for "${search}"` : "No glasses found"}
+                   </p>
+                   <p className="text-(--muted-foreground) text-sm">
+                     {search ? "Try a different search term" : "Check back soon"}
+                   </p>
+                   {search && (
+                     <motion.button
+                       whileHover={{ scale: 1.03 }}
+                       whileTap={{ scale: 0.97 }}
+                       onClick={() => { setSearch(""); setActiveSort("default") }}
+                       className="mt-4 px-8 py-3 border border-(--primary) text-(--primary) uppercase text-sm tracking-wider hover:bg-(--primary) hover:text-(--primary-foreground) transition-colors">
+                       Clear Search
+                     </motion.button>
+                   )}
+                 </motion.div>
+               )}
 
         {/* ── Product grid ── */}
         {!loading && !error && filtered.length > 0 && (
