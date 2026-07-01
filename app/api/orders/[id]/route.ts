@@ -14,12 +14,7 @@ export async function GET(
      const {id}   = await params
     const session = await getServerSession(authOptions);
      console.log("Fetching order with id:", id)
-    if (!session?.user?.id) {
-      return NextResponse.json({
-        success: false,
-        error: "Unauthorized"
-      }, { status: 401 });
-    }
+  
 
     const order = await Order.findById(id).lean();
 

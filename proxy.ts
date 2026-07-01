@@ -17,7 +17,7 @@ export async function proxy(request: NextRequest) {
     }
 
     // protected pages — redirect to login if not logged in
-    const protectedPages = ["/profile", "/orders", "/admin"];
+    const protectedPages = ["/profile", "/admin"];
     if (protectedPages.some(page => pathname.startsWith(page)) && !token) {
         return NextResponse.redirect(new URL("/signIn", request.url));
     }

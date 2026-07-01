@@ -179,10 +179,10 @@ export default function Checkout() {
     setError("")
 
     // ✅ check auth first — show modal if not logged in
-    if (!session) {
-      setShowAuthModal(true)
-      return
-    }
+    // if (!session) {
+    //   setShowAuthModal(true)
+    //   return
+    // }
 
     // validation
     if (!form.name || !form.email || !form.address || !form.city || !form.mobileNumber) {
@@ -352,7 +352,7 @@ export default function Checkout() {
             </motion.h2>
 
             {/* ✅ session status hint */}
-            {!session && (
+            {/* {!session && (
               <motion.div
                 variants={fadeUp}
                 className="flex items-center gap-3 p-3 border border-(--border) text-(--muted-foreground) text-sm">
@@ -366,19 +366,19 @@ export default function Checkout() {
                   </button>
                 </span>
               </motion.div>
-            )}
+            )} */}
 
             {/* ✅ session badge — logged in */}
-            {session && (
-              <motion.div
+             
+              {/* <motion.div
                 variants={fadeUp}
                 className="flex items-center gap-3 p-3 border border-green-500/30 bg-green-500/10 text-sm">
                 <CheckCircle2 className="w-4 h-4 text-green-400 shrink-0" />
                 <span className="text-green-400">
-                  Signed in as {session.user?.email}
+                  
                 </span>
-              </motion.div>
-            )}
+              </motion.div> */}
+            
 
             {/* error */}
             {error && (
@@ -520,11 +520,6 @@ export default function Checkout() {
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Placing Order...
-                </>
-              ) : !session ? (
-                <>
-                  <Shield className="w-4 h-4" />
-                  Sign in & Place Order
                 </>
               ) : "Place Order"}
             </motion.button>
