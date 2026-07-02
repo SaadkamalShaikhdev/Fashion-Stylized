@@ -77,7 +77,7 @@ const WalletDetails = () => {
               fill={true}
               sizes="100vw"
               className='w-full h-full object-cover opacity-40'
-              src="photo-1772651983030-565c2b7be181.jpg"
+              src="main-wallet"
             />
           </motion.div>
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />

@@ -78,7 +78,7 @@ const GlassDetails = () => {
               alt="Glasses bg"
               fill={true}
               className='w-full h-full object-cover opacity-40'
-              src="/glass.jpg"
+              src="main-glass"
             />
           </motion.div>
           <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent" />
