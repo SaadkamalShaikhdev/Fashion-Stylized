@@ -23,7 +23,7 @@ const stagger = {
 
 const HeroSection = () => {
   return (
-      <section className="relative min-h-[calc(100dvh-75px)] flex md:items-center items-end md:pb-25 pb-15 md:justify-items-start justify-center">
+      <section className="relative min-h-[calc(100svh-75px)] flex md:items-center items-end md:pb-25 pb-15 md:justify-items-start justify-center">
           
           {/* background image */}
           <div className="absolute inset-0 overflow-hidden">
