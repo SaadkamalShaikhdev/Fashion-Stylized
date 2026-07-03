@@ -1,7 +1,7 @@
 "use client"
 import { apiClient } from '@/lib/api-client'
 import { Image } from '@imagekit/next'
-import { Search, Eye, ShoppingBag, AlertCircle, X } from 'lucide-react'
+import { Search, Eye, ShoppingBag, AlertCircle, X, TrendingUp, LayoutGrid } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import { IProduct } from '@/models/Product'
@@ -14,6 +14,11 @@ const sortOptions = [
   { label: "Price: High to Low", value: "desc" },
 ]
 
+const trendingFilters = [
+  { label: "All", value: "all", icon: LayoutGrid },
+  { label: "Trending", value: "trending", icon: TrendingUp },
+]
+
 const WalletDetails = () => {
   const [wallets, setWallets] = useState<IProduct[]>([])
   const [filtered, setFiltered] = useState<IProduct[]>([])
@@ -21,6 +26,7 @@ const WalletDetails = () => {
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState("")
   const [activeSort, setActiveSort] = useState("default")
+  const [activeTrending, setActiveTrending] = useState("all") // ✅ new
   const { addItem } = useCartStore()
 
   useEffect(() => {
@@ -47,6 +53,11 @@ const WalletDetails = () => {
   useEffect(() => {
     let result = [...wallets]
 
+    // ✅ trending filter
+    if (activeTrending === "trending") {
+      result = result.filter(p => p.isTrending)
+    }
+
     // search
     if (search.trim()) {
       result = result.filter(p =>
@@ -59,7 +70,7 @@ const WalletDetails = () => {
     if (activeSort === "desc") result.sort((a, b) => b.price - a.price)
 
     setFiltered(result)
-  }, [wallets, search, activeSort])
+  }, [wallets, search, activeSort, activeTrending])
 
   return (
     <>
@@ -118,27 +129,49 @@ const WalletDetails = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 pb-6 border-b border-(--border) gap-4">
 
-          {/* ✅ search */}
-          <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-(--muted-foreground)" />
-            <input
-              type="text"
-              placeholder="Search wallets..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="w-full pl-10 pr-10 py-2.5 bg-transparent border border-(--border) focus:border-(--primary) outline-none text-sm transition-colors placeholder:text-(--muted-foreground)"
-            />
-            {/* ✅ clear button */}
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-(--muted-foreground) hover:text-foreground transition-colors">
-                <X className="w-4 h-4" />
-              </button>
-            )}
+          {/* left — search + trending capsules */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+
+            {/* search */}
+            <div className="relative w-full sm:w-72">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-(--muted-foreground)" />
+              <input
+                type="text"
+                placeholder="Search wallets..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                className="w-full pl-10 pr-10 py-2.5 bg-transparent border border-(--border) focus:border-(--primary) outline-none text-sm transition-colors placeholder:text-(--muted-foreground)"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-(--muted-foreground) hover:text-foreground transition-colors">
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            {/* ✅ trending capsule pills */}
+            <div className="flex items-center gap-2">
+              {trendingFilters.map(filter => (
+                <motion.button
+                  key={filter.value}
+                  onClick={() => setActiveTrending(filter.value)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs uppercase tracking-wider border transition-all duration-300 ${
+                    activeTrending === filter.value
+                      ? "bg-(--primary) text-(--primary-foreground) border-(--primary)"
+                      : "border-(--border) text-(--muted-foreground) hover:border-(--primary) hover:text-foreground bg-transparent"
+                  }`}>
+                  <filter.icon className="w-3 h-3" />
+                  {filter.label}
+                </motion.button>
+              ))}
+            </div>
           </div>
 
-          {/* sort + results count */}
+          {/* right — sort + results count */}
           <div className="flex items-center gap-4 w-full sm:w-auto">
             {!loading && !error && (
               <p className="text-xs uppercase tracking-widest text-(--muted-foreground)">
@@ -195,18 +228,22 @@ const WalletDetails = () => {
             animate={{ opacity: 1 }}
             className="flex flex-col items-center justify-center py-32 gap-3 text-center">
             <p className="text-3xl font-cormorant-garamond">
-              {search ? `No results for "${search}"` : "No wallets found"}
+              {search
+                ? `No results for "${search}"`
+                : activeTrending === "trending"
+                ? "No trending wallets found"
+                : "No wallets found"}
             </p>
             <p className="text-(--muted-foreground) text-sm">
               {search ? "Try a different search term" : "Check back soon"}
             </p>
-            {search && (
+            {(search || activeTrending !== "all") && (
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                onClick={() => { setSearch(""); setActiveSort("default") }}
+                onClick={() => { setSearch(""); setActiveSort("default"); setActiveTrending("all") }}
                 className="mt-4 px-8 py-3 border border-(--primary) text-(--primary) uppercase text-sm tracking-wider hover:bg-(--primary) hover:text-(--primary-foreground) transition-colors">
-                Clear Search
+                Clear Filters
               </motion.button>
             )}
           </motion.div>
