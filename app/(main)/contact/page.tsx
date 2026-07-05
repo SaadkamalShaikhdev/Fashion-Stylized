@@ -128,7 +128,7 @@ export default function ContactPage() {
               <div>
                 <p className="text-xs uppercase tracking-widest text-(--muted-foreground) mb-1">Location</p>
                 <p className="text-sm font-medium group-hover:text-(--primary) transition-colors">
-                  Orangi Town, Karachi
+                  H No. 909, Sector 11e, MUhalla Orangi Town, Karachi
                 </p>
                 <p className="text-xs text-(--muted-foreground) mt-1">View on Google Maps</p>
               </div>
