@@ -13,7 +13,7 @@ const filters = ["All", "Glasses", "Wallets"]
 const NewArrival = () => {
   const [products, setProducts] = useState<IProduct[]>([])
   const [filtered, setFiltered] = useState<IProduct[]>([])
-  const [activeFilter, setActiveFilter] = useState("All")
+  const [activeFilter, setActiveFilter] = useState("Glasses")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const { addItem } = useCartStore()
@@ -25,8 +25,11 @@ const NewArrival = () => {
         setLoading(true)
         const res = await apiClient.getTrendingProducts()
         if (res.success) {
-          setProducts(res.data || [])
-          setFiltered(res.data || [])
+          const products = res.data || []
+          setProducts(products)
+          setFiltered(products.filter(p =>
+            p.category.toLowerCase() === activeFilter.toLowerCase()
+          ))
         } else {
           setError(res.error || "Failed to fetch products")
         }
@@ -39,6 +42,7 @@ const NewArrival = () => {
     getData()
   }, [])
 
+
   // filter logic
   const handleFilter = (filter: string) => {
     setActiveFilter(filter)
@@ -50,6 +54,7 @@ const NewArrival = () => {
       ))
     }
   }
+  
 
   // get image url — handles both images[] and imageUrl[]
   const getImage = (product: IProduct) => {
