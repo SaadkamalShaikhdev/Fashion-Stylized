@@ -78,17 +78,17 @@ const HeroSection = () => {
 <motion.h1
   variants={fadeUp}
   transition={{ duration: 0.8, ease: "easeOut" }}
-  className="text-4xl sm:text-6xl lg:text-7xl md:text-start text-center tracking-tight uppercase leading-none font-cormorant-garamond text-white"
+  className="text-4xl sm:text-5xl  md:text-start text-center tracking-tight uppercase leading-none font-cormorant-garamond text-white"
 >
-  Elevate Your
+  Luxury Accessories
 </motion.h1>
 
 <motion.h1
   variants={fadeUp}
   transition={{ duration: 0.8, ease: "easeOut" }}
-  className="text-4xl sm:text-6xl md:text-start text-center lg:text-7xl uppercase tracking-tight leading-none font-cormorant-garamond mb-3 md:mb-6"
+  className="text-4xl sm:text-5xl md:text-start text-center  uppercase tracking-tight leading-none font-cormorant-garamond mb-3 md:mb-6"
 >
-  <span className="text-(--primary)">Everyday Style</span>
+  <span className="text-(--primary)">Designed To Last</span>
 </motion.h1>
 
  <div className="flex items-center xl:w-[550px] lg:w-[450px] md:w-[350px] w-full mt-2 md:mt-0">
