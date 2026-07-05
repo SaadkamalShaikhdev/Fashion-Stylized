@@ -8,14 +8,12 @@ import Link from "next/link"
 const categories = [
   {
     title: "Wallets",
-    subtitle: "Timeless Craft",
     icon: Wallet,
     src: "main-wallet",
     href: "/products/wallets"
   },
   {
     title: "Glasses",
-    subtitle: "Refined Vision",
     icon: Glasses,
     src: "main-glass",
     href: "/products/glasses"
@@ -88,9 +86,7 @@ const CategorySection = () => {
                   <h3 className='text-xl sm:text-4xl mb-1 sm:mb-2 font-cormorant-garamond text-white'>
                     {category.title}
                   </h3>
-                  <p className='text-white/60 tracking-wide uppercase text-[10px] sm:text-sm line-clamp-1'>
-                    {category.subtitle}
-                  </p>
+                 
 
                   {/* shop now — always visible on mobile, hover on desktop */}
                   <div className='mt-2 sm:mt-4 flex items-center gap-1 sm:gap-2 text-(--primary) opacity-100 sm:opacity-0 sm:translate-y-2 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 transition-all duration-300'>
