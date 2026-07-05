@@ -4,11 +4,11 @@ import { motion } from "framer-motion"
 import { Truck, RefreshCw, Shield, Phone } from "lucide-react"
 
 const messages = [
-  { icon: Truck, text: "Free delivery all over Pakistan on orders above Rs. 5000" },
+  { icon: Truck, text: "delivery all over Pakistan" },
   { icon: RefreshCw, text: "7 day hassle-free return policy" },
   { icon: Shield, text: "100% authentic premium products" },
   { icon: Phone, text: "Contact us on WhatsApp: 0318 2942654" },
-  { icon: Truck, text: "Free delivery all over Pakistan on orders above Rs. 5000" },
+  { icon: Truck, text: "delivery all over Pakistan" },
   { icon: RefreshCw, text: "7 day hassle-free return policy" },
   { icon: Shield, text: "100% authentic premium products" },
   { icon: Phone, text: "Contact us on WhatsApp: 0318 2942654" },
