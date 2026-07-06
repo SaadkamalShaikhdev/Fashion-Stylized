@@ -110,7 +110,7 @@ const ProductPages = () => {
             transition={{ duration: 1.8, ease: "easeOut" }}
             className="w-full h-full">
             <Image
-              src="home.jpg"
+              src="main-glass"
               urlEndpoint='https://ik.imagekit.io/fashionstylized'
               alt="Collection"
               fill={true}
@@ -178,7 +178,7 @@ const ProductPages = () => {
       </section>
 
       {/* ── Category Section ── */}
-      <CategorySection />
+      {/* <CategorySection /> */}
 
       {/* ── Filters + Products ── */}
       <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12">
