@@ -57,6 +57,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_PK",
     siteName: "Fashion Stylized",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Fashion Stylized — Premium Accessories",
+      },
+    ],
   },
 
   twitter: {
@@ -64,6 +72,7 @@ export const metadata: Metadata = {
     title: "Fashion Stylized | Premium Wallets, Watches & Glasses in Pakistan",
     description:
       "Explore premium wallets, watches, and glasses for men and women in Pakistan.",
+    images: ["/og-image.jpg"],
   },
   metadataBase: new URL("https://fashionstylized.store"),
 alternates: {
@@ -81,12 +90,31 @@ export default function RootLayout({
       lang="en"
       className={` h-full antialiased  ${geistSans.variable} ${inter.variable} ${cormorantGaramond.variable} ${geistMono.variable}`}
     >
-      <body  className={`min-h-full flex flex-col  ${inter.className}`}>
+      <body className={`min-h-full flex flex-col ${inter.className}`}>
         <AuthProvider>
- <GoogleAnalytics gaId="G-4TEVQNPBXP" />
-{children}
+          <GoogleAnalytics gaId="G-4TEVQNPBXP" />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                name: "Fashion Stylized",
+                url: "https://fashionstylized.store",
+                logo: "https://fashionstylized.store/logo.png",
+                contactPoint: {
+                  "@type": "ContactPoint",
+                  telephone: "+92-318-2942654",
+                  contactType: "customer service",
+                  email: "allauddinkamaluddin@gmail.com",
+                },
+                sameAs: [],
+              }),
+            }}
+          />
+          {children}
         </AuthProvider>
-</body>
+      </body>
     </html>
   );
 }

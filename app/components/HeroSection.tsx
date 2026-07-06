@@ -119,7 +119,7 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="w-full sm:w-auto bg-(--primary) text-(--primary-foreground) min-[380px]:px-4 px-2 px-0 sm:px-12 py-4 uppercase tracking-widest flex items-center justify-center md:gap-3 gap-2 group text-sm">
-                  <Link href="/products">
+                  <Link href="/products/collections">
                   
                 Explore Collection
                   </Link>
@@ -131,7 +131,7 @@ const HeroSection = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 className="w-full sm:w-auto border border-white/60 text-white px-8 sm:px-12 py-4 uppercase tracking-widest text-sm hover:border-white transition-colors">
-                <Link href="#story">
+                <Link href="/products">
                 
                 Shop Now
                 </Link>

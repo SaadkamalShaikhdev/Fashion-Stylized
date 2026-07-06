@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ShoppingBag, Eye, Funnel, AlertCircle, Clock, Glasses, Wallet, ChevronRight } from 'lucide-react'
 import { IProduct } from '@/models/Product'
@@ -54,7 +54,7 @@ const featuredPieces = [
   },
 ]
 
-const ProductPages = () => {
+const CollectionPages = () => {
   const [products, setProducts] = useState<IProduct[]>([])
   const [filtered, setFiltered] = useState<IProduct[]>([])
   const [loading, setLoading] = useState(true)
@@ -178,7 +178,7 @@ const ProductPages = () => {
       </section>
 
       {/* ── Category Section ── */}
-      {/* <CategorySection /> */}
+      <CategorySection />
 
       {/* ── Filters + Products ── */}
       <section className="max-w-[1600px] mx-auto px-6 lg:px-12 py-12">
@@ -447,4 +447,4 @@ const ProductPages = () => {
   )
 }
 
-export default ProductPages
+export default CollectionPages

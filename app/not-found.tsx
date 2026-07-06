@@ -1,3 +1,10 @@
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Page Not Found | Fashion Stylized",
+  description: "The page you're looking for doesn't exist or has been moved. Browse our premium wallets, watches, and glasses.",
+}
+
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col items-center justify-center px-4">
@@ -7,7 +14,7 @@ export default function NotFound() {
       </h1>
 
       <p className="mt-4 text-lg text-[var(--muted-foreground)]">
-        This page doesn’t exist or has been moved.
+        This page doesn't exist or has been moved.
       </p>
 
       <a
