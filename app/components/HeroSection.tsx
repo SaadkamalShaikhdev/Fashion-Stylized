@@ -133,7 +133,7 @@ const HeroSection = () => {
                 className="w-full sm:w-auto border border-white/60 text-white px-8 sm:px-12 py-4 uppercase tracking-widest text-sm hover:border-white transition-colors">
                 <Link href="#story">
                 
-                Our Story
+                Shop Now
                 </Link>
               </motion.button>
     
