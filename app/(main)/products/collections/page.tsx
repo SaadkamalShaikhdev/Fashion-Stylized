@@ -1,27 +1,27 @@
 import CollectionPages from "./CollectionDetails"
 
 export const metadata = {
-  title: "Premium Wallets, Watches & Glasses in Pakistan | Fashion Stylized",
+  title: "Shop All Collections | Fashion Stylized",
   description:
-    "Shop premium wallets, watches, and glasses in Pakistan at Fashion Stylized. Discover stylish accessories, modern designs, and quality craftsmanship for men and women.",
+    "Browse all collections at Fashion Stylized — premium wallets, watches, and glasses in Pakistan. Filter by category to find your perfect accessory.",
 
   keywords: [
+    "collections",
+    "shop all",
     "wallets in Pakistan",
     "watches in Pakistan",
     "glasses in Pakistan",
     "fashion accessories Pakistan",
-    "men wallets Pakistan",
-    "women wallets Pakistan",
-    "luxury watches Pakistan",
-    "eyewear Pakistan",
+    "men accessories",
+    "women accessories",
     "online shopping Pakistan",
-    "Fashion Stylized Pakistan",
+    "Fashion Stylized",
   ],
 
   openGraph: {
-    title: "Premium Wallets, Watches & Glasses in Pakistan | Fashion Stylized",
+    title: "Shop All Collections | Fashion Stylized",
     description:
-      "Explore premium wallets, watches, and glasses for men and women in Pakistan. Shop stylish accessories at Fashion Stylized.",
+      "Browse all collections of premium wallets, watches, and glasses at Fashion Stylized.",
     type: "website",
     locale: "en_PK",
   },
