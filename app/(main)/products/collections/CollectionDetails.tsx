@@ -25,7 +25,7 @@ const stagger = {
 }
 
 // ✅ filter by category not subcategory
-const filters = ["All", "Watches", "Glasses", "Wallets"]
+const filters = ["All", "Glasses", "Wallets"]
 const sortOptions = [
   { label: "Default", value: "default" },
   { label: "Price: Low to High", value: "asc" },
@@ -34,12 +34,12 @@ const sortOptions = [
 
 // ✅ fixed featured pieces data
 const featuredPieces = [
-  {
-    href: "/products/watches",
-    icon: Clock,
-    title: "Swiss Timepieces",
-    description: "Precision engineering",
-  },
+  // {
+  //   href: "/products/watches",
+  //   icon: Clock,
+  //   title: "Swiss Timepieces",
+  //   description: "Precision engineering",
+  // },
   {
     href: "/products/wallets",
     icon: Wallet,
