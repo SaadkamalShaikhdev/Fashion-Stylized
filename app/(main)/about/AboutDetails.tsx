@@ -130,7 +130,7 @@ export default function AboutPage() {
         <div className="max-w-[1200px] mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { number: "40+", label: "Products" },
+              { number: "30+", label: "Products" },
               { number: "200+", label: "Happy Customers" },
               { number: "3", label: "Categories" },
               { number: "5★", label: "Average Rating" },

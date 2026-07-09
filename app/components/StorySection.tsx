@@ -104,7 +104,7 @@ const StorySection = () => {
             className="mb-10 flex flex-wrap gap-x-8 gap-y-8 sm:gap-12"
           >
             {[
-              { number: "50+", label: "Products" },
+              { number: "30+", label: "Products" },
               { number: "200+", label: "Happy Customers" },
               { number: "Quality", label: "Guaranteed" },
             ].map((stat, i) => (
