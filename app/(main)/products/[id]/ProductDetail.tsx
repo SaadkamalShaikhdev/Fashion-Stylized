@@ -12,6 +12,7 @@ import { useBuyNowStore } from '@/app/store/buyNowStore'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useWishlistStore } from '@/app/store/wishlistStore'
+import { getProductOffer } from '@/lib/product-offers'
 
 const ProductDetail = () => {
   const [product, setProduct] = useState<IProduct | null>(null)
@@ -218,17 +219,19 @@ const handleWishlist = async () => {
 
   if (!product) return null
 
+  const offer = getProductOffer(product)
+
   return (
     <>
       {/* ── Product section ── */}
-      <section className='max-w-[1600px] mx-auto px-6 lg:px-12 py-6'>
+      <section className='max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-4 sm:py-6 pb-24 sm:pb-6'>
 
         {/* breadcrumb */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-(--muted-foreground) flex gap-2 capitalize py-6 text-sm flex-wrap">
+          className="text-(--muted-foreground) flex gap-2 capitalize py-3 sm:py-6 text-sm flex-wrap">
           <Link className='hover:text-(--foreground) transition-colors' href="/">Home</Link>
           <span>/</span>
           <Link className='hover:text-(--foreground) transition-colors' href="/products">Products</Link>
@@ -301,7 +304,7 @@ const handleWishlist = async () => {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="space-y-8">
+            className="space-y-5 sm:space-y-8">
 
             {/* title + price */}
             <motion.div
@@ -314,9 +317,21 @@ const handleWishlist = async () => {
               <h1 className="text-4xl lg:text-5xl mb-4 font-cormorant-garamond leading-tight">
                 {product.title}
               </h1>
-              <p className='text-3xl text-(--primary) mb-2'>
-                Rs. {product.price.toLocaleString()}
-              </p>
+              <div className='flex flex-wrap items-center gap-3 mb-2'>
+                <p className='text-3xl text-(--primary)'>
+                  Rs. {offer.showOffer ? offer.displayPrice.toLocaleString() : product.price.toLocaleString()}
+                </p>
+                {offer.showOffer && (
+                  <p className='text-sm text-(--muted-foreground) line-through'>
+                    Rs. {offer.originalPrice.toLocaleString()}
+                  </p>
+                )}
+              </div>
+              {offer.showOffer && (
+                <p className='text-sm text-amber-500 mb-3'>
+                  {offer.discountPercent}% off • {offer.label}
+                </p>
+              )}
 
               {/* stock indicator */}
               <div className="flex items-center gap-2 mt-2">
@@ -377,7 +392,7 @@ const handleWishlist = async () => {
               transition={{ delay: 0.5 }}
               className="space-y-4">
 
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <div className='hidden md:grid grid-cols-1 md:grid-cols-2 gap-4'>
 
                 {/* add to cart */}
                 <motion.button
@@ -405,7 +420,7 @@ const handleWishlist = async () => {
 
                 {/* buy now */}
                 <motion.button
-                onClick={handleBuyNow}
+                  onClick={handleBuyNow}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   disabled={product.stock === 0}
@@ -415,26 +430,26 @@ const handleWishlist = async () => {
               </div>
 
               {/* wishlist + share */}
-              <div className="flex gap-4">
-              <motion.button
-  whileHover={{ scale: 1.02 }}
-  whileTap={{ scale: 0.98 }}
-  onClick={handleWishlist}
-  disabled={wishlistLoading}
-  className={`flex-1 py-4 border transition-colors flex items-center justify-center gap-2 text-sm uppercase tracking-wider ${
-    isInWishlist(product._id?.toString() || "")
-      ? "border-red-500/60 text-red-400 bg-red-500/10"  // ✅ in wishlist
-      : "border-(--border) hover:border-(--primary) transition-colors"  // not in wishlist
-  }`}>
-  {wishlistLoading ? (
-    <Loader2 className="h-4 w-4 animate-spin" />
-  ) : (
-    <Heart className={`h-4 w-4 ${
-      isInWishlist(product._id?.toString() || "") ? "fill-red-400 text-red-400" : ""
-    }`} />
-  )}
-  {isInWishlist(product._id?.toString() || "") ? "Wishlisted" : "Wishlist"}
-</motion.button>
+              <div className="hidden md:flex gap-4">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleWishlist}
+                  disabled={wishlistLoading}
+                  className={`flex-1 py-4 border transition-colors flex items-center justify-center gap-2 text-sm uppercase tracking-wider ${
+                    isInWishlist(product._id?.toString() || "")
+                      ? "border-red-500/60 text-red-400 bg-red-500/10"
+                      : "border-(--border) hover:border-(--primary) transition-colors"
+                  }`}>
+                  {wishlistLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Heart className={`h-4 w-4 ${
+                      isInWishlist(product._id?.toString() || "") ? "fill-red-400 text-red-400" : ""
+                    }`} />
+                  )}
+                  {isInWishlist(product._id?.toString() || "") ? "Wishlisted" : "Wishlist"}
+                </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -473,6 +488,32 @@ const handleWishlist = async () => {
           </motion.div>
         </div>
       </section>
+
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-(--border) bg-background/95 backdrop-blur md:hidden">
+        <div className="mx-auto flex max-w-[1600px] items-center gap-2 px-3 py-3">
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={handleAddToCart}
+            disabled={product.stock === 0}
+            className={`flex-1 rounded-none border border-(--primary) px-4 py-3 text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+              addedToCart
+                ? "border-green-500 text-green-500"
+                : "text-(--primary) hover:bg-(--primary) hover:text-black"
+            }`}
+          >
+            <ShoppingBag className="h-4 w-4" />
+            {addedToCart ? "Added" : "Cart"}
+          </motion.button>
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={handleBuyNow}
+            disabled={product.stock === 0}
+            className="flex-1 rounded-none bg-(--primary) px-4 py-3 text-sm uppercase tracking-wider text-(--primary-foreground) transition-opacity disabled:opacity-50"
+          >
+            Buy Now
+          </motion.button>
+        </div>
+      </div>
 
       {/* ── You May Also Like ── */}
       {recommendProducts.length > 0 && (
@@ -533,9 +574,22 @@ const handleWishlist = async () => {
                     <h3 className="text-xl font-cormorant-garamond group-hover:text-(--primary) transition-colors">
                       {item.title}
                     </h3>
-                    <p className="text-(--primary) tracking-wider text-sm">
-                      Rs {item.price.toLocaleString()}
-                    </p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {getProductOffer(item).showOffer ? (
+                        <>
+                          <p className="text-(--primary) tracking-wider text-sm">
+                            Rs {getProductOffer(item).displayPrice.toLocaleString()}
+                          </p>
+                          <p className="text-xs text-(--muted-foreground) line-through">
+                            Rs {getProductOffer(item).originalPrice.toLocaleString()}
+                          </p>
+                        </>
+                      ) : (
+                        <p className="text-(--primary) tracking-wider text-sm">
+                          Rs {item.price.toLocaleString()}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </Link>
 
