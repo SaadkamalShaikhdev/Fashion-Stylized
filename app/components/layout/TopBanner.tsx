@@ -8,10 +8,12 @@ const messages = [
   { icon: RefreshCw, text: "7 day hassle-free return policy" },
   { icon: Shield, text: "100% authentic premium products" },
   { icon: Phone, text: "Contact us on WhatsApp: 0318 2942654" },
+  { icon: Shield, text: "Cash on delivery available" },
   { icon: Truck, text: "delivery all over Pakistan" },
   { icon: RefreshCw, text: "7 day hassle-free return policy" },
   { icon: Shield, text: "100% authentic premium products" },
   { icon: Phone, text: "Contact us on WhatsApp: 0318 2942654" },
+  { icon: Shield, text: "Cash on delivery available" },
 ]
 
 const TopBanner = () => {

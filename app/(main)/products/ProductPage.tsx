@@ -26,7 +26,7 @@ const stagger = {
 }
 
 // ✅ filter by category not subcategory
-const filters = ["All", "Watches", "Glasses", "Wallets"]
+const filters = ["All",  "Glasses", "Wallets"]
 const sortOptions = [
   { label: "Default", value: "default" },
   { label: "Price: Low to High", value: "asc" },
@@ -35,12 +35,12 @@ const sortOptions = [
 
 // ✅ fixed featured pieces data
 const featuredPieces = [
-  {
-    href: "/products/watches",
-    icon: Clock,
-    title: "Swiss Timepieces",
-    description: "Precision engineering",
-  },
+  // {
+  //   href: "/products/watches",
+  //   icon: Clock,
+  //   title: "Swiss Timepieces",
+  //   description: "Precision engineering",
+  // },
   {
     href: "/products/wallets",
     icon: Wallet,
@@ -145,25 +145,25 @@ const ProductPages = () => {
             variants={fadeUp}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-5xl sm:text-6xl lg:text-8xl tracking-tight leading-none font-cormorant-garamond text-white">
-            Curated
+            Discover
           </motion.h1>
 
           <motion.h1
             variants={fadeUp}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-5xl sm:text-6xl lg:text-8xl tracking-tight leading-none font-cormorant-garamond mb-6">
-            <span className="text-(--primary)">Collection</span>
+            <span className="text-(--primary)">Our Products</span>
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="text-base sm:text-lg lg:text-xl text-white/80 mb-10 max-w-2xl mx-auto tracking-wide px-4">
-            Discover our meticulously assembled collections, each telling a unique story of craftsmanship
+            Explore our curated selection of premium essentials crafted for modern living
           </motion.p>
 
           {/* ✅ fixed scroll indicator positioning */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
@@ -174,7 +174,7 @@ const ProductPages = () => {
               transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
               className="w-px h-8 bg-white/50"
             />
-          </motion.div>
+          </motion.div> */}
         </motion.div>
       </section>
 
