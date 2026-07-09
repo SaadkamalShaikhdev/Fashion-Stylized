@@ -8,6 +8,8 @@ import { motion } from 'framer-motion'
 import { IProduct } from '@/models/Product'
 import { useCartStore } from '@/app/store/cartStore'
 import { getProductOffer } from '@/lib/product-offers'
+import { showToast } from "@/lib/toast"
+
 
 interface ProductCardProps {
   item: IProduct
@@ -30,6 +32,7 @@ const ProductCard = ({ item, index = 0, className = '' }: ProductCardProps) => {
       category: item.category,
       quantity: 1,
     })
+    showToast.addedToCart()
   }
 
   return (
