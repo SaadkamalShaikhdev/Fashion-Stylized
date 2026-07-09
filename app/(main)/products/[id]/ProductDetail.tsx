@@ -5,7 +5,7 @@ import { apiClient } from '@/lib/api-client'
 import Link from 'next/link'
 import { IProduct } from '@/models/Product'
 import { Image } from '@imagekit/next'
-import { Minus, Plus, ShoppingBag, Heart, Share2, AlertCircle, Eye, CheckCircle2,Loader2 } from "lucide-react"
+import { Minus, Plus, ShoppingBag, Heart, Share2, AlertCircle, Eye, CheckCircle2, Loader2, Truck } from "lucide-react"
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/app/store/cartStore'
 import { useBuyNowStore } from '@/app/store/buyNowStore'
@@ -343,6 +343,11 @@ const handleWishlist = async () => {
                     ? `Only ${product.stock} left`
                     : "Out of Stock"}
                 </span>
+              </div>
+
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-(--primary)/25 bg-(--primary)/10 px-3 py-2">
+                <Truck className="h-4 w-4 text-(--primary)" />
+                <span className="text-sm text-(--foreground)">Delivery in 3-5 days</span>
               </div>
             </motion.div>
 
