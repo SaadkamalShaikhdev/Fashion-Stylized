@@ -13,6 +13,8 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useWishlistStore } from '@/app/store/wishlistStore'
 import { getProductOffer } from '@/lib/product-offers'
+import { showToast } from "@/lib/toast"
+
 
 const ProductDetail = () => {
   const [product, setProduct] = useState<IProduct | null>(null)
@@ -130,6 +132,7 @@ const handleWishlist = async () => {
       category: product.category,
       quantity,
     })
+    showToast.addedToCart()
     setAddedToCart(true)
     setTimeout(() => setAddedToCart(false), 2500)
   }
