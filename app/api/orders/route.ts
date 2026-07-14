@@ -3,6 +3,8 @@ import { connectToDatabase } from "@/lib/db";
 import Order from "@/models/Order";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { sendOrderNotificationEmail } from "@/lib/resend"
+
 
 export const dynamic = "force-dynamic"
 export async function POST(request: NextRequest) {
@@ -60,6 +62,23 @@ export async function POST(request: NextRequest) {
     });
 
     const savedOrder = await newOrder.save();
+
+      sendOrderNotificationEmail({
+      orderId: savedOrder._id.toString(),
+      customerName: name,
+      customerEmail: email,
+      mobileNumber,
+      city,
+      address,
+      paymentMethod: paymentMethod || "COD",
+      products: products.map((p: any) => ({
+        title: p.title,
+        quantity: p.quantity,
+        price: p.price,
+        category: p.category,
+      })),
+      totalAmount,
+    }).catch(err => console.error("Failed to send order notification:", err))
 
     return NextResponse.json({
       success: true,
