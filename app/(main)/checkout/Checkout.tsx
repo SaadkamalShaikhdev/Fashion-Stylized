@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic"
 import { useSearchParams, useRouter } from "next/navigation"
 import { useCartStore } from "@/app/store/cartStore"
 import { useBuyNowStore } from "@/app/store/buyNowStore"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useSession } from "next-auth/react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Image } from "@imagekit/next"
@@ -55,6 +55,8 @@ export default function Checkout() {
     mobileNumber: "",
     paymentMethod: "COD",
   })
+
+  const isSubmittingRef = useRef(false)
 
   const fetchSettings = async () => {
     try {
@@ -176,21 +178,20 @@ export default function Checkout() {
   }
 
   const handleSubmit = async () => {
+    // prevent double submissions (fast double-click)
+    if (isSubmittingRef.current) return
+    isSubmittingRef.current = true
     setError("")
-
-    // ✅ check auth first — show modal if not logged in
-    // if (!session) {
-    //   setShowAuthModal(true)
-    //   return
-    // }
 
     // validation
     if (!form.name || !form.email || !form.address || !form.city || !form.mobileNumber) {
       setError("Please fill all required fields")
+      isSubmittingRef.current = false
       return
     }
     if (!/^\d{11}$/.test(form.mobileNumber)) {
       setError("Please enter a valid 11-digit mobile number")
+      isSubmittingRef.current = false
       return
     }
 
@@ -227,14 +228,14 @@ export default function Checkout() {
       }
 
       setTimeout(() => {
-              router.push(`/orders/${res.orderId}`)
-
-      }, 2000);
+        router.push(`/orders/${res.orderId}`)
+      }, 2000)
 
     } catch (err) {
       setError("Something went wrong. Please try again.")
     } finally {
       setLoading(false)
+      isSubmittingRef.current = false
     }
   }
 

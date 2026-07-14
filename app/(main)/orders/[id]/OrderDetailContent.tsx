@@ -15,23 +15,23 @@ export default function OrderDetailContent() {
   const [order, setOrder] = useState<IOrder | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [shipping, setShipping] = useState<number>(0)
+  // const [shipping, setShipping] = useState<number>(0)
 
-  const fetchSettings = async () => {
-  try {
-    const res = await apiClient.getdeliveryFee()
-    if (res.success) {
-      setShipping(res.data.deliveryFee)
-    }
-  } catch (error) {
-    console.error("Failed to fetch delivery fee:", error)
-    setShipping(300)
-  }
-  }
+  // const fetchSettings = async () => {
+  // try {
+  //   const res = await apiClient.getdeliveryFee()
+  //   if (res.success) {
+  //     setShipping(res.data.deliveryFee)
+  //   }
+  // } catch (error) {
+  //   console.error("Failed to fetch delivery fee:", error)
+  //   setShipping(300)
+  // }
+  // }
 
-  useEffect(() => {
-    fetchSettings()
-  }, [])
+  // useEffect(() => {
+  //   fetchSettings()
+  // }, [])
 
   useEffect(() => {
     async function getOrder() {
@@ -232,8 +232,9 @@ export default function OrderDetailContent() {
                     {item.title}
                   </h3>
                   <p className="text-sm text-(--primary)">
-                    Rs. {item.price.toLocaleString()} \u00d7 {item.quantity} = Rs. {(item.price * item.quantity).toLocaleString()}
-                  </p>
+  Rs. {item.price.toLocaleString()} {"\u00D7"} {item.quantity} = Rs.{" "}
+  {(item.price * item.quantity).toLocaleString()}
+</p>
                 </div>
               </div>
             ))}
@@ -242,11 +243,11 @@ export default function OrderDetailContent() {
           <div className="mt-6 pt-4 border-t border-(--border) space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-(--muted-foreground)">Subtotal</span>
-              <span>Rs. {(order.totalAmount - shipping).toLocaleString()}</span>
+              <span>Rs. {(order.totalAmount - order.shippingFee).toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-(--muted-foreground)">Shipping</span>
-              <span>Rs. {shipping.toLocaleString()}</span>
+              <span>Rs. {order.shippingFee.toLocaleString()}</span>
             </div>
             <div className="flex justify-between pt-2 border-t border-(--border)">
               <span className="uppercase tracking-wider">Total</span>

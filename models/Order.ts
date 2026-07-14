@@ -24,6 +24,7 @@ export interface IOrder {
   isPaid: boolean;
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
   totalAmount: number;
+  shippingFee: number
   _id?: mongoose.Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
@@ -55,6 +56,7 @@ const orderSchema = new mongoose.Schema<IOrder>({
     default: "pending"
   },
   totalAmount: { type: Number, required: true },
+  shippingFee: { type: Number, default: 300 },
 }, { timestamps: true })
 
 const Order = mongoose.models.Order || mongoose.model<IOrder>("Order", orderSchema);

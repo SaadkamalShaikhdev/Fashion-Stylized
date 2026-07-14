@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
       isPaid: false,
       status: "pending",
       totalAmount,
+      shippingFee: deliveryFee,
     });
 
     const savedOrder = await newOrder.save();
