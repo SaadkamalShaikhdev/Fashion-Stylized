@@ -1,6 +1,7 @@
 import {Resend} from "resend";
 import VerificationEmail from "@/app/components/email-template";
-import OrderNotificationEmail from "@/app/components/email/OrderNotificationEmail"
+import OrderNotificationEmail from "@/app/components/email/OrderNotificationEmail";
+import OrderConfirmationEmail from "@/app/components/email/OrderConfirmationEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -63,6 +64,49 @@ export async function sendOrderNotificationEmail(order: OrderNotificationParams)
   if (error) {
     console.error("Order notification email error:", error)
     // ✅ don't throw — order already saved, email failure shouldn't break anything
+  }
+
+  return data
+}
+
+type OrderConfirmationParams = {
+  customerName: string
+  customerEmail: string
+  orderId: string
+  products: {
+    title: string
+    quantity: number
+    price: number
+    category: string
+  }[]
+  totalAmount: number
+  shippingFee: number
+  address: string
+  city: string
+  mobileNumber: string
+  paymentMethod: string
+}
+
+export async function sendOrderConfirmationEmail(order: OrderConfirmationParams) {
+  const { data, error } = await resend.emails.send({
+    from: "Fashion Stylized <noreply@fashionstylized.store>",
+    to: [order.customerEmail],
+    subject: `Order Confirmed #${order.orderId.slice(-8).toUpperCase()} — Fashion Stylized`,
+    react: OrderConfirmationEmail({
+      customerName: order.customerName,
+      orderId: order.orderId,
+      products: order.products,
+      totalAmount: order.totalAmount,
+      shippingFee: order.shippingFee,
+      address: order.address,
+      city: order.city,
+      mobileNumber: order.mobileNumber,
+      paymentMethod: order.paymentMethod,
+    }),
+  })
+
+  if (error) {
+    console.error("Order confirmation email error:", error)
   }
 
   return data
