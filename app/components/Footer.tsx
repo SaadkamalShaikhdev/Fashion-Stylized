@@ -87,8 +87,8 @@ const Footer = () => {
         <ul className="space-y-3 text-sm text-(--muted-foreground)">
           {[
             { label: "About Us", href: "/about" },
-            { label: "Craftsmanship", href: "/craftsmanship" },
-            { label: "Sustainability", href: "/sustainability" },
+            { label: "Shipping Policy", href: "/shipping-policy" },
+            { label: "Return Policy", href: "/return-policy" },
             { label: "Contact", href: "/contact" },
           ].map((item) => (
             <li key={item.label}>
@@ -128,6 +128,8 @@ const Footer = () => {
           { label: "Privacy", href: "/privacy" },
           { label: "Terms", href: "/terms" },
           { label: "Cookies", href: "/cookies" },
+          { label: "Shipping", href: "/shipping-policy" },
+          { label: "Returns", href: "/return-policy" },
         ].map((item) => (
           <Link key={item.label} href={item.href} className="hover:text-(--primary) transition-colors">
             {item.label}

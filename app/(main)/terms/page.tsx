@@ -47,7 +47,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-xl font-cormorant-garamond mb-3 text-foreground">4. Shipping & Delivery</h2>
           <p className="text-(--muted-foreground)">
-            We deliver across Pakistan. Delivery times vary by location and are typically 3-7 business days. A shipping fee of Rs. 500 is applied to all orders. We are not liable for delays caused by courier services or circumstances beyond our control.
+            We deliver across Pakistan. Delivery times vary by location and are typically 3-7 business days. A shipping fee of Rs. 300 is applied to all orders. We are not liable for delays caused by courier services or circumstances beyond our control.
           </p>
         </section>
 
