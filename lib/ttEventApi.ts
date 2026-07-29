@@ -54,8 +54,6 @@ export async function sendTikTokEvent(params: TikTokEventParams) {
   const payload = {
     event_source: 'web',
     event_source_id: TIKTOK_PIXEL_ID,
-     test_event_code: 'TEST03920'
-    ,
 
     data: [
       {
