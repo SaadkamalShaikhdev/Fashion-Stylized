@@ -5,7 +5,12 @@ import { sendTikTokEvent } from '@/lib/ttEventApi';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? req.ip ?? '';
+
+    const ip =
+      req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      req.headers.get('x-real-ip') ||
+      '';
+
     const userAgent = req.headers.get('user-agent') ?? '';
 
     const result = await sendTikTokEvent({
