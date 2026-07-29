@@ -8,9 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { apiClient } from "@/lib/api-client";
 import { useSession } from "next-auth/react";
+
 import CheckoutAuthModal from "@/app/components/checkout/CheckoutAuthModal";
 export const dynamic = "force-dynamic"
-// const SHIPPING_COST = 500;
 
 const PROMO_CODES: Record<string, number> = {
   // "FASHION10": 10,

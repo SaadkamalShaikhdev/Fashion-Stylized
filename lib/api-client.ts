@@ -255,6 +255,27 @@ async updateAdminSetting(data: { deliveryFee: number }) {
 async getdeliveryFee() {
   return this.fetch<{ success: boolean; data: { deliveryFee: number }; error?: string }>("/setting")
 }
+
+async trackTikTokEvent(data: {
+  event: string;
+  eventId: string;
+  value: number;
+  currency: string;
+  contents: {
+    content_id: string;
+    content_type: "product" | "product_group";
+    content_name: string;
+  }[];
+  email?: string;
+  phone?: string;
+  pageUrl?: string;
+}) {
+  return this.fetch<{ success: boolean; error?: string }>("/events/tiktok", {
+    method: "POST",
+    body: data,
+  });
+}
+
 }
 
 

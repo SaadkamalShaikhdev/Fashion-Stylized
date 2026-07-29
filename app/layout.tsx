@@ -4,7 +4,9 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { AuthProvider } from "./context/AuthProvider";
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google';
+import {Suspense} from "react";
+import TikTokPixel from "./components/TikTokPixel";
 
 
 const geistSans = Geist({
@@ -91,6 +93,9 @@ export default function RootLayout({
       className={` h-full antialiased  ${geistSans.variable} ${inter.variable} ${cormorantGaramond.variable} ${geistMono.variable}`}
     >
       <body className={`min-h-full flex flex-col ${inter.className}`}>
+         <Suspense fallback={null}>
+          <TikTokPixel />
+        </Suspense>
         <AuthProvider>
           <GoogleAnalytics gaId="G-4TEVQNPBXP" />
           <script

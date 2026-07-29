@@ -1,25 +1,24 @@
-import { i } from "motion/react-client";
 import { create } from "zustand"
-import { persist,createJSONStorage  } from "zustand/middleware"
+import { persist, createJSONStorage } from "zustand/middleware"
 
 export type CartItem = {
-    id: string;
-    title: string;
-    price: number
+  id: string;
+  title: string;
+  price: number
   image: string
   quantity: number
   category: string
 }
 
 type CartStore = {
-    items: CartItem[];
-    total: number;
-    itemCount: number;
-    addItem: (item: CartItem) => void
-    removeItem: (id: string) => void
-    updateQuantity: (id: string, quantity: number) => void
-    clearCart: () => void
-    isInCart: (id: string) => boolean
+  items: CartItem[];
+  total: number;
+  itemCount: number;
+  addItem: (item: CartItem) => void
+  removeItem: (id: string) => void
+  updateQuantity: (id: string, quantity: number) => void
+  clearCart: () => void
+  isInCart: (id: string) => boolean
 }
 
 function calculateTotal(items: CartItem[]) {
@@ -28,6 +27,25 @@ function calculateTotal(items: CartItem[]) {
 
 function calculateItemCount(items: CartItem[]) {
   return items.reduce((sum, item) => sum + item.quantity, 0)
+}
+
+// Fire-and-forget TikTok pixel call — safe to call from a client store
+function trackAddToCart(item: CartItem) {
+  if (typeof window === "undefined") return
+  const w = window as any
+  if (w.ttq) {
+    w.ttq.track("AddToCart", {
+      contents: [
+        {
+          content_id: item.id,
+          content_type: "product",
+          content_name: item.title,
+        },
+      ],
+      value: item.price,
+      currency: "PKR",
+    })
+  }
 }
 
 export const useCartStore = create<CartStore>()(
@@ -54,6 +72,9 @@ export const useCartStore = create<CartStore>()(
           total: calculateTotal(updatedItems),
           itemCount: calculateItemCount(updatedItems),
         })
+
+        // Fire pixel event after cart state updates
+        trackAddToCart(item)
       },
 
       removeItem: (id) => {
@@ -91,10 +112,9 @@ export const useCartStore = create<CartStore>()(
       isInCart: (id) => get().items.some(i => i.id === id),
     }),
     {
-      name: "cart-storage", // localStorage key
-       storage: createJSONStorage(() => localStorage), // explicit localStorage
-      skipHydration: true, // ✅ fixes Next.js hydration warning
+      name: "cart-storage",
+      storage: createJSONStorage(() => localStorage),
+      skipHydration: true,
     }
   )
 )
-

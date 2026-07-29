@@ -148,7 +148,7 @@ const handleWishlist = async () => {
   }
 
     const handleBuyNow = (()=>{
-      if(!product) return
+      if(!product || !product._id) return
       setItem({
         id: product._id?.toString() || '',
     title: product.title,
@@ -160,6 +160,25 @@ const handleWishlist = async () => {
       router.push("/checkout?type=buynow")
       
     })
+
+    useEffect(() => {
+  if (!product || !product._id) return
+  const w = window as any
+  if (w.ttq) {
+    w.ttq.track("ViewContent", {
+      contents: [
+        {
+          content_id: product._id.toString(),
+          content_type: "product",
+          content_name: product.title,
+        },
+      ],
+      value: product.price,
+      currency: "PKR",
+    })
+  }
+}, [product])
+
   // ── Loading skeleton ──
   if (loading) {
     return (

@@ -1,6 +1,6 @@
 // app/(main)/orders/[id]/OrderDetailContent.tsx
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { CheckCircle2, Package, MapPin, Phone, Mail, ArrowRight, Loader2 } from "lucide-react"
@@ -9,29 +9,19 @@ import Link from "next/link"
 import { Image } from "@imagekit/next"
 import { IOrder } from "@/models/Order"
 
+declare global {
+  interface Window {
+    ttq: any;
+  }
+}
+
 export default function OrderDetailContent() {
   const { id } = useParams()
   const router = useRouter()
   const [order, setOrder] = useState<IOrder | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  // const [shipping, setShipping] = useState<number>(0)
-
-  // const fetchSettings = async () => {
-  // try {
-  //   const res = await apiClient.getdeliveryFee()
-  //   if (res.success) {
-  //     setShipping(res.data.deliveryFee)
-  //   }
-  // } catch (error) {
-  //   console.error("Failed to fetch delivery fee:", error)
-  //   setShipping(300)
-  // }
-  // }
-
-  // useEffect(() => {
-  //   fetchSettings()
-  // }, [])
+  const trackedRef = useRef(false) // guards against double-firing within this mount
 
   useEffect(() => {
     async function getOrder() {
@@ -50,6 +40,56 @@ export default function OrderDetailContent() {
     }
     getOrder()
   }, [id])
+
+  // Fire TikTok PlaceAnOrder (or CompletePayment if you add online payment later)
+useEffect(() => {
+  if (!order || !order._id) return
+
+  const orderId = order._id.toString()
+  const storageKey = `ttq_tracked_${orderId}`
+
+  // Prevent re-firing on refresh / revisit of this same order
+  if (trackedRef.current || sessionStorage.getItem(storageKey)) return
+
+  trackedRef.current = true
+  sessionStorage.setItem(storageKey, "1")
+
+  const eventId = orderId // stable ID, shared between client pixel + server call for dedup
+
+  const contents = order.products.map((item) => ({
+    content_id: item.productId?.toString() || item.title,
+    content_type: "product" as const,
+    content_name: item.title,
+  }))
+
+  // Since it's COD-only right now, use PlaceAnOrder — not CompletePayment (payment hasn't happened yet)
+  const eventName = order.paymentMethod === "COD" ? "PlaceAnOrder" : "CompletePayment"
+
+  // 1. Client-side pixel fire
+  if (typeof window !== "undefined" && window.ttq) {
+    window.ttq.track(
+      eventName,
+      {
+        value: order.totalAmount,
+        currency: "PKR",
+        contents,
+      },
+      { event_id: eventId }
+    )
+  }
+
+  // 2. Server-side Events API fire (fire-and-forget)
+  apiClient.trackTikTokEvent({
+    event: eventName,
+    eventId,
+    value: order.totalAmount,
+    currency: "PKR",
+    contents,
+    email: order.email,
+    phone: order.mobileNumber,
+    pageUrl: typeof window !== "undefined" ? window.location.href : undefined,
+  }).catch(() => {})
+}, [order])
 
   if (loading) {
     return (
