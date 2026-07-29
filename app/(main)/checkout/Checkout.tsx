@@ -45,6 +45,7 @@ export default function Checkout() {
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [orderSuccess, setOrderSuccess] = useState(false)
   const [shipping, setShipping] = useState(0)
+  const trackedCheckoutRef = useRef(false)
 
   const [form, setForm] = useState({
     name: "",
@@ -74,6 +75,7 @@ export default function Checkout() {
   }, [])
   
 
+  
 
   // fill name/email from session
   useEffect(() => {
@@ -238,6 +240,25 @@ export default function Checkout() {
       isSubmittingRef.current = false
     }
   }
+
+
+useEffect(() => {
+  if (checkoutItems.length === 0 || trackedCheckoutRef.current) return
+  trackedCheckoutRef.current = true
+
+  const w = window as any
+  if (w.ttq) {
+    w.ttq.track("InitiateCheckout", {
+      contents: checkoutItems.map((item) => ({
+        content_id: item.id,
+        content_type: "product",
+        content_name: item.title,
+      })),
+      value: total,
+      currency: "PKR",
+    })
+  }
+}, [checkoutItems, total])
 
   // ── Loading / validating state ──
   if (validating || status === "loading") {
