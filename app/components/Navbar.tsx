@@ -153,6 +153,7 @@ const Navbar = () => {
             {/* mobile menu button */}
             <button
               onClick={() => setSidebarOpen(true)}
+              aria-label="Open menu"
               className='block lg:hidden'>
               <Menu className='h-6 w-6 opacity-70 hover:opacity-100 transition-opacity cursor-pointer' />
             </button>

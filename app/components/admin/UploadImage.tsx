@@ -135,7 +135,8 @@ const ImageUpload = ({ images, onChange, maxImages = 4 }: Props) => {
                 )}
                 <button
                   onClick={() => removeImage(index)}
-                  className="absolute top-2 right-2 w-6 h-6 bg-black/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500">
+                  aria-label={"Remove image " + (index + 1)}
+                  className="absolute top-2 right-2 w-8 h-8 bg-black/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500">
                   <X className="w-3 h-3" />
                 </button>
               </motion.div>

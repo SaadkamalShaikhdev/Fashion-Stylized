@@ -331,7 +331,8 @@ useEffect(() => {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => removeItem(item.id)}
-                            className="text-(--muted-foreground) hover:text-red-400 transition-colors flex-shrink-0">
+                            aria-label={"Remove " + item.title}
+                            className="text-(--muted-foreground) hover:text-red-400 transition-colors flex-shrink-0 p-2">
                             <X className="h-4 w-4" />
                           </motion.button>
                         </div>
@@ -381,7 +382,8 @@ useEffect(() => {
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                 disabled={item.quantity <= 1}
-                                className="p-2 sm:p-3 hover:bg-(--muted) transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                                aria-label="Decrease quantity"
+                                className="p-2 sm:p-3 hover:bg-(--muted) transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-w-[44px] min-h-[44px] flex items-center justify-center">
                                 <Minus className="h-3 w-3 sm:h-4 sm:w-4" />
                               </motion.button>
                               <span className="px-4 sm:px-6 text-base sm:text-lg min-w-[40px] text-center">
@@ -390,7 +392,8 @@ useEffect(() => {
                               <motion.button
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="p-2 sm:p-3 hover:bg-(--muted) transition-colors">
+                                aria-label="Increase quantity"
+                                className="p-2 sm:p-3 hover:bg-(--muted) transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center">
                                 <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                               </motion.button>
                             </div>
@@ -469,7 +472,7 @@ useEffect(() => {
                         <p className="text-sm text-green-400 font-medium">{appliedPromo.code}</p>
                         <p className="text-xs text-green-400/70">{appliedPromo.discount}% discount applied</p>
                       </div>
-                      <button onClick={removePromo} className="text-green-400/70 hover:text-green-400 transition-colors">
+                      <button onClick={removePromo} aria-label="Remove promo code" className="text-green-400/70 hover:text-green-400 transition-colors p-2">
                         <X className="w-4 h-4" />
                       </button>
                     </motion.div>

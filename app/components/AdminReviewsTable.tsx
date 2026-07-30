@@ -164,8 +164,8 @@ export default function AdminReviewsTable() {
                 <button
                   onClick={() => toggleStatus(review)}
                   disabled={actioningId === review._id}
-                  title={review.status === "active" ? "Hide review" : "Unhide review"}
-                  className="w-8 h-8 border border-(--border) hover:border-(--primary) transition-colors flex items-center justify-center disabled:opacity-50">
+                  aria-label={review.status === "active" ? "Hide review" : "Unhide review"}
+                  className="w-11 h-11 border border-(--border) hover:border-(--primary) transition-colors flex items-center justify-center disabled:opacity-50">
                   {actioningId === review._id ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   ) : review.status === "active" ? (
@@ -177,8 +177,8 @@ export default function AdminReviewsTable() {
                 <button
                   onClick={() => handleDelete(review._id)}
                   disabled={actioningId === review._id}
-                  title="Delete review"
-                  className="w-8 h-8 border border-(--destructive)/40 text-(--destructive) hover:bg-(--destructive)/10 transition-colors flex items-center justify-center disabled:opacity-50">
+                  aria-label="Delete review"
+                  className="w-11 h-11 border border-(--destructive)/40 text-(--destructive) hover:bg-(--destructive)/10 transition-colors flex items-center justify-center disabled:opacity-50">
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
               </div>
