@@ -13,6 +13,8 @@ export interface IProduct {
     isTrending?: boolean;
     createdAt?: Date;
     updatedAt?: Date; 
+    avgRating?: number;
+reviewCount?: number;
 }
 
 const productSchema = new mongoose.Schema<IProduct>({
@@ -24,7 +26,15 @@ const productSchema = new mongoose.Schema<IProduct>({
     stock: {type: Number, default: 5},
     category: {type: String, required: true},
     subcategory: {type: String},
-    isTrending: {type: Boolean, default: false}
+    isTrending: {type: Boolean, default: false},
+    avgRating: {
+  type: Number,
+  default: 0,
+},
+reviewCount: {
+  type: Number,
+  default: 0,
+}
 }, { timestamps: true
 })
 
