@@ -276,6 +276,95 @@ async trackTikTokEvent(data: {
   });
 }
 
+/**
+ * ADD these methods to your existing APIClient class in lib/api-client.ts.
+ * Matches the {success, data, error} pattern used by getProductById,
+ * createProduct, toggleWishlist, etc. Don't create this as a separate file.
+ */
+
+async getReviews(productId: string, page = 1, limit = 10) {
+  try {
+    const res = await fetch(`/api/reviews?productId=${productId}&page=${page}&limit=${limit}`)
+    const json = await res.json()
+    if (!res.ok) return { success: false, error: json.error || "Failed to fetch reviews" }
+    return { success: true, data: json }
+  } catch {
+    return { success: false, error: "Something went wrong. Please try again." }
+  }
+}
+
+async createReview(payload: {
+  productId: string
+  name?: string
+  rating: number
+  title?: string
+  comment: string
+  images?: string[]
+}) {
+  try {
+    const res = await fetch("/api/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+    const json = await res.json()
+    if (!res.ok) return { success: false, error: json.error || "Failed to submit review" }
+    return { success: true, data: json.review }
+  } catch {
+    return { success: false, error: "Something went wrong. Please try again." }
+  }
+}
+
+async deleteReview(id: string) {
+  try {
+    const res = await fetch(`/api/reviews/${id}`, { method: "DELETE" })
+    const json = await res.json()
+    if (!res.ok) return { success: false, error: json.error || "Failed to delete review" }
+    return { success: true }
+  } catch {
+    return { success: false, error: "Something went wrong. Please try again." }
+  }
+}
+
+// --- admin ---
+async getAdminReviews(params: { status?: string; rating?: number; productId?: string; page?: number } = {}) {
+  try {
+    const query = new URLSearchParams(params as any).toString()
+    const res = await fetch(`/api/admin/reviews?${query}`)
+    const json = await res.json()
+    if (!res.ok) return { success: false, error: json.error || "Failed to fetch reviews" }
+    return { success: true, data: json }
+  } catch {
+    return { success: false, error: "Something went wrong. Please try again." }
+  }
+}
+
+async setReviewStatus(id: string, status: "active" | "hidden") {
+  try {
+    const res = await fetch(`/api/admin/reviews/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    })
+    const json = await res.json()
+    if (!res.ok) return { success: false, error: json.error || "Failed to update review" }
+    return { success: true, data: json.review }
+  } catch {
+    return { success: false, error: "Something went wrong. Please try again." }
+  }
+}
+
+async deleteAdminReview(id: string) {
+  try {
+    const res = await fetch(`/api/admin/reviews/${id}`, { method: "DELETE" })
+    const json = await res.json()
+    if (!res.ok) return { success: false, error: json.error || "Failed to delete review" }
+    return { success: true }
+  } catch {
+    return { success: false, error: "Something went wrong. Please try again." }
+  }
+}
+
 }
 
 

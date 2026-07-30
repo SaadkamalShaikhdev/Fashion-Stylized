@@ -29,3 +29,9 @@ export const loginRateLimit = new Ratelimit({
   analytics: true,
   prefix: "login",
 })
+
+ export const reviewRateLimit = new Ratelimit({
+   redis,
+   limiter: Ratelimit.slidingWindow(3, "1 h"), // 3 reviews per hour per IP
+   prefix: "ratelimit:review",
+ });

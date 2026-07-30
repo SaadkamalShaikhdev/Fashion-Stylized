@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react'
 import { useWishlistStore } from '@/app/store/wishlistStore'
 import { getProductOffer } from '@/lib/product-offers'
 import { showToast } from "@/lib/toast"
+import ReviewList from '@/app/components/ReviewList'
 
 
 const ProductDetail = () => {
@@ -486,6 +487,19 @@ const handleWishlist = async () => {
                   Share
                 </motion.button>
               </div>
+            </motion.div>
+
+          {/* reviews */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55 }}
+            >
+              <ReviewList
+                productId={product._id?.toString() || ""}
+                avgRating={product.avgRating}
+                reviewCount={product.reviewCount}
+              />
             </motion.div>
 
             {/* key features */}

@@ -1,6 +1,19 @@
 "use client"
 import { apiClient } from '@/lib/api-client'
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { Loader2, AlertCircle, CheckCircle2, Truck } from 'lucide-react'
+import AdminReviewsTable from '@/app/components/AdminReviewsTable'
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+}
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } }
+}
 
 const Setting = () => {
   const [deliveryFee, setDeliveryFee] = useState<number>(0)
@@ -42,6 +55,7 @@ const Setting = () => {
       if (res.success) {
         setDeliveryFee(newFee)
         setSuccess("Delivery fee updated successfully")
+        setTimeout(() => setSuccess(""), 3000)
       } else {
         setError(res.error || "Failed to update settings")
       }
@@ -57,37 +71,81 @@ const Setting = () => {
   }, [])
 
   return (
-    <div className="p-6 max-w-md">
-      <h1 className="text-2xl font-bold mb-4">Settings</h1>
-      
-      {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>}
-      {success && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">{success}</div>}
+    <motion.div
+      variants={stagger}
+      initial="hidden"
+      animate="show"
+      className="max-w-3xl space-y-6">
 
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">Delivery Fee ($)</label>
-          <input
-            type="number"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Enter delivery fee"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            step="0.01"
-            min="0"
-          />
+      <motion.div variants={fadeUp}>
+        <h1 className="text-3xl font-cormorant-garamond">Settings</h1>
+        <p className="text-sm text-(--muted-foreground) mt-1">
+          Manage store-wide configuration
+        </p>
+      </motion.div>
+
+      {/* ── Delivery Fee ── */}
+      <motion.div variants={fadeUp} className="border border-(--border) bg-(--card) p-6 max-w-md">
+        <h2 className="text-sm uppercase tracking-wider text-(--muted-foreground) mb-6 flex items-center gap-2">
+          <Truck className="w-4 h-4 text-(--primary)" />
+          Delivery Fee
+        </h2>
+
+        {error && (
+          <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/40 text-red-400 px-4 py-3 text-sm mb-4">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="flex items-center gap-3 bg-green-500/10 border border-green-500/40 text-green-400 px-4 py-3 text-sm mb-4">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            {success}
+          </div>
+        )}
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm uppercase tracking-wider mb-2">
+              Delivery Fee (Rs.)
+            </label>
+            <input
+              type="number"
+              value={inputValue}
+              onChange={e => setInputValue(e.target.value)}
+              placeholder="Enter delivery fee"
+              step="0.01"
+              min="0"
+              className="w-full px-4 py-3 bg-transparent border border-(--border) focus:border-(--primary) outline-none text-sm transition-colors placeholder:text-(--muted-foreground)"
+            />
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={updateSettings}
+            disabled={loading}
+            className="w-full py-3 bg-(--primary) text-(--primary-foreground) uppercase tracking-widest text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed">
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Updating...
+              </>
+            ) : (
+              "Update Settings"
+            )}
+          </motion.button>
+
+          <p className="text-xs text-(--muted-foreground) uppercase tracking-wider">
+            Current Delivery Fee: Rs. {deliveryFee.toFixed(2)}
+          </p>
         </div>
-        
-        <button
-          onClick={updateSettings}
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          {loading ? "Updating..." : "Update Settings"}
-        </button>
+      </motion.div>
 
-        <p className="text-sm text-gray-600">Current Delivery Fee: ${deliveryFee.toFixed(2)}</p>
-      </div>
-    </div>
+      {/* ── Reviews moderation ── */}
+      <AdminReviewsTable />
+
+    </motion.div>
   )
 }
 
