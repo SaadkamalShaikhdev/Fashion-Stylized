@@ -172,14 +172,15 @@ export default function ReviewForm({ productId, onSubmitted }: Props) {
         </label>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map(n => (
-            <button
-              type="button"
-              key={n}
-              onClick={() => setRating(n)}
-              onMouseEnter={() => setHoverRating(n)}
-              onMouseLeave={() => setHoverRating(0)}
-              className="p-0.5">
-              <Star
+              <button
+                type="button"
+                key={n}
+                onClick={() => setRating(n)}
+                onMouseEnter={() => setHoverRating(n)}
+                onMouseLeave={() => setHoverRating(0)}
+                aria-label={"Rate " + n + " star" + (n === 1 ? "" : "s")}
+                className="p-0.5">
+                <Star
                 size={26}
                 className={
                   n <= (hoverRating || rating)
@@ -227,7 +228,8 @@ export default function ReviewForm({ productId, onSubmitted }: Props) {
               <button
                 type="button"
                 onClick={() => removeImage(url)}
-                className="absolute -top-2 -right-2 bg-(--destructive) text-(--destructive-foreground) rounded-full w-5 h-5 flex items-center justify-center">
+                aria-label="Remove image"
+                className="absolute -top-2 -right-2 bg-(--destructive) text-(--destructive-foreground) rounded-full w-7 h-7 flex items-center justify-center">
                 <X className="w-3 h-3" />
               </button>
             </div>

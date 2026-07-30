@@ -301,7 +301,8 @@ export default function ProductForm({ initialData, mode }: Props) {
                     {feature}
                     <button
                       onClick={() => removeFeature(i)}
-                      className="text-(--muted-foreground) hover:text-red-400 transition-colors">
+                      aria-label={"Remove feature: " + feature}
+                      className="text-(--muted-foreground) hover:text-red-400 transition-colors w-6 h-6 flex items-center justify-center">
                       <X className="w-3 h-3" />
                     </button>
                   </motion.span>

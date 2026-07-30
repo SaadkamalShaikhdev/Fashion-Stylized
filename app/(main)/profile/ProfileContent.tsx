@@ -339,7 +339,8 @@ export default function ProfileContent() {
                         <button
                           type="button"
                           onClick={() => setShowCurrent(!showCurrent)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-(--muted-foreground)">
+                          aria-label={showCurrent ? "Hide password" : "Show password"}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-(--muted-foreground) p-2">
                           {showCurrent ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                       </div>
@@ -355,7 +356,8 @@ export default function ProfileContent() {
                         <button
                           type="button"
                           onClick={() => setShowNew(!showNew)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-(--muted-foreground)">
+                          aria-label={showNew ? "Hide password" : "Show password"}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-(--muted-foreground) p-2">
                           {showNew ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                       </div>
@@ -473,7 +475,8 @@ export default function ProfileContent() {
                         whileTap={{ scale: 0.97 }}
                         onClick={() => handleRemoveWishlist(item.id)}
                         disabled={removingId === item.id}
-                        className="px-3 py-2 border border-(--border) hover:border-red-500/40 hover:text-red-400 transition-colors disabled:opacity-50">
+                        aria-label={"Remove " + item.title + " from wishlist"}
+                        className="px-3 py-2 border border-(--border) hover:border-red-500/40 hover:text-red-400 transition-colors disabled:opacity-50 min-w-[44px] min-h-[44px] flex items-center justify-center">
                         {removingId === item.id
                           ? <Loader2 className="w-3 h-3 animate-spin" />
                           : <Trash2 className="w-3 h-3" />

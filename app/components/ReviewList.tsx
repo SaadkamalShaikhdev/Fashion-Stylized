@@ -93,12 +93,14 @@ export default function ReviewList({ productId, avgRating = 0, reviewCount = 0 }
             <div className="hidden sm:flex gap-2">
               <button
                 onClick={() => scroll("left")}
-                className="w-9 h-9 border border-(--border) hover:border-(--primary) transition-colors flex items-center justify-center">
+                aria-label="Scroll reviews left"
+                className="w-11 h-11 border border-(--border) hover:border-(--primary) transition-colors flex items-center justify-center">
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={() => scroll("right")}
-                className="w-9 h-9 border border-(--border) hover:border-(--primary) transition-colors flex items-center justify-center">
+                aria-label="Scroll reviews right"
+                className="w-11 h-11 border border-(--border) hover:border-(--primary) transition-colors flex items-center justify-center">
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>

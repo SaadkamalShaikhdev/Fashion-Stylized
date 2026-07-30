@@ -304,6 +304,7 @@ const handleWishlist = async () => {
                   onClick={() => setSelectedImage(image)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  aria-label={"View image " + (index + 1)}
                   // ✅ selected border
                   className={`relative aspect-square bg-(--secondary) overflow-hidden transition-all duration-300 ${
                     selectedImage === image
@@ -395,7 +396,8 @@ const handleWishlist = async () => {
                     whileTap={{ scale: 0.9 }}
                     onClick={decrement}
                     disabled={quantity <= 1}
-                    className="p-3 hover:bg-(--muted) transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                    aria-label="Decrease quantity"
+                    className="p-3 hover:bg-(--muted) transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-w-[44px] min-h-[44px] flex items-center justify-center">
                     <Minus className="h-4 w-4" />
                   </motion.button>
                   <span className="px-8 text-lg min-w-[60px] text-center">{quantity}</span>
@@ -403,7 +405,8 @@ const handleWishlist = async () => {
                     whileTap={{ scale: 0.9 }}
                     onClick={increment}
                     disabled={quantity >= product.stock}
-                    className="p-3 hover:bg-(--muted) transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                    aria-label="Increase quantity"
+                    className="p-3 hover:bg-(--muted) transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-w-[44px] min-h-[44px] flex items-center justify-center">
                     <Plus className="h-4 w-4" />
                   </motion.button>
                 </div>

@@ -87,7 +87,7 @@ const SignUp = () => {
         <Image src="/home.jpg" className='w-full h-full object-cover opacity-50' alt='home' fill={true} />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent flex items-end p-12">
           <div>
-            <h2 className='font-cormorant-garamond text-6xl text-white mb-4'>Timeless <br /> <span className='text-[#d4af37]'>Elegance</span></h2>
+            <p className='font-cormorant-garamond text-6xl text-white mb-4'>Timeless <br /> <span className='text-[#d4af37]'>Elegance</span></p>
             <p className='text-white/80 max-w-md tracking-wide'>Curated accessories for the discerning individual</p>
           </div>
         </div>

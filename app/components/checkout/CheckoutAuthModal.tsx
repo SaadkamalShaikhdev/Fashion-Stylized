@@ -79,6 +79,7 @@ const CheckoutAuthModal = ({ isOpen, onClose,onSuccess }: Props) => {
             {/* close */}
             <button
               onClick={onClose}
+              aria-label="Close sign in modal"
               className="absolute top-4 right-4 text-(--muted-foreground) hover:text-foreground transition-colors">
               <X className="w-5 h-5" />
             </button>
