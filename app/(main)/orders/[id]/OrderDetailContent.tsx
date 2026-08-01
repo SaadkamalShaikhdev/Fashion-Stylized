@@ -48,40 +48,46 @@ useEffect(() => {
   const orderId = order._id.toString()
   const storageKey = `ttq_tracked_${orderId}`
 
-  // Prevent re-firing on refresh / revisit of this same order
   if (trackedRef.current || sessionStorage.getItem(storageKey)) return
 
   trackedRef.current = true
   sessionStorage.setItem(storageKey, "1")
 
-  const eventId = orderId // stable ID, shared between client pixel + server call for dedup
-
+  const eventId = orderId
   const contents = order.products.map((item) => ({
     content_id: item.productId?.toString() || item.title,
     content_type: "product" as const,
     content_name: item.title,
   }))
 
-  // Since it's COD-only right now, use PlaceAnOrder — not CompletePayment (payment hasn't happened yet)
-  const eventName = order.paymentMethod === "COD" ? "PlaceAnOrder" : "CompletePayment"
-
-  // 1. Client-side pixel fire
-  if (typeof window !== "undefined" && window.ttq) {
-    window.ttq.track(
-      eventName,
-      {
-        value: order.totalAmount,
-        currency: "PKR",
-        contents,
-      },
-      { event_id: eventId }
-    )
+  const eventParams = {
+    value: order.totalAmount,
+    currency: "PKR",
+    contents,
   }
 
-  // 2. Server-side Events API fire (fire-and-forget)
+  if (typeof window !== "undefined" && window.ttq) {
+    // Fires the required "Purchase" funnel event TikTok checks for
+    window.ttq.track("Purchase", eventParams, { event_id: `${eventId}_purchase` })
+
+    // Also keep PlaceAnOrder for accurate order-vs-payment semantics
+    window.ttq.track("PlaceAnOrder", eventParams, { event_id: `${eventId}_place` })
+  }
+
   apiClient.trackTikTokEvent({
-    event: eventName,
-    eventId,
+    event: "Purchase",
+    eventId: `${eventId}_purchase`,
+    value: order.totalAmount,
+    currency: "PKR",
+    contents,
+    email: order.email,
+    phone: order.mobileNumber,
+    pageUrl: typeof window !== "undefined" ? window.location.href : undefined,
+  }).catch(() => {})
+
+  apiClient.trackTikTokEvent({
+    event: "PlaceAnOrder",
+    eventId: `${eventId}_place`,
     value: order.totalAmount,
     currency: "PKR",
     contents,
