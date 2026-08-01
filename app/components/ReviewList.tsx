@@ -147,27 +147,44 @@ export default function ReviewList({ productId, avgRating = 0, reviewCount = 0 }
               <div
                 key={review._id}
                 className="w-80 shrink-0 snap-start border border-(--border) bg-(--card) p-5 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-0.5">
-                    {[1, 2, 3, 4, 5].map(n => (
-                      <Star
-                        key={n}
-                        size={13}
-                        className={
-                          n <= review.rating
-                            ? "fill-(--primary) text-(--primary)"
-                            : "text-(--muted-foreground)"
-                        }
-                      />
-                    ))}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-sm font-semibold text-(--foreground)">{review.name}</p>
+                      <span className="text-xs text-(--muted-foreground)">
+                        {new Date(review.createdAt).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-0.5 mt-2">
+                      {[1, 2, 3, 4, 5].map(n => (
+                        <Star
+                          key={n}
+                          size={13}
+                          className={
+                            n <= review.rating
+                              ? "fill-(--primary) text-(--primary)"
+                              : "text-(--muted-foreground)"
+                          }
+                        />
+                      ))}
+                    </div>
                   </div>
-                  <span className="text-xs text-(--muted-foreground)">
-                    {new Date(review.createdAt).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
+
+                  {review.images && review.images.length > 0 && (
+                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-md border border-(--border)">
+                      <img
+                        src={review.images[0]}
+                        alt={`${review.name}'s review`}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {review.title && (
@@ -177,16 +194,6 @@ export default function ReviewList({ productId, avgRating = 0, reviewCount = 0 }
                 <p className="text-sm text-(--muted-foreground) leading-relaxed line-clamp-4">
                   {review.comment}
                 </p>
-
-                {review.images && review.images.length > 0 && (
-                  <div className="flex gap-2 pt-1">
-                    {review.images.slice(0, 3).map(url => (
-                      <img key={url} src={url} alt="" className="w-12 h-12 object-cover border border-(--border)" />
-                    ))}
-                  </div>
-                )}
-
-                <p className="text-xs uppercase tracking-wider text-(--primary)">— {review.name}</p>
               </div>
             ))}
           </div>
