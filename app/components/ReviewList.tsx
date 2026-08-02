@@ -242,6 +242,24 @@ export default function ReviewList({ productId, avgRating = 0, reviewCount = 0 }
               </div>
             ))}
           </div>
+
+          {/* mobile control bar — desktop uses the header arrows instead */}
+          {reviews.length > 1 && (
+            <div className="sm:hidden flex justify-center gap-3 mt-4">
+              <button
+                onClick={() => scroll("left")}
+                aria-label="Scroll reviews left"
+                className="w-10 h-10 rounded-full border border-(--border) hover:border-(--primary) flex items-center justify-center text-(--foreground) active:scale-95 transition-all">
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => scroll("right")}
+                aria-label="Scroll reviews right"
+                className="w-10 h-10 rounded-full border border-(--border) hover:border-(--primary) flex items-center justify-center text-(--foreground) active:scale-95 transition-all">
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       )}
 
