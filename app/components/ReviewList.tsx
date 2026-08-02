@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState, useCallback, useRef } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Star, ChevronLeft, ChevronRight, PenLine, X } from "lucide-react"
 import { apiClient } from "@/lib/api-client"
 import ReviewForm from "./ReviewForm"
@@ -27,6 +27,9 @@ export default function ReviewList({ productId, avgRating = 0, reviewCount = 0 }
   const [showForm, setShowForm] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  // lightbox state — holds the image set being viewed + current index within it
+  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null)
+
   const fetchReviews = useCallback(async () => {
     setLoading(true)
     const res = await apiClient.getReviews(productId, 1, 20)
@@ -46,6 +49,40 @@ export default function ReviewList({ productId, avgRating = 0, reviewCount = 0 }
     const cardWidth = 336 // card width + gap
     el.scrollBy({ left: direction === "left" ? -cardWidth : cardWidth, behavior: "smooth" })
   }
+
+  function openLightbox(images: string[], index: number) {
+    setLightbox({ images, index })
+  }
+
+  function closeLightbox() {
+    setLightbox(null)
+  }
+
+  function nextImage(e?: React.MouseEvent) {
+    e?.stopPropagation()
+    setLightbox(prev =>
+      prev ? { ...prev, index: (prev.index + 1) % prev.images.length } : prev
+    )
+  }
+
+  function prevImage(e?: React.MouseEvent) {
+    e?.stopPropagation()
+    setLightbox(prev =>
+      prev ? { ...prev, index: (prev.index - 1 + prev.images.length) % prev.images.length } : prev
+    )
+  }
+
+  // keyboard navigation while lightbox is open
+  useEffect(() => {
+    if (!lightbox) return
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") closeLightbox()
+      if (e.key === "ArrowRight") nextImage()
+      if (e.key === "ArrowLeft") prevImage()
+    }
+    window.addEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKey)
+  }, [lightbox])
 
   return (
     <motion.section
@@ -176,14 +213,22 @@ export default function ReviewList({ productId, avgRating = 0, reviewCount = 0 }
                   </div>
 
                   {review.images && review.images.length > 0 && (
-                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-md border border-(--border)">
+                    <button
+                      type="button"
+                      onClick={() => openLightbox(review.images!, 0)}
+                      className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md border border-(--border) hover:border-(--primary) transition-colors">
                       <img
                         src={review.images[0]}
                         alt={`${review.name}'s review`}
                         className="h-full w-full object-cover"
                         loading="lazy"
                       />
-                    </div>
+                      {review.images.length > 1 && (
+                        <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">
+                          +{review.images.length - 1}
+                        </span>
+                      )}
+                    </button>
                   )}
                 </div>
 
@@ -199,6 +244,63 @@ export default function ReviewList({ productId, avgRating = 0, reviewCount = 0 }
           </div>
         </div>
       )}
+
+      {/* ── lightbox ── */}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeLightbox}
+            className="fixed inset-0 z-100 bg-black/90 flex items-center justify-center p-4 sm:p-10">
+
+            <button
+              onClick={closeLightbox}
+              aria-label="Close"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 flex items-center justify-center text-white/80 hover:text-white transition-colors">
+              <X className="w-6 h-6" />
+            </button>
+
+            {lightbox.images.length > 1 && (
+              <button
+                onClick={prevImage}
+                aria-label="Previous image"
+                className="absolute left-2 sm:left-6 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-white/80 hover:text-white transition-colors">
+                <ChevronLeft className="w-7 h-7" />
+              </button>
+            )}
+
+            <motion.div
+              key={lightbox.index}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.2 }}
+              onClick={e => e.stopPropagation()}
+              className="max-w-3xl max-h-[85vh] w-full flex flex-col items-center gap-4">
+              <img
+                src={lightbox.images[lightbox.index]}
+                alt=""
+                className="max-w-full max-h-[75vh] object-contain"
+              />
+              {lightbox.images.length > 1 && (
+                <p className="text-xs text-white/60 uppercase tracking-wider">
+                  {lightbox.index + 1} / {lightbox.images.length}
+                </p>
+              )}
+            </motion.div>
+
+            {lightbox.images.length > 1 && (
+              <button
+                onClick={nextImage}
+                aria-label="Next image"
+                className="absolute right-2 sm:right-6 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-white/80 hover:text-white transition-colors">
+                <ChevronRight className="w-7 h-7" />
+              </button>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.section>
   )
 }
