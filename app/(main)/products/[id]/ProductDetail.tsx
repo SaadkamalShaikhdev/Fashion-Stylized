@@ -369,9 +369,15 @@ const handleWishlist = async () => {
                 </span>
               </div>
 
-              <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-(--primary)/25 bg-(--primary)/10 px-3 py-2">
-                <Truck className="h-4 w-4 text-(--primary)" />
-                <span className="text-sm text-(--foreground)">Delivery in 3-5 days</span>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <div className="inline-flex items-center gap-2 rounded-full border border-(--primary)/25 bg-(--primary)/10 px-3 py-2">
+                  <Truck className="h-4 w-4 text-(--primary)" />
+                  <span className="text-sm text-(--foreground)">Delivery in 3-5 days</span>
+                </div>
+                <div className="inline-flex items-center gap-2 rounded-full border border-(--primary)/25 bg-(--primary)/10 px-3 py-2">
+                  <CheckCircle2 className="h-4 w-4 text-(--primary)" />
+                  <span className="text-sm text-(--foreground)">Easy return policy</span>
+                </div>
               </div>
             </motion.div>
 
