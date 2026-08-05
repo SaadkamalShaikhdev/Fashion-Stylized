@@ -32,6 +32,7 @@ type Order = {
   isPaid: boolean
   status: string
   totalAmount: number
+  shippingFee: number
   products: OrderProduct[]
   createdAt: string
   updatedAt: string
@@ -132,7 +133,7 @@ export default function AdminOrderDetailPage() {
     )
   }
 
-  const subtotal = order.totalAmount - 500
+  const subtotal = order.totalAmount - order.shippingFee
 
   return (
     <motion.div
@@ -228,10 +229,10 @@ export default function AdminOrderDetailPage() {
                 <span className="text-(--muted-foreground)">Subtotal</span>
                 <span>Rs. {subtotal.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-sm">
+               <div className="flex justify-between text-sm">
                 <span className="text-(--muted-foreground)">Shipping</span>
-                <span>Rs. 500</span>
-              </div>
+                <span>Rs. {order.shippingFee.toLocaleString()}</span>
+              </div> 
               <div className="flex justify-between pt-2 border-t border-(--border)">
                 <span className="uppercase tracking-wider text-sm">Total</span>
                 <span className="text-xl text-(--primary) font-cormorant-garamond">
