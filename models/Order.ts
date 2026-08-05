@@ -18,7 +18,7 @@ export interface IOrder {
   products: IOrderProduct[];
   address: string;
   city: string;
-  postalCode: string;
+  postalCode?: string;
   mobileNumber: string;
   paymentMethod: "COD" | "online";
   isPaid: boolean;
@@ -46,7 +46,7 @@ const orderSchema = new mongoose.Schema<IOrder>({
   products: { type: [orderProductSchema], required: true },
   address: { type: String, required: true },
   city: { type: String, required: true },
-  postalCode: { type: String, required: true },
+  postalCode: { type: String, required: false },
   mobileNumber: { type: String, required: true },
   paymentMethod: { type: String, enum: ["COD", "online"], default: "COD" },
   isPaid: { type: Boolean, default: false },
