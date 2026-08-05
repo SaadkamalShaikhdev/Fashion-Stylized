@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
       mobileNumber,
       city,
       address,
+      shippingFee: deliveryFee,
       paymentMethod: paymentMethod || "COD",
       products: products.map((p: any) => ({
         title: p.title,

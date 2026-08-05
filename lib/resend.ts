@@ -39,6 +39,7 @@ type OrderNotificationParams = {
   city: string
   address: string
   paymentMethod: string
+  shippingFee: number
   products: {
     title: string
     quantity: number
