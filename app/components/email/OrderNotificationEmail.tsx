@@ -15,6 +15,7 @@ type Props = {
   city: string
   address: string
   paymentMethod: string
+  shippingFee: number
   products: OrderProduct[]
   totalAmount: number
   adminUrl: string
@@ -27,12 +28,13 @@ export default function OrderNotificationEmail({
   mobileNumber,
   city,
   address,
+  shippingFee,
   paymentMethod,
   products,
   totalAmount,
   adminUrl,
 }: Props) {
-  const subtotal = totalAmount - 500
+  const subtotal = totalAmount - shippingFee
 
   return (
     <div style={{ backgroundColor: "#f4f4f4", padding: "40px 0", fontFamily: "'Helvetica Neue', Arial, sans-serif" }}>
@@ -156,7 +158,7 @@ export default function OrderNotificationEmail({
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "10px 16px", borderBottom: "1px solid #E5E7EB" }}>
               <span style={{ fontSize: "12px", color: "#6B7280" }}>Shipping</span>
-              <span style={{ fontSize: "12px", color: "#111827" }}>Rs. 500</span>
+              <span style={{ fontSize: "12px", color: "#111827" }}>Rs. {shippingFee.toLocaleString()}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "14px 16px", backgroundColor: "#0a0a0a" }}>
               <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "1px" }}>Total</span>
