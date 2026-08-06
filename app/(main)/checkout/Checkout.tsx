@@ -198,6 +198,7 @@ export default function Checkout() {
     }
 
     setLoading(true)
+
     try {
       const res = await apiClient.createOrder({
         name: form.name,
@@ -229,15 +230,14 @@ export default function Checkout() {
         clearCart()
       }
 
+      setOrderSuccess(true)
+
       setTimeout(() => {
         router.push(`/orders/${res.orderId}`)
       }, 2000)
 
     } catch (err) {
       setError("Something went wrong. Please try again.")
-    } finally {
-      setLoading(false)
-      isSubmittingRef.current = false
     }
   }
 
