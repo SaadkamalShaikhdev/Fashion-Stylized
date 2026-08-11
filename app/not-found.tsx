@@ -19,7 +19,7 @@ export default function NotFound() {
 
       <a
         href="/"
-        className="mt-6 px-6 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] hover:opacity-90 transition"
+        className="mt-6 px-6 py-2 rounded-lg bg-(--primary) text-(--primary-foreground) hover:opacity-90 transition"
       >
         Back to Home
       </a>
