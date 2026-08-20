@@ -7,6 +7,8 @@ import { AuthProvider } from "./context/AuthProvider";
 import { GoogleAnalytics } from '@next/third-parties/google';
 import {Suspense} from "react";
 import TikTokPixel from "./components/TikTokPixel";
+import Script from "next/script";
+
 
 
 const geistSans = Geist({
@@ -93,6 +95,7 @@ export default function RootLayout({
       className={` h-full antialiased  ${geistSans.variable} ${inter.variable} ${cormorantGaramond.variable} ${geistMono.variable}`}
     >
       <body className={`min-h-full flex flex-col ${inter.className}`}>
+        
          <Suspense fallback={null}>
           <TikTokPixel />
         </Suspense>
@@ -119,7 +122,24 @@ export default function RootLayout({
           />
           {children}
         </AuthProvider>
+          <Script
+          id="meta-pixel"
+          strategy="afterInteractive"
+        >
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+
+            fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
+            fbq('track', 'PageView');
+          `}</Script>
       </body>
     </html>
-  );
+  );  
 }
