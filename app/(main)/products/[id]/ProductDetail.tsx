@@ -5,7 +5,7 @@ import { apiClient } from '@/lib/api-client'
 import Link from 'next/link'
 import { IProduct } from '@/models/Product'
 import { Image } from '@imagekit/next'
-import { Minus, Plus, ShoppingBag, Heart, Share2, AlertCircle, Eye, CheckCircle2, Loader2, Truck } from "lucide-react"
+import { Minus, Plus, ShoppingBag, Heart, Share2, AlertCircle, Eye, CheckCircle2, Loader2, Truck, Check } from "lucide-react"
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCartStore } from '@/app/store/cartStore'
 import { useBuyNowStore } from '@/app/store/buyNowStore'
@@ -15,7 +15,9 @@ import { useWishlistStore } from '@/app/store/wishlistStore'
 import { getProductOffer } from '@/lib/product-offers'
 import { showToast } from "@/lib/toast"
 import ReviewList from '@/app/components/ReviewList'
+import { ProductColor } from '@/models/Product'
 
+const getColorEntry = (color: ProductColor) => Object.entries(color)[0] || ["", ""]
 
 const ProductDetail = () => {
   const [product, setProduct] = useState<IProduct | null>(null)
@@ -25,6 +27,8 @@ const ProductDetail = () => {
   const [recommendProducts, setRecommendProducts] = useState<IProduct[]>([])
   const [quantity, setQuantity] = useState(1)
   const [addedToCart, setAddedToCart] = useState(false)
+  const [selectedColor, setSelectedColor] = useState<string>("")
+  const [showColorModal, setShowColorModal] = useState(false)
 
 const { isInWishlist, addWishlistItem, removeItem } = useWishlistStore()
 const { data: session } = useSession()
@@ -132,6 +136,7 @@ const handleWishlist = async () => {
       image: product.images?.[0] || "",
       category: product.category,
       quantity,
+      ...(selectedColor && { color: selectedColor }),
     })
     showToast.addedToCart()
     setAddedToCart(true)
@@ -150,6 +155,10 @@ const handleWishlist = async () => {
 
     const handleBuyNow = (()=>{
       if(!product || !product._id) return
+      if (product.colors?.length && !selectedColor) {
+        setShowColorModal(true)
+        return
+      }
       setItem({
         id: product._id?.toString() || '',
     title: product.title,
@@ -157,6 +166,7 @@ const handleWishlist = async () => {
     image: product.images?.[0] || "",
     category: product.category,
     quantity,
+    ...(selectedColor && { color: selectedColor }),
       })
       router.push("/checkout?type=buynow")
       
@@ -246,6 +256,71 @@ const handleWishlist = async () => {
 
   return (
     <>
+      {showColorModal && product.colors && product.colors.length > 0 && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="select-color-title"
+          onClick={() => setShowColorModal(false)}>
+          <div
+            className="w-full max-w-md border border-(--border) bg-(--card) p-6 shadow-2xl"
+            onClick={event => event.stopPropagation()}>
+            <div className="flex items-start justify-between gap-4 mb-6">
+              <div>
+                <h2 id="select-color-title" className="text-2xl font-cormorant-garamond">Choose a color</h2>
+                <p className="text-xs text-(--muted-foreground) mt-1">Select a color before continuing.</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowColorModal(false)}
+                aria-label="Close color selection"
+                className="text-(--muted-foreground) hover:text-(--foreground) text-xl leading-none">
+                ×
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {product.colors.map(color => {
+                const [colorName, colorHex] = getColorEntry(color)
+                const isSelected = selectedColor === colorName
+                return (
+                  <button
+                    key={colorName}
+                    type="button"
+                    onClick={() => setSelectedColor(colorName)}
+                    aria-pressed={isSelected}
+                    className={`flex items-center gap-3 border px-3 py-3 text-left text-sm transition-colors ${
+                      isSelected
+                        ? "border-(--primary) bg-(--primary)/10 text-(--primary)"
+                        : "border-(--border) hover:border-(--primary)"
+                    }`}>
+                    <span
+                      className="h-7 w-7 shrink-0 border border-white/20"
+                      style={{ backgroundColor: colorHex }}
+                      aria-hidden="true"
+                    />
+                    <span className="truncate">{colorName}</span>
+                    {isSelected && <Check className="ml-auto h-4 w-4 shrink-0" />}
+                  </button>
+                )
+              })}
+            </div>
+
+            <button
+              type="button"
+              disabled={!selectedColor}
+              onClick={() => {
+                setShowColorModal(false)
+                handleBuyNow()
+              }}
+              className="mt-6 w-full bg-(--primary) py-3 text-sm uppercase tracking-widest text-(--primary-foreground) transition-opacity disabled:cursor-not-allowed disabled:opacity-50">
+              Continue to checkout
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ── Product section ── */}
       <section className='max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 py-4 sm:py-6 pb-24 sm:pb-6'>
 
@@ -389,6 +464,45 @@ const handleWishlist = async () => {
               className="text-(--muted-foreground) leading-relaxed">
               {product.description}
             </motion.p>
+
+            {/* color selection — only shown if the product has color options */}
+            {product.colors && product.colors.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}>
+                <label className="block text-sm uppercase tracking-wider mb-3">
+                  Color{selectedColor && <span className="text-(--muted-foreground) normal-case tracking-normal"> — {selectedColor}</span>}
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {product.colors.map((color) => {
+                    const [colorName, colorHex] = getColorEntry(color)
+                    return (
+                    <motion.button
+                      key={colorName}
+                      type="button"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => setSelectedColor(colorName)}
+                      aria-pressed={selectedColor === colorName}
+                      className={`flex items-center gap-2 px-4 py-2.5 border text-sm uppercase tracking-wider transition-colors ${
+                        selectedColor === colorName
+                          ? "border-(--primary) bg-(--primary)/10 text-(--primary)"
+                          : "border-(--border) text-(--muted-foreground) hover:border-(--primary)/50 hover:text-(--foreground)"
+                      }`}>
+                      <span
+                        className="h-5 w-5 border border-white/20"
+                        style={{ backgroundColor: colorHex }}
+                        aria-hidden="true"
+                      />
+                      {selectedColor === colorName && <Check className="w-3.5 h-3.5" />}
+                      {colorName}
+                    </motion.button>
+                    )
+                  })}
+                </div>
+              </motion.div>
+            )}
 
             {/* quantity */}
             <motion.div

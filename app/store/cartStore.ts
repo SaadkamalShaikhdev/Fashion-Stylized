@@ -8,6 +8,7 @@ export type CartItem = {
   image: string
   quantity: number
   category: string
+  color?: string
 }
 
 type CartStore = {
@@ -15,10 +16,10 @@ type CartStore = {
   total: number;
   itemCount: number;
   addItem: (item: CartItem) => void
-  removeItem: (id: string) => void
-  updateQuantity: (id: string, quantity: number) => void
+  removeItem: (id: string, color?: string) => void
+  updateQuantity: (id: string, quantity: number, color?: string) => void
   clearCart: () => void
-  isInCart: (id: string) => boolean
+  isInCart: (id: string, color?: string) => boolean
 }
 
 function calculateTotal(items: CartItem[]) {
@@ -27,6 +28,10 @@ function calculateTotal(items: CartItem[]) {
 
 function calculateItemCount(items: CartItem[]) {
   return items.reduce((sum, item) => sum + item.quantity, 0)
+}
+
+function matchesCartItem(item: CartItem, id: string, color?: string) {
+  return item.id === id && (color === undefined || item.color === color)
 }
 
 // Fire-and-forget TikTok pixel call — safe to call from a client store
@@ -56,15 +61,16 @@ export const useCartStore = create<CartStore>()(
       itemCount: 0,
 
       addItem: (item) => {
-        const existing = get().items.find(i => i.id === item.id)
-        let updatedItems
+        const quantity = Math.max(1, Math.floor(item.quantity))
+        const existing = get().items.find(i => i.id === item.id && i.color === item.color)
+        let updatedItems: CartItem[]
 
         if (existing) {
           updatedItems = get().items.map(i =>
-            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+            i.id === item.id && i.color === item.color ? { ...i, quantity: i.quantity + quantity } : i
           )
         } else {
-          updatedItems = [...get().items, { ...item, quantity: 1 }]
+          updatedItems = [...get().items, { ...item, quantity }]
         }
 
         set({
@@ -77,8 +83,8 @@ export const useCartStore = create<CartStore>()(
         trackAddToCart(item)
       },
 
-      removeItem: (id) => {
-        const updatedItems = get().items.filter(i => i.id !== id)
+      removeItem: (id, color) => {
+        const updatedItems = get().items.filter(i => !matchesCartItem(i, id, color))
         set({
           items: updatedItems,
           total: calculateTotal(updatedItems),
@@ -86,9 +92,9 @@ export const useCartStore = create<CartStore>()(
         })
       },
 
-      updateQuantity: (id, quantity) => {
+      updateQuantity: (id, quantity, color) => {
         if (quantity <= 0) {
-          const updatedItems = get().items.filter(i => i.id !== id)
+          const updatedItems = get().items.filter(i => !matchesCartItem(i, id, color))
           set({
             items: updatedItems,
             total: calculateTotal(updatedItems),
@@ -98,7 +104,7 @@ export const useCartStore = create<CartStore>()(
         }
 
         const updatedItems = get().items.map(i =>
-          i.id === id ? { ...i, quantity } : i
+          matchesCartItem(i, id, color) ? { ...i, quantity } : i
         )
         set({
           items: updatedItems,
@@ -109,7 +115,7 @@ export const useCartStore = create<CartStore>()(
 
       clearCart: () => set({ items: [], total: 0, itemCount: 0 }),
 
-      isInCart: (id) => get().items.some(i => i.id === id),
+      isInCart: (id, color) => get().items.some(i => matchesCartItem(i, id, color)),
     }),
     {
       name: "cart-storage",

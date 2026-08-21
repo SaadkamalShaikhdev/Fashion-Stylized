@@ -19,6 +19,7 @@ type CheckoutItem = {
   image: string
   category: string
   quantity: number
+  color?: string
 }
 
 const fadeUp = {
@@ -114,7 +115,7 @@ export default function Checkout() {
           // product deleted
           if (!res.success || !res.data) {
             warnings.push(`"${item.title}" is no longer available and was removed`)
-            if (!isBuyNow) removeItem(item.id)
+            if (!isBuyNow) removeItem(item.id, item.color)
             continue
           }
 
@@ -123,7 +124,7 @@ export default function Checkout() {
           // out of stock
           if (liveProduct.stock === 0) {
             warnings.push(`"${liveProduct.title}" is out of stock and was removed`)
-            if (!isBuyNow) removeItem(item.id)
+            if (!isBuyNow) removeItem(item.id, item.color)
             continue
           }
 
@@ -132,7 +133,7 @@ export default function Checkout() {
           if (item.quantity > liveProduct.stock) {
             warnings.push(`"${liveProduct.title}" quantity reduced to ${liveProduct.stock} (max available)`)
             finalQuantity = liveProduct.stock
-            if (!isBuyNow) updateQuantity(item.id, liveProduct.stock)
+            if (!isBuyNow) updateQuantity(item.id, liveProduct.stock, item.color)
           }
 
           // price changed
@@ -210,6 +211,7 @@ export default function Checkout() {
           image: item.image,
           category: item.category,
           quantity: item.quantity,
+          color: item.color,
         })),
         address: form.address,
         city: form.city,
@@ -560,9 +562,9 @@ useEffect(() => {
               </h2>
 
               {/* items list */}
-              <div className="space-y-4 mb-6 max-h-[400px] overflow-y-auto pr-1">
+              <div className="space-y-4 mb-6 max-h-[400px] overflow-y-auto pr-1 pt-2">
                 {checkoutItems.map((item) => (
-                  <div key={item.id} className="flex gap-4 pb-4 border-b border-(--border) last:border-0">
+                  <div key={`${item.id}:${item.color || ""}`} className="flex gap-4 pb-4 border-b border-(--border) last:border-0">
                     <div className="relative w-16 h-16 flex-shrink-0 bg-(--secondary)">
                       <Image
                         urlEndpoint="https://ik.imagekit.io/fashionstylized"
@@ -578,6 +580,9 @@ useEffect(() => {
                     <div className="flex-1 min-w-0">
                       <p className="text-xs text-(--muted-foreground) uppercase tracking-wider">{item.category}</p>
                       <h3 className="text-sm font-cormorant-garamond line-clamp-1">{item.title}</h3>
+                      {item.color && (
+                        <p className="text-xs text-(--muted-foreground)">Color: {item.color}</p>
+                      )}
                       <p className="text-sm text-(--primary)">Rs. {(item.price * item.quantity).toLocaleString()}</p>
                     </div>
                   </div>

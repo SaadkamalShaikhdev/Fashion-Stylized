@@ -15,7 +15,7 @@ type Order = {
   totalAmount: number
   status: "pending" | "processing" | "shipped" | "delivered" | "cancelled"
   paymentMethod: string
-  products: { title: string; quantity: number; price: number }[]
+  products: { title: string; quantity: number; price: number; color?: string }[]
   createdAt: string
 }
 
@@ -225,7 +225,14 @@ export default function AdminOrdersPage() {
 
                       {/* items */}
                       <td className="px-4 py-3 text-(--muted-foreground)">
-                        {order.products.length} {order.products.length === 1 ? "item" : "items"}
+                        <p>{order.products.length} {order.products.length === 1 ? "item" : "items"}</p>
+                        <div className="mt-1 space-y-0.5">
+                          {order.products.map((item, itemIndex) => (
+                            <p key={`${item.title}-${itemIndex}`} className="text-xs">
+                              {item.title}{item.color ? ` · ${item.color}` : ""}
+                            </p>
+                          ))}
+                        </div>
                       </td>
 
                       {/* total */}
@@ -332,6 +339,14 @@ export default function AdminOrdersPage() {
                 </div>
 
                 {/* middle row */}
+                <div className="border-t border-(--border) pt-3 space-y-1">
+                  {order.products.map((item, itemIndex) => (
+                    <p key={`${item.title}-${itemIndex}`} className="text-xs text-(--muted-foreground)">
+                      {item.title}{item.color ? ` · Color: ${item.color}` : ""} × {item.quantity}
+                    </p>
+                  ))}
+                </div>
+
                 <div className="flex items-center justify-between text-sm border-t border-(--border) pt-3">
                   <span className="text-(--muted-foreground) text-xs">
                     {order.products.length} items · {order.paymentMethod}

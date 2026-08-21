@@ -8,6 +8,7 @@ type BuyNowItem = {
   image: string
   category: string
   quantity: number
+  color?: string
 }
 
 type BuyNowStore = {

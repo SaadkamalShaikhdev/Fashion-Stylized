@@ -18,6 +18,7 @@ type OrderProduct = {
   image: string
   category: string
   quantity: number
+  color?: string
 }
 
 type Order = {
@@ -210,6 +211,9 @@ export default function AdminOrderDetailPage() {
                     <h3 className="font-cormorant-garamond text-lg line-clamp-1">
                       {item.title}
                     </h3>
+                    {item.color && (
+                      <p className="text-xs text-(--muted-foreground)">Color: {item.color}</p>
+                    )}
                     <div className="flex items-center justify-between mt-1 flex-wrap gap-2">
                       <p className="text-sm text-(--muted-foreground)">
                         Rs. {item.price.toLocaleString()} × {item.quantity}

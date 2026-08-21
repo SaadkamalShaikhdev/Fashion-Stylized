@@ -67,6 +67,7 @@ export default function EditProductPage() {
           isTrending: product.isTrending,
           keyFeatures: product.keyFeatures || [],
           images: product.images || [],
+          colors: product.colors || [],
         }}
       />
     </div>

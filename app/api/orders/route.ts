@@ -4,6 +4,7 @@ import Order from "@/models/Order";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { sendOrderNotificationEmail, sendOrderConfirmationEmail } from "@/lib/resend"
+import Setting from "@/models/Setting"
 
 
 export const dynamic = "force-dynamic"
@@ -39,12 +40,14 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const deliveryFee = 300
+    const setting = await Setting.findOne().lean()
+    const deliveryFee = setting?.deliveryFee ?? 300
     // ✅ calculate total on server — never trust client
-    const totalAmount = products.reduce(
+    const subtotal = products.reduce(
       (sum: number, item: { price: number; quantity: number }) =>
-        sum + item.price * item.quantity + deliveryFee, 0
+        sum + item.price * item.quantity, 0
     );
+    const totalAmount = subtotal + deliveryFee;
 
     const newOrder = new Order({
       userId: session?.user?.id.toString() || null,

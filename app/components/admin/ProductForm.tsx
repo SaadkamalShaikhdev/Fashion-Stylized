@@ -2,10 +2,11 @@
 "use client"
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Plus, X, Loader2, AlertCircle, CheckCircle2, TrendingUp } from "lucide-react"
+import { Plus, X, Loader2, AlertCircle, CheckCircle2, TrendingUp, Palette } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { apiClient } from "@/lib/api-client"
 import ImageUpload from "./UploadImage"
+import { ProductColor } from "@/models/Product"
 
 type ProductData = {
   title: string
@@ -16,6 +17,7 @@ type ProductData = {
   isTrending: boolean
   keyFeatures: string[]
   images: string[]
+  colors: ProductColor[]
 }
 
 type Props = {
@@ -32,6 +34,7 @@ const defaultData: ProductData = {
   isTrending: false,
   keyFeatures: [],
   images: [],
+  colors: [],
 }
 
 const fadeUp = {
@@ -43,6 +46,8 @@ export default function ProductForm({ initialData, mode }: Props) {
   const router = useRouter()
   const [form, setForm] = useState<ProductData>(initialData || defaultData)
   const [featureInput, setFeatureInput] = useState("")
+  const [colorNameInput, setColorNameInput] = useState("")
+  const [colorHexInput, setColorHexInput] = useState("#000000")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
@@ -70,6 +75,24 @@ export default function ProductForm({ initialData, mode }: Props) {
     setForm(prev => ({
       ...prev,
       keyFeatures: prev.keyFeatures.filter((_, i) => i !== index)
+    }))
+  }
+
+  const addColor = () => {
+    const name = colorNameInput.trim()
+    const hex = colorHexInput.trim()
+    if (!name || !/^#[0-9A-Fa-f]{6}$/.test(hex)) return
+    // avoid case-insensitive duplicates (e.g. "Brown" and "brown")
+    if (form.colors.some(c => Object.keys(c)[0]?.toLowerCase() === name.toLowerCase())) return
+    setForm(prev => ({ ...prev, colors: [...prev.colors, { [name]: hex.toUpperCase() }] }))
+    setColorNameInput("")
+    setColorHexInput("#000000")
+  }
+
+  const removeColor = (index: number) => {
+    setForm(prev => ({
+      ...prev,
+      colors: prev.colors.filter((_, i) => i !== index)
     }))
   }
 
@@ -104,6 +127,7 @@ export default function ProductForm({ initialData, mode }: Props) {
         isTrending: form.isTrending,
         keyFeatures: form.keyFeatures,
         images: form.images,
+        colors: form.colors, // optional — empty array means single-color product
       }
 
       let res
@@ -266,6 +290,67 @@ export default function ProductForm({ initialData, mode }: Props) {
                 </p>
               </div>
             </label>
+          </motion.div>
+
+          {/* colors */}
+          <motion.div variants={fadeUp}>
+            <label className="block text-sm uppercase tracking-wider mb-2 flex items-center gap-2">
+              <Palette className="w-4 h-4 text-(--primary)" />
+              Colors (optional)
+            </label>
+            <p className="text-xs text-(--muted-foreground) mb-3">
+              Leave empty if this product only comes in one color
+            </p>
+            <div className="flex gap-2 mb-3">
+              <input
+                value={colorNameInput}
+                onChange={e => setColorNameInput(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && (e.preventDefault(), addColor())}
+                placeholder="Color name, e.g. Brown"
+                className="flex-1 px-4 py-2 bg-transparent border border-(--border) focus:border-(--primary) outline-none text-sm transition-colors placeholder:text-(--muted-foreground)"
+              />
+              <input
+                type="color"
+                value={colorHexInput}
+                onChange={e => setColorHexInput(e.target.value)}
+                aria-label="Color hex value"
+                className="h-10 w-14 cursor-pointer border border-(--border) bg-transparent p-1"
+              />
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={addColor}
+                type="button"
+                className="px-4 py-2 bg-(--primary) text-(--primary-foreground) text-sm uppercase tracking-wider">
+                <Plus className="w-4 h-4" />
+              </motion.button>
+            </div>
+
+            {/* color chips */}
+            {form.colors.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {form.colors.map((color, i) => {
+                  const [name, hex] = Object.entries(color)[0] || []
+                  return (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-(--secondary) border border-(--border) text-xs">
+                    <span className="h-4 w-4 border border-white/20" style={{ backgroundColor: hex }} />
+                    {name} ({hex})
+                    <button
+                      onClick={() => removeColor(i)}
+                      type="button"
+                      aria-label={"Remove color: " + name}
+                      className="text-(--muted-foreground) hover:text-red-400 transition-colors w-6 h-6 flex items-center justify-center">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </motion.span>
+                  )
+                })}
+              </div>
+            )}
           </motion.div>
 
           {/* key features */}
