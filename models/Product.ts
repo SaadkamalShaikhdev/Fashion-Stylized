@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+export type ProductColor = Record<string, string>;
+
 export interface IProduct {
     title: string;
     description: string;
@@ -13,6 +15,7 @@ export interface IProduct {
     isTrending?: boolean;
     createdAt?: Date;
     updatedAt?: Date; 
+    colors?: ProductColor[]
     avgRating?: number;
 reviewCount?: number;
 }
@@ -26,6 +29,7 @@ const productSchema = new mongoose.Schema<IProduct>({
     stock: {type: Number, default: 5},
     category: {type: String, required: true},
     subcategory: {type: String},
+    colors: [{ type: mongoose.Schema.Types.Mixed }],
     isTrending: {type: Boolean, default: false},
     avgRating: {
   type: Number,

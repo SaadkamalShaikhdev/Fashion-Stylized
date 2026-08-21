@@ -9,6 +9,7 @@ export interface IOrderProduct {
   image: string;
   category: string;
   quantity: number;
+  color?: string;
 }
 
 export interface IOrder {
@@ -37,6 +38,7 @@ const orderProductSchema = new mongoose.Schema<IOrderProduct>({
   image: { type: String },
   category: { type: String },
   quantity: { type: Number, required: true, min: 1 },
+  color: { type: String },
 })
 
 const orderSchema = new mongoose.Schema<IOrder>({

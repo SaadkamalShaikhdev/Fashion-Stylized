@@ -277,6 +277,9 @@ useEffect(() => {
                   <h3 className="text-base font-cormorant-garamond line-clamp-1">
                     {item.title}
                   </h3>
+                  {item.color && (
+                    <p className="text-xs text-(--muted-foreground)">Color: {item.color}</p>
+                  )}
                   <p className="text-sm text-(--primary)">
   Rs. {item.price.toLocaleString()} {"\u00D7"} {item.quantity} = Rs.{" "}
   {(item.price * item.quantity).toLocaleString()}

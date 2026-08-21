@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     await connectToDatabase()
 
-    const { title, description, price, images, keyFeatures, category, isTrending} = await request.json()
+    const { title, description, price, images, keyFeatures, category, isTrending, colors , stock} = await request.json()
 
     if (!title || !description || !price || !category) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 })
@@ -71,7 +71,9 @@ export async function POST(request: NextRequest) {
       images: images,
       keyFeatures,
       category,
+      colors: colors || [],
       isTrending: isTrending || false,
+      stock: stock || 5,
     })
 
     const savedProduct = await newProduct.save()
@@ -101,7 +103,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: "Product ID is required" }, { status: 400 })
     }
 
-    const { title, description, price, images, keyFeatures, category, isTrending, expire, token, signature } = await request.json()
+    const { title, description, price, images, keyFeatures, category, isTrending, colors, stock, expire, token, signature } = await request.json()
 
     if (!title || !description || !price || !category) {
       return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 })
@@ -115,7 +117,9 @@ export async function PUT(request: NextRequest) {
       keyFeatures,
       category,
       isTrending,
-      images
+      images,
+      colors: colors || [],
+      stock: stock || 5,
     }
 
     // ✅ fix — if new images provided upload and save URLs

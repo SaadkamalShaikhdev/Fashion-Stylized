@@ -47,6 +47,7 @@ const CartPage = () => {
   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0)
   const discountAmount = appliedPromo ? Math.round(subtotal * appliedPromo.discount / 100) : 0
   const finalTotal = subtotal + shippingCost - discountAmount
+  const getItemKey = (item: { id: string; color?: string }) => `${item.id}:${item.color || ""}`
 
 const fetchSettings = async () => {
     try {
@@ -74,11 +75,12 @@ useEffect(() => {
       let foundIssues = false
 
       for (const item of items) {
+        const itemKey = getItemKey(item)
         try {
           const res = await apiClient.getProductById(item.id)
 
           if (!res.success || !res.data) {
-            newValidationMap[item.id] = {
+            newValidationMap[itemKey] = {
               unavailable: true,
               outOfStock: false,
               priceChanged: false,
@@ -105,24 +107,29 @@ useEffect(() => {
             validation.priceChanged = true
             validation.oldPrice = item.price
             foundIssues = true
-            useCartStore.setState(state => ({
-              items: state.items.map(i =>
-                i.id === item.id ? { ...i, price: liveProduct.price } : i
+            useCartStore.setState(state => {
+              const updatedItems = state.items.map(i =>
+                i.id === item.id && i.color === item.color ? { ...i, price: liveProduct.price } : i
               )
-            }))
+              return {
+                items: updatedItems,
+                total: updatedItems.reduce((sum, cartItem) => sum + cartItem.price * cartItem.quantity, 0),
+                itemCount: updatedItems.reduce((sum, cartItem) => sum + cartItem.quantity, 0),
+              }
+            })
           }
 
           if (item.quantity > liveProduct.stock && liveProduct.stock > 0) {
             validation.quantityReduced = true
             validation.oldQuantity = item.quantity
             foundIssues = true
-            updateQuantity(item.id, liveProduct.stock)
+            updateQuantity(item.id, liveProduct.stock, item.color)
           }
 
-          newValidationMap[item.id] = validation
+          newValidationMap[itemKey] = validation
 
         } catch (err) {
-          newValidationMap[item.id] = {
+          newValidationMap[itemKey] = {
             unavailable: true,
             outOfStock: false,
             priceChanged: false,
@@ -141,9 +148,10 @@ useEffect(() => {
   }, [])
 
   const handleRemoveUnavailable = () => {
-    Object.entries(validationMap).forEach(([id, validation]) => {
+    Object.entries(validationMap).forEach(([itemKey, validation]) => {
       if (validation.unavailable || validation.outOfStock) {
-        removeItem(id)
+        const item = items.find(candidate => getItemKey(candidate) === itemKey)
+        if (item) removeItem(item.id, item.color)
       }
     })
     setHasIssues(false)
@@ -330,7 +338,7 @@ useEffect(() => {
                           <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => removeItem(item.id, item.color)}
                             aria-label={"Remove " + item.title}
                             className="text-(--muted-foreground) hover:text-red-400 transition-colors flex-shrink-0 p-2">
                             <X className="h-4 w-4" />
@@ -351,6 +359,9 @@ useEffect(() => {
                             </p>
                           )}
                         </div>
+                        {item.color && (
+                          <p className="text-xs text-(--muted-foreground) mb-2">Color: {item.color}</p>
+                        )}
 
                         {validation?.unavailable && (
                           <p className="text-red-400 text-xs uppercase tracking-wider mb-2 flex items-center gap-1">
@@ -380,7 +391,7 @@ useEffect(() => {
                             <div className="flex items-center border border-(--border)">
                               <motion.button
                                 whileTap={{ scale: 0.9 }}
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity - 1, item.color)}
                                 disabled={item.quantity <= 1}
                                 aria-label="Decrease quantity"
                                 className="p-2 sm:p-3 hover:bg-(--muted) transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-w-[44px] min-h-[44px] flex items-center justify-center">
@@ -391,7 +402,7 @@ useEffect(() => {
                               </span>
                               <motion.button
                                 whileTap={{ scale: 0.9 }}
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity + 1, item.color)}
                                 aria-label="Increase quantity"
                                 className="p-2 sm:p-3 hover:bg-(--muted) transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center">
                                 <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
@@ -406,7 +417,7 @@ useEffect(() => {
                         {(validation?.unavailable || validation?.outOfStock) && (
                           <motion.button
                             whileTap={{ scale: 0.97 }}
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => removeItem(item.id, item.color)}
                             className="text-xs uppercase tracking-wider text-red-400 border border-red-500/30 px-3 py-1 hover:bg-red-500/10 transition-colors mt-2">
                             Remove
                           </motion.button>

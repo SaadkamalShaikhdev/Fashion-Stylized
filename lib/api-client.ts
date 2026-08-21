@@ -116,6 +116,7 @@ async createOrder(orderData: {
     image: string;
     category: string;
     quantity: number;
+    color?: string;
   }[];
   address: string;
   city: string;
@@ -192,6 +193,7 @@ async createProduct(data: {
   isTrending: boolean
   keyFeatures: string[]
   images: string[]
+  colors: Record<string, string>[]
 }) {
   return this.fetch<{ success: boolean; data: any; error?: string }>("/products", {
     method: "POST",
@@ -208,6 +210,7 @@ async updateProduct(id: string, data: {
   isTrending: boolean
   keyFeatures: string[]
   images: string[]
+  colors: Record<string, string>[]
 }) {
   return this.fetch<{ success: boolean; data: any; error?: string }>(
     `/products?id=${id}`,
