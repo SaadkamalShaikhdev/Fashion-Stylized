@@ -16,6 +16,7 @@ import { getProductOffer } from '@/lib/product-offers'
 import { showToast } from "@/lib/toast"
 import ReviewList from '@/app/components/ReviewList'
 import { ProductColor } from '@/models/Product'
+import { fbTrack } from '@/lib/fpixel';
 
 const getColorEntry = (color: ProductColor) => Object.entries(color)[0] || ["", ""]
 
@@ -95,6 +96,16 @@ const [wishlistLoading, setWishlistLoading] = useState(false)
   }
   loadWishlist()
 }, [session])
+
+  useEffect(() => {
+    fbTrack('ViewContent', {
+      content_ids: [product?._id],
+      content_name: product?.title,
+      content_type: 'product',
+      value: product?.price,
+      currency: 'PKR',
+    });
+  }, [product?._id]);
 
 const handleWishlist = async () => {
   if (!session) {

@@ -11,6 +11,8 @@ import { apiClient } from "@/lib/api-client"
 import { Loader2, AlertCircle, CheckCircle2, ShoppingBag, Shield } from "lucide-react"
 import Link from "next/link"
 import CheckoutAuthModal from "@/app/components/checkout/CheckoutAuthModal"
+import { fbTrack } from '@/lib/fpixel';
+
 
 type CheckoutItem = {
   id: string
@@ -179,70 +181,70 @@ export default function Checkout() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
+const handleSubmit = async () => {
+  if (isSubmittingRef.current) return
+  isSubmittingRef.current = true
+  setError("")
 
-  const handleSubmit = async () => {
-    // prevent double submissions (fast double-click)
-    if (isSubmittingRef.current) return
-    isSubmittingRef.current = true
-    setError("")
-
-    // validation
-    if (!form.name || !form.email || !form.address || !form.city || !form.mobileNumber) {
-      setError("Please fill all required fields")
-      isSubmittingRef.current = false
-      return
-    }
-    if (!/^\d{11}$/.test(form.mobileNumber)) {
-      setError("Please enter a valid 11-digit mobile number")
-      isSubmittingRef.current = false
-      return
-    }
-
-    setLoading(true)
-
-    try {
-      const res = await apiClient.createOrder({
-        name: form.name,
-        email: form.email,
-        products: checkoutItems.map(item => ({
-          productId: item.id,
-          title: item.title,
-          price: item.price,
-          image: item.image,
-          category: item.category,
-          quantity: item.quantity,
-          color: item.color,
-        })),
-        address: form.address,
-        city: form.city,
-        postalCode: form.postalCode,
-        mobileNumber: form.mobileNumber,
-        paymentMethod: form.paymentMethod,
-      })
-
-      if (!res.success) {
-        setError(res.error || "Failed to place order")
-        return
-      }
-
-      // clear cart or buynow
-      if (isBuyNow) {
-        clearBuyNow()
-      } else {
-        clearCart()
-      }
-
-      setOrderSuccess(true)
-
-      setTimeout(() => {
-        router.push(`/orders/${res.orderId}`)
-      }, 2000)
-
-    } catch (err) {
-      setError("Something went wrong. Please try again.")
-    }
+  if (!form.name || !form.email || !form.address || !form.city || !form.mobileNumber) {
+    setError("Please fill all required fields")
+    isSubmittingRef.current = false
+    return
+  }
+  if (!/^\d{11}$/.test(form.mobileNumber)) {
+    setError("Please enter a valid 11-digit mobile number")
+    isSubmittingRef.current = false
+    return
   }
 
+  setLoading(true)
+
+  try {
+    const res = await apiClient.createOrder({
+      name: form.name,
+      email: form.email,
+      products: checkoutItems.map(item => ({
+        productId: item.id,
+        title: item.title,
+        price: item.price,
+        image: item.image,
+        category: item.category,
+        quantity: item.quantity,
+        color: item.color,
+      })),
+      address: form.address,
+      city: form.city,
+      postalCode: form.postalCode,
+      mobileNumber: form.mobileNumber,
+      paymentMethod: form.paymentMethod,
+    })
+
+    if (!res.success) {
+      setError(res.error || "Failed to place order")
+      return
+    }
+
+    // ✅ no Purchase event here — it fires on the confirmation page instead
+
+    if (isBuyNow) {
+      clearBuyNow()
+    } else {
+      clearCart()
+    }
+
+    setOrderSuccess(true)
+
+    setTimeout(() => {
+      router.push(`/orders/${res.orderId}`)
+    }, 2000)
+
+  } catch (err) {
+    setError("Something went wrong. Please try again.")
+  } finally {
+    setLoading(false)
+    isSubmittingRef.current = false
+  }
+}
 
 useEffect(() => {
   if (checkoutItems.length === 0 || trackedCheckoutRef.current) return
@@ -260,6 +262,14 @@ useEffect(() => {
       currency: "PKR",
     })
   }
+
+  fbTrack('InitiateCheckout', {
+    content_ids: checkoutItems.map((item) => item.id),
+    content_type: 'product',
+    num_items: checkoutItems.reduce((sum, item) => sum + item.quantity, 0),
+    value: total,
+    currency: 'PKR',
+  })
 }, [checkoutItems, total])
 
   // ── Loading / validating state ──
