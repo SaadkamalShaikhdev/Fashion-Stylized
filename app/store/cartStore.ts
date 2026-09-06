@@ -1,5 +1,7 @@
 import { create } from "zustand"
 import { persist, createJSONStorage } from "zustand/middleware"
+import { fbTrack } from '@/lib/fpixel';
+
 
 export type CartItem = {
   id: string;
@@ -35,9 +37,11 @@ function matchesCartItem(item: CartItem, id: string, color?: string) {
 }
 
 // Fire-and-forget TikTok pixel call — safe to call from a client store
+// Fire-and-forget pixel calls — safe to call from a client store
 function trackAddToCart(item: CartItem) {
   if (typeof window === "undefined") return
   const w = window as any
+
   if (w.ttq) {
     w.ttq.track("AddToCart", {
       contents: [
@@ -47,10 +51,18 @@ function trackAddToCart(item: CartItem) {
           content_name: item.title,
         },
       ],
-      value: item.price,
+      value: item.price * item.quantity,
       currency: "PKR",
     })
   }
+
+  fbTrack('AddToCart', {
+    content_ids: [item.id],
+    content_name: item.title,
+    content_type: 'product',
+    value: item.price * item.quantity,
+    currency: 'PKR',
+  })
 }
 
 export const useCartStore = create<CartStore>()(

@@ -41,12 +41,12 @@ export default function OrderDetailContent() {
     getOrder()
   }, [id])
 
-  // Fire TikTok PlaceAnOrder (or CompletePayment if you add online payment later)
+// Fire TikTok PlaceAnOrder + Facebook Purchase (both funnel-verified events)
 useEffect(() => {
   if (!order || !order._id) return
 
   const orderId = order._id.toString()
-  const storageKey = `ttq_tracked_${orderId}`
+  const storageKey = `pixel_tracked_${orderId}`
 
   if (trackedRef.current || sessionStorage.getItem(storageKey)) return
 
@@ -67,11 +67,20 @@ useEffect(() => {
   }
 
   if (typeof window !== "undefined" && window.ttq) {
-    // Fires the required "Purchase" funnel event TikTok checks for
     window.ttq.track("Purchase", eventParams, { event_id: `${eventId}_purchase` })
-
-    // Also keep PlaceAnOrder for accurate order-vs-payment semantics
     window.ttq.track("PlaceAnOrder", eventParams, { event_id: `${eventId}_place` })
+  }
+
+  // ✅ Facebook Pixel Purchase
+  const w = window as any
+  if (typeof window !== "undefined" && w.fbq) {
+    w.fbq('track', 'Purchase', {
+      value: order.totalAmount,
+      currency: 'PKR',
+      content_ids: contents.map(c => c.content_id),
+      content_type: 'product',
+      num_items: order.products.reduce((sum, p) => sum + p.quantity, 0),
+    }, { eventID: `${eventId}_purchase` }) // event_id for CAPI dedup, note fbq uses "eventID" not "event_id"
   }
 
   apiClient.trackTikTokEvent({
@@ -95,6 +104,9 @@ useEffect(() => {
     phone: order.mobileNumber,
     pageUrl: typeof window !== "undefined" ? window.location.href : undefined,
   }).catch(() => {})
+
+  // ⚠️ If you have a Facebook Conversions API endpoint, call it here too —
+  // see note below on why this matters more for Facebook than TikTok.
 }, [order])
 
   if (loading) {

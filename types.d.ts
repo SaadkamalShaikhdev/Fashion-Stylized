@@ -4,6 +4,13 @@ declare global{
         conn: Connection | null,
         promise: Promise<Connection> | null
     }
+      interface Window {
+    fbq: (
+      track: 'track' | 'trackCustom' | 'init',
+      eventName: string,
+      params?: Record<string, unknown>
+    ) => void;
+  }
 }
 
 export {};
